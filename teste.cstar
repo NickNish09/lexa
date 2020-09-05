@@ -1,0 +1,2 @@
+tuple int, float a;
+a = (20, 500.40);
