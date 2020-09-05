@@ -1,4 +1,4 @@
-tuple int, float a;
-a = (20, 500.40);
-
-print(a);
+tuple int, float alface;
+alface = (20, 500.40);
+float b[10];
+print(alface);

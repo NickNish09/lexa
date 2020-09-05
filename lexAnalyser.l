@@ -6,9 +6,35 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+int errors = 0;
+int error_index = 0;
+int col = 1; int lin = 1;
+
+struct lerror {
+    char type[50];
+    char msg[100];
+    char sym[100];
+    int line;
+};
+
+struct lerror err[500];
+
+void printErrors(){
+    printf("Erro número %d\n", error_index+1);
+    int i;
+    for(i=0; i<errors; i++){
+        printf("\nSimbolo: %s\n", err[i].sym);
+        printf("%s\n", err[i].type);
+        printf("%s\n", err[i].msg);
+        printf("Linha: %d\n", err[i].line);
+        printf("\n");
+    }
+}
+
 %}
 
-DELIM [ \t\n]
+DELIM [ \t]
+ENTER [\n]
 ESPACO {DELIM}+
 SEPARADOR [;{}()]
 LETRA [A-Za-z]
@@ -16,6 +42,7 @@ DIGITO [0-9]
 INT "-"?{DIGITO}+
 FLOAT "-"?{DIGITO}+("."{DIGITO}+)*
 ID {LETRA}({LETRA}|{DIGITO})*
+VAR_DECL {ID}['['({DIGITO})+']']
 
 /* keywords */
 BOOL "true"|"false"
@@ -26,7 +53,7 @@ RETORNO "return"
 PARAM_TIPOS "void"|{TIPO}" "{ID}['['']']" "(','{TIPO}" "{ID}['['']'])*
 
 /* tuple sendo declarada a partir da palavra reservada */
-DECLARACAO {TIPO} {ID}(','{ID})*|"tuple" {TIPO}(','{TIPO})* ID
+DECLARACAO {TIPO} {VAR_DECL}(','{VAR_DECL})*|"tuple" {TIPO}(','{TIPO})* VAR_DECL
 
 FUNC_DECL {TIPO}" "{ID}'('" "{PARAM_TIPOS}" "')'
 /* COD_BLOCK IF'('EXPRESSION')'COD_BLOCK[ else COD_BLOCK] */
@@ -34,68 +61,73 @@ OP_ARITM "+"|"-"|"*"|"/"
 OP_COMP "=="|"!="|"<="|"<"|">="|">"
 OP_LOG "&&"|"||"
 OP_ASSIGN "="
-SCAN "scan"'('{DIGITO}','{ID}')'|"scan"'('{LETRA}','{ID}')'
-PRINT "print"'('{ID}')'|"print"'('({LETRA}{DIGITO})*')'
+SCAN "scan"'('{DIGITO}','{VAR_DECL}')'|"scan"'('{LETRA}','{VAR_DECL}')'
+PRINT "print"'('{VAR_DECL}')'|"print"'('({LETRA}{DIGITO})*')'
 
 %%
 
 {DELIM} {
-    printf("DELIM %s (tamanho %d)\n", yytext, yyleng);
+    
 }
 {ESPACO} {
-    printf("ESPACO %s (tamanho %d)\n", yytext, yyleng);
+    printf("ESPACO %s (tamanho %d)\n", yytext, (int)yyleng);
 }
 {SEPARADOR} {
-    printf("SEPARADOR %s (tamanho %d)\n", yytext, yyleng);
-}
-{LETRA} {
-    printf("LETRA %s (tamanho %d)\n", yytext, yyleng);
-}
-{DIGITO} {
-    printf("DIGITO %s (tamanho %d)\n", yytext, yyleng);
+    printf("SEPARADOR %s (tamanho %d)\n", yytext, (int)yyleng);
 }
 {INT} {
-    printf("INT %s (tamanho %d)\n", yytext, yyleng);
+    printf("INT %s (tamanho %d)\n", yytext, (int)yyleng);
 }
 {FLOAT} {
-    printf("FLOAT %s (tamanho %d)\n", yytext, yyleng);
+    printf("FLOAT %s (tamanho %d)\n", yytext, (int)yyleng);
 }
 {BOOL} {
-    printf("BOOL %s (tamanho %d)\n", yytext, yyleng);
+    printf("BOOL %s (tamanho %d)\n", yytext, (int)yyleng);
 }
 {TIPO} {
-    printf("TIPO %s (tamanho %d)\n", yytext, yyleng);
+    printf("TIPO %s (tamanho %d)\n", yytext, (int)yyleng);
 }
 {PARAM_TIPOS} {
-    printf("PARAM_TIPOS %s (tamanho %d)\n", yytext, yyleng);
+    printf("PARAM_TIPOS %s (tamanho %d)\n", yytext, (int)yyleng);
 }
 {FUNC_DECL} {
-    printf("FUNC_DECL %s (tamanho %d)\n", yytext, yyleng);
+    printf("FUNC_DECL %s (tamanho %d)\n", yytext, (int)yyleng);
 }
 {OP_ARITM} {
-    printf("OP_ARITM %s (tamanho %d)\n", yytext, yyleng);
+    printf("OP_ARITM %s (tamanho %d)\n", yytext, (int)yyleng);
 }
 {OP_COMP} {
-    printf("OP_COMP %s (tamanho %d)\n", yytext, yyleng);
+    printf("OP_COMP %s (tamanho %d)\n", yytext, (int)yyleng);
 }
 {OP_LOG} {
-    printf("OP_LOG %s (tamanho %d)\n", yytext, yyleng);
+    printf("OP_LOG %s (tamanho %d)\n", yytext, (int)yyleng);
 }
 {OP_ASSIGN} {
-    printf("OP_ASSIGN %s (tamanho %d)\n", yytext, yyleng);
+    printf("OP_ASSIGN %s (tamanho %d)\n", yytext, (int)yyleng);
 }
 {SCAN} {
-    printf("SCAN %s (tamanho %d)\n", yytext, yyleng);
+    printf("SCAN %s (tamanho %d)\n", yytext, (int)yyleng);
 }
 {PRINT} {
-    printf("PRINT %s (tamanho %d)\n", yytext, yyleng);
+    printf("PRINT %s (tamanho %d)\n", yytext, (int)yyleng);
+}
+{VAR_DECL} {
+    printf("VAR_DECL %s (tamanho %d)\n", yytext, (int)yyleng);
 }
 {ID} {
-    printf("ID %s (tamanho %d)\n", yytext, yyleng);
+    printf("ID %s (tamanho %d)\n", yytext, (int)yyleng);
 }
-
+{ENTER} {
+    lin++;
+    col = 1;
+}
 . {
-    printf("Erro \n");
+    errors++;
+    strcpy(err[error_index].type, "NO_SIMBOL");
+    strcpy(err[error_index].msg, "Simbolo não pertence à gramática");
+    strcpy(err[error_index].sym, yytext);
+    err[error_index].line = lin;
+    error_index++;
 }
 
 %%
@@ -110,4 +142,5 @@ int main( int argc, char **argv ) {
     }
 
     yylex();
+    printErrors();
 }
