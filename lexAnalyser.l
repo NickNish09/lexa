@@ -75,12 +75,6 @@ PRINT "print"'('{VAR_DECL}')'|"print"'('({LETRA}{DIGITO})*')'
 {SEPARADOR} {
     printf("SEPARADOR %s (tamanho %d)\n", yytext, (int)yyleng);
 }
-{INT} {
-    printf("INT %s (tamanho %d)\n", yytext, (int)yyleng);
-}
-{FLOAT} {
-    printf("FLOAT %s (tamanho %d)\n", yytext, (int)yyleng);
-}
 {BOOL} {
     printf("BOOL %s (tamanho %d)\n", yytext, (int)yyleng);
 }
@@ -116,6 +110,12 @@ PRINT "print"'('{VAR_DECL}')'|"print"'('({LETRA}{DIGITO})*')'
 }
 {ID} {
     printf("ID %s (tamanho %d)\n", yytext, (int)yyleng);
+}
+{INT} {
+    printf("INT %s (tamanho %d)\n", yytext, (int)yyleng);
+}
+{FLOAT} {
+    printf("FLOAT %s (tamanho %d)\n", yytext, (int)yyleng);
 }
 {ENTER} {
     lin++;

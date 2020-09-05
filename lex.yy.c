@@ -371,26 +371,26 @@ struct yy_trans_info
 	};
 static yyconst flex_int16_t yy_accept[211] =
     {   0,
-        0,    0,   21,   19,    1,   18,   19,   19,    3,   10,
-       10,    4,   11,   13,   11,   17,   17,   17,   17,   17,
-       17,   17,   17,   17,   19,    2,   11,   12,    4,    0,
-        0,   17,   17,   17,   17,   17,   17,   17,   17,   17,
-       17,   17,   17,    5,    0,    0,   17,   17,   17,   17,
-        7,   17,   17,   17,   17,   17,   16,   17,   17,    0,
-       17,   17,    6,   17,    7,    0,   17,    0,    0,    0,
+        0,    0,   21,   19,    1,   18,   19,   19,    3,    8,
+        8,   16,    9,   11,    9,   15,   15,   15,   15,   15,
+       15,   15,   15,   15,   19,    2,    9,   10,   16,    0,
+        0,   15,   15,   15,   15,   15,   15,   15,   15,   15,
+       15,   15,   15,   17,    0,    0,   15,   15,   15,   15,
+        5,   15,   15,   15,   15,   15,   14,   15,   15,    0,
+       15,   15,    4,   15,    5,    0,   15,    0,    0,    0,
         0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
         0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-        8,   15,    0,    0,    0,    0,    0,    0,    0,    0,
+        6,   13,    0,    0,    0,    0,    0,    0,    0,    0,
 
         0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
         0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-       15,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+       13,    0,    0,    0,    0,    0,    0,    0,    0,    0,
         0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
         0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-        0,    0,    0,    0,    0,    0,    0,    0,    0,    9,
+        0,    0,    0,    0,    0,    0,    0,    0,    0,    7,
         0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-        0,    0,   14,    0,    0,    0,    0,    0,    0,    0,
-        0,    0,    8,    0,    0,    0,    0,    0,    0,    0,
+        0,    0,   12,    0,    0,    0,    0,    0,    0,    0,
+        0,    0,    6,    0,    0,    0,    0,    0,    0,    0,
         0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
 
         0,    0,    0,    0,    0,    0,    0,    0,    0,    0
@@ -943,98 +943,98 @@ case 4:
 YY_RULE_SETUP
 #line 78 "lexAnalyser.l"
 {
-    printf("INT %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("BOOL %s (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 81 "lexAnalyser.l"
 {
-    printf("FLOAT %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("TIPO %s (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 84 "lexAnalyser.l"
 {
-    printf("BOOL %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("PARAM_TIPOS %s (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 87 "lexAnalyser.l"
 {
-    printf("TIPO %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("FUNC_DECL %s (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 90 "lexAnalyser.l"
 {
-    printf("PARAM_TIPOS %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("OP_ARITM %s (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
 #line 93 "lexAnalyser.l"
 {
-    printf("FUNC_DECL %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("OP_COMP %s (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
 #line 96 "lexAnalyser.l"
 {
-    printf("OP_ARITM %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("OP_LOG %s (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
 #line 99 "lexAnalyser.l"
 {
-    printf("OP_COMP %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("OP_ASSIGN %s (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
 #line 102 "lexAnalyser.l"
 {
-    printf("OP_LOG %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("SCAN %s (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
 #line 105 "lexAnalyser.l"
 {
-    printf("OP_ASSIGN %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("PRINT %s (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
 #line 108 "lexAnalyser.l"
 {
-    printf("SCAN %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("VAR_DECL %s (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
 #line 111 "lexAnalyser.l"
 {
-    printf("PRINT %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("ID %s (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 114 "lexAnalyser.l"
 {
-    printf("VAR_DECL %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("INT %s (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 117 "lexAnalyser.l"
 {
-    printf("ID %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("FLOAT %s (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 18:
