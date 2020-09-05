@@ -636,10 +636,10 @@ struct lerror {
 struct lerror err[500];
 
 void printErrors(){
-    printf("Erro número %d\n", error_index+1);
     int i;
     for(i=0; i<errors; i++){
-        printf("\nSimbolo: %s\n", err[i].sym);
+        printf("\nErro número %d\n", i+1);
+        printf("Simbolo: %s\n", err[i].sym);
         printf("%s\n", err[i].type);
         printf("%s\n", err[i].msg);
         printf("Linha: %d\n", err[i].line);
@@ -1051,7 +1051,7 @@ YY_RULE_SETUP
 #line 124 "lexAnalyser.l"
 {
     errors++;
-    strcpy(err[error_index].type, "NO_SIMBOL");
+    strcpy(err[error_index].type, "nsym");
     strcpy(err[error_index].msg, "Simbolo não pertence à gramática");
     strcpy(err[error_index].sym, yytext);
     err[error_index].line = lin;
