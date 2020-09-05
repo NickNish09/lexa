@@ -16,27 +16,26 @@ DIGITO [0-9]
 INT "-"?{DIGITO}+
 FLOAT "-"?{DIGITO}+("."{DIGITO}+)*
 ID {LETRA}({LETRA}|{DIGITO})*
-VAR_DECL {ID}
 
 /* keywords */
 BOOL "true"|"false"
-TIPO "float"|"int"|"char"|"bool"|"void"
+TIPO "float"|"int"|"char"|"bool"|"void"|"tuple"
 CONDICOES "if"|"else"
 LACOS "while"|"for"
 RETORNO "return"
 PARAM_TIPOS "void"|{TIPO}" "{ID}['['']']" "(','{TIPO}" "{ID}['['']'])*
 
 /* tuple sendo declarada a partir da palavra reservada */
-DECLARACAO {TIPO} {VAR_DECL}(','{VAR_DECL})*|"tuple" {TIPO}(','{TIPO})* VAR_DECL
+DECLARACAO {TIPO} {ID}(','{ID})*|"tuple" {TIPO}(','{TIPO})* ID
 
-FUNC_DECL {TIPO} {ID}'(' {PARAM_TIPOS} ')'
+FUNC_DECL {TIPO}" "{ID}'('" "{PARAM_TIPOS}" "')'
 /* COD_BLOCK IF'('EXPRESSION')'COD_BLOCK[ else COD_BLOCK] */
 OP_ARITM "+"|"-"|"*"|"/"
 OP_COMP "=="|"!="|"<="|"<"|">="|">"
 OP_LOG "&&"|"||"
 OP_ASSIGN "="
-SCAN "scan"'('{DIGITO}','{VAR_DECL}')' | "scan"'('{LETRA}','{VAR_DECL}')'
-PRINT "print"'('{VAR_DECL}')' | "print"'('({LETRA}{DIGITO})*')'
+SCAN "scan"'('{DIGITO}','{ID}')'|"scan"'('{LETRA}','{ID}')'
+PRINT "print"'('{ID}')'|"print"'('({LETRA}{DIGITO})*')'
 
 %%
 
@@ -70,11 +69,29 @@ PRINT "print"'('{VAR_DECL}')' | "print"'('({LETRA}{DIGITO})*')'
 {PARAM_TIPOS} {
     printf("PARAM_TIPOS %s (tamanho %d)\n", yytext, yyleng);
 }
+{FUNC_DECL} {
+    printf("FUNC_DECL %s (tamanho %d)\n", yytext, yyleng);
+}
+{OP_ARITM} {
+    printf("OP_ARITM %s (tamanho %d)\n", yytext, yyleng);
+}
+{OP_COMP} {
+    printf("OP_COMP %s (tamanho %d)\n", yytext, yyleng);
+}
+{OP_LOG} {
+    printf("OP_LOG %s (tamanho %d)\n", yytext, yyleng);
+}
+{OP_ASSIGN} {
+    printf("OP_ASSIGN %s (tamanho %d)\n", yytext, yyleng);
+}
+{SCAN} {
+    printf("SCAN %s (tamanho %d)\n", yytext, yyleng);
+}
+{PRINT} {
+    printf("PRINT %s (tamanho %d)\n", yytext, yyleng);
+}
 {ID} {
     printf("ID %s (tamanho %d)\n", yytext, yyleng);
-}
-{VAR_DECL} {
-    printf("VAR_DECL %s (tamanho %d)\n", yytext, yyleng);
 }
 
 . {
