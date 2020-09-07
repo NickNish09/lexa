@@ -32,7 +32,7 @@ void printErrors(){
 }
 
 %}
-
+%x COMENTARIO
 DELIM [ \t]
 ENTER [\n]
 ESPACO {DELIM}+
@@ -65,6 +65,11 @@ SCAN "scan"'('{DIGITO}','{VAR_DECL}')'|"scan"'('{LETRA}','{VAR_DECL}')'
 PRINT "print"'('{VAR_DECL}')'|"print"'('({LETRA}{DIGITO})*')'
 
 %%
+
+"/*"            { BEGIN(COMENTARIO); }
+<COMENTARIO>"*/" { BEGIN(INITIAL); }
+<COMENTARIO>\n   { }
+<COMENTARIO>.    { }
 
 {DELIM} {
     

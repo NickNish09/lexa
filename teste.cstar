@@ -1,4 +1,6 @@
 tuple int, float alface;
 alface = (20, 500.40);
+/* this is a
+   comment */
 float b[10];
 print(alface);
