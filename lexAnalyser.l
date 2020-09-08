@@ -9,6 +9,9 @@
 int errors = 0;
 int error_index = 0;
 int col = 1; int lin = 1;
+char bad_pattern[200];
+int bad_pattern_index = 0;
+int bad_pattern_bool = 0;
 
 struct lerror {
     char type[50];
@@ -120,24 +123,55 @@ PRINT "print"'('{VAR_DECL}')'|"print"'('({LETRA}{DIGITO})*')'
 {INT} {
     BEGIN(INTEIRO);
     printf("INT %s (tamanho %d)\n", yytext, (int)yyleng);
+    strcpy(bad_pattern, yytext);
+    bad_pattern_index = (int)yyleng;
 }
 <INTEIRO>{DIGITO} { }
 <INTEIRO>{DELIM} { 
     BEGIN(INITIAL);
+    if(bad_pattern_bool){
+        errors++;
+        strcpy(err[error_index].type, "fpat");
+        strcpy(err[error_index].msg, "Padrão não pertence à gramática");
+        strcpy(err[error_index].sym, bad_pattern);
+        err[error_index].line = lin;
+        error_index++;
+    }
+    bad_pattern_bool = 0;
+    strcpy(bad_pattern, "");
+    bad_pattern_index = 0;
 }
 <INTEIRO>{ENTER} { 
     BEGIN(INITIAL);
+    if(bad_pattern_bool){
+        errors++;
+        strcpy(err[error_index].type, "fpat");
+        strcpy(err[error_index].msg, "Padrão não pertence à gramática");
+        strcpy(err[error_index].sym, bad_pattern);
+        err[error_index].line = lin;
+        error_index++;
+    }
+    bad_pattern_bool = 0;
+    strcpy(bad_pattern, "");
+    bad_pattern_index = 0;
 }
 <INTEIRO>{SEPARADOR} { 
     BEGIN(INITIAL);
+    if(bad_pattern_bool){
+        errors++;
+        strcpy(err[error_index].type, "fpat");
+        strcpy(err[error_index].msg, "Padrão não pertence à gramática");
+        strcpy(err[error_index].sym, bad_pattern);
+        err[error_index].line = lin;
+        error_index++;
+    }
+    bad_pattern_bool = 0;
+    strcpy(bad_pattern, "");
+    bad_pattern_index = 0;
 }
 <INTEIRO>. { 
-    errors++;
-    strcpy(err[error_index].type, "fpat");
-    strcpy(err[error_index].msg, "Padrão não pertence à gramática");
-    strcpy(err[error_index].sym, yytext);
-    err[error_index].line = lin;
-    error_index++;
+    bad_pattern[bad_pattern_index++] = *yytext;
+    bad_pattern_bool = 1;
  }
 {FLOAT} {
     printf("FLOAT %s (tamanho %d)\n", yytext, (int)yyleng);
