@@ -3,4 +3,5 @@ alface = (20, 500.40);
 /* this is a
    comment */
 float b[10];
+int g6;
 print(alface);

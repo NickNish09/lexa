@@ -33,6 +33,7 @@ void printErrors(){
 
 %}
 %x COMENTARIO
+%x INTEIRO
 DELIM [ \t]
 ENTER [\n]
 ESPACO {DELIM}+
@@ -117,8 +118,27 @@ PRINT "print"'('{VAR_DECL}')'|"print"'('({LETRA}{DIGITO})*')'
     printf("ID %s (tamanho %d)\n", yytext, (int)yyleng);
 }
 {INT} {
+    BEGIN(INTEIRO);
     printf("INT %s (tamanho %d)\n", yytext, (int)yyleng);
 }
+<INTEIRO>{DIGITO} { }
+<INTEIRO>{DELIM} { 
+    BEGIN(INITIAL);
+}
+<INTEIRO>{ENTER} { 
+    BEGIN(INITIAL);
+}
+<INTEIRO>{SEPARADOR} { 
+    BEGIN(INITIAL);
+}
+<INTEIRO>. { 
+    errors++;
+    strcpy(err[error_index].type, "fpat");
+    strcpy(err[error_index].msg, "Padrão não pertence à gramática");
+    strcpy(err[error_index].sym, yytext);
+    err[error_index].line = lin;
+    error_index++;
+ }
 {FLOAT} {
     printf("FLOAT %s (tamanho %d)\n", yytext, (int)yyleng);
 }
