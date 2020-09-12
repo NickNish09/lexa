@@ -144,8 +144,8 @@ PRINT "print"'('{VAR_DECL}')'|"print"'('({LETRA}{DIGITO})*')'
     printf("<VAR_DECL, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 {ID} {
-    printf("<ID, %s> (tamanho %d)\n", yytext, (int)yyleng);
-    pushSymTable(yytext);
+    int address = pushSymTable(yytext);
+    printf("<ID, %d> (tamanho %d)\n", address, (int)yyleng);
 }
 {INT} {
     BEGIN(INTEIRO);

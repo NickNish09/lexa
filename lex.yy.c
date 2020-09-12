@@ -1088,8 +1088,8 @@ case 19:
 YY_RULE_SETUP
 #line 146 "lexAnalyser.l"
 {
-    printf("<ID, %s> (tamanho %d)\n", yytext, (int)yyleng);
-    pushSymTable(yytext);
+    int address = pushSymTable(yytext);
+    printf("<ID, %d> (tamanho %d)\n", address, (int)yyleng);
 }
 	YY_BREAK
 case 20:
