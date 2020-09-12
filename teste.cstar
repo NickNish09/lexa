@@ -1,7 +1,7 @@
-tuple int, float alface;
-alface = (20, 500.40);
+tuple int, float person;
+person = (20, 500.40);
 /* this is a
    comment */
-float b[10];
-int g6;
-print(alface);
+float salary[10];
+int age;
+print(person);
