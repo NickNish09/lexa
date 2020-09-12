@@ -5,3 +5,7 @@ person = (20, 500.40);
 float salary[10];
 int age;
 print(person);
+
+int sum(){
+   return age + 20;
+};
