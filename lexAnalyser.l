@@ -5,6 +5,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#define SYM_SIZE 100
+#define SYM_TABLE_SIZE 700
 
 int errors = 0;
 int error_index = 0;
@@ -12,15 +14,23 @@ int col = 1; int lin = 1;
 char bad_pattern[200];
 int bad_pattern_index = 0;
 int bad_pattern_bool = 0;
+int symbol_table_index = 1;
 
 struct lerror {
     char type[50];
     char msg[100];
-    char sym[100];
+    char sym[SYM_SIZE];
     int line;
 };
 
-struct lerror err[500];
+struct lerror err[SYM_TABLE_SIZE];
+
+struct symbol_item {
+    char sym[SYM_SIZE];
+    int position;
+};
+
+struct symbol_item symbol_table[SYM_TABLE_SIZE];
 
 void printErrors(){
     int i;
@@ -32,7 +42,23 @@ void printErrors(){
         printf("Linha: %d\n", err[i].line);
         printf("\n");
     }
-}
+};
+
+int pushSymTable(char symbol[]){
+    strcpy(symbol_table[symbol_table_index].sym,symbol);
+    symbol_table[symbol_table_index].position = symbol_table_index;
+    symbol_table_index++;
+    printf("%s adicionado à tabela\n", symbol);
+    return symbol_table_index;
+};
+
+void printSymTable(){
+    printf("\n** -- Tabela de Símbolos: -- **\n");
+    int i;
+    for(i=0; i<symbol_table_index; i++){
+        printf("%d | %s \n", symbol_table[i].position, symbol_table[i].sym);
+    }
+};
 
 %}
 %x COMENTARIO
@@ -119,6 +145,7 @@ PRINT "print"'('{VAR_DECL}')'|"print"'('({LETRA}{DIGITO})*')'
 }
 {ID} {
     printf("<ID, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    pushSymTable(yytext);
 }
 {INT} {
     BEGIN(INTEIRO);
@@ -202,4 +229,5 @@ int main( int argc, char **argv ) {
 
     yylex();
     printErrors();
+    printSymTable();
 }
