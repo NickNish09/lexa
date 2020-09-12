@@ -971,98 +971,98 @@ case 6:
 YY_RULE_SETUP
 #line 81 "lexAnalyser.l"
 {
-    printf("ESPACO %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("<ESPACO, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 84 "lexAnalyser.l"
 {
-    printf("SEPARADOR %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("<SEPARADOR, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 87 "lexAnalyser.l"
 {
-    printf("BOOL %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("<BOOL, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
 #line 90 "lexAnalyser.l"
 {
-    printf("TIPO %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("<TIPO, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
 #line 93 "lexAnalyser.l"
 {
-    printf("PARAM_TIPOS %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("<PARAM_TIPOS, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
 #line 96 "lexAnalyser.l"
 {
-    printf("FUNC_DECL %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("<FUNC_DECL, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
 #line 99 "lexAnalyser.l"
 {
-    printf("OP_ARITM %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("<OP_ARITM, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
 #line 102 "lexAnalyser.l"
 {
-    printf("OP_COMP %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("<OP_COMP, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
 #line 105 "lexAnalyser.l"
 {
-    printf("OP_LOG %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("<OP_LOG, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
 #line 108 "lexAnalyser.l"
 {
-    printf("OP_ASSIGN %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("<OP_ASSIGN, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 111 "lexAnalyser.l"
 {
-    printf("SCAN %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("<SCAN, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 114 "lexAnalyser.l"
 {
-    printf("PRINT %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("<PRINT, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 117 "lexAnalyser.l"
 {
-    printf("VAR_DECL %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("<VAR_DECL, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
 #line 120 "lexAnalyser.l"
 {
-    printf("ID %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("<ID, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 20:
@@ -1070,7 +1070,7 @@ YY_RULE_SETUP
 #line 123 "lexAnalyser.l"
 {
     BEGIN(INTEIRO);
-    printf("INT %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("<INT, %s> (tamanho %d)\n", yytext, (int)yyleng);
     strcpy(bad_pattern, yytext);
     bad_pattern_index = (int)yyleng;
 }
@@ -1147,7 +1147,7 @@ case 26:
 YY_RULE_SETUP
 #line 176 "lexAnalyser.l"
 {
-    printf("FLOAT %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("<FLOAT, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 27:

@@ -79,50 +79,50 @@ PRINT "print"'('{VAR_DECL}')'|"print"'('({LETRA}{DIGITO})*')'
     
 }
 {ESPACO} {
-    printf("ESPACO %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("<ESPACO, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 {SEPARADOR} {
-    printf("SEPARADOR %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("<SEPARADOR, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 {BOOL} {
-    printf("BOOL %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("<BOOL, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 {TIPO} {
-    printf("TIPO %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("<TIPO, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 {PARAM_TIPOS} {
-    printf("PARAM_TIPOS %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("<PARAM_TIPOS, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 {FUNC_DECL} {
-    printf("FUNC_DECL %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("<FUNC_DECL, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 {OP_ARITM} {
-    printf("OP_ARITM %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("<OP_ARITM, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 {OP_COMP} {
-    printf("OP_COMP %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("<OP_COMP, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 {OP_LOG} {
-    printf("OP_LOG %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("<OP_LOG, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 {OP_ASSIGN} {
-    printf("OP_ASSIGN %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("<OP_ASSIGN, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 {SCAN} {
-    printf("SCAN %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("<SCAN, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 {PRINT} {
-    printf("PRINT %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("<PRINT, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 {VAR_DECL} {
-    printf("VAR_DECL %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("<VAR_DECL, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 {ID} {
-    printf("ID %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("<ID, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 {INT} {
     BEGIN(INTEIRO);
-    printf("INT %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("<INT, %s> (tamanho %d)\n", yytext, (int)yyleng);
     strcpy(bad_pattern, yytext);
     bad_pattern_index = (int)yyleng;
 }
@@ -174,7 +174,7 @@ PRINT "print"'('{VAR_DECL}')'|"print"'('({LETRA}{DIGITO})*')'
     bad_pattern_bool = 1;
  }
 {FLOAT} {
-    printf("FLOAT %s (tamanho %d)\n", yytext, (int)yyleng);
+    printf("<FLOAT, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 {ENTER} {
     lin++;
