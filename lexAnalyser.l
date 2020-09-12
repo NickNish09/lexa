@@ -16,6 +16,7 @@ int bad_pattern_index = 0;
 int bad_pattern_bool = 0;
 int symbol_table_index = 1;
 int current_scope = 0; // global scope
+int scope_stack_index = 0; // global scope
 
 struct lerror {
     char type[50];
@@ -65,7 +66,7 @@ void printSymTable(){
         } else {
             strcpy(escopo, "funcao");
         }
-        printf("%d | %s | %s\n", symbol_table[i].position, symbol_table[i].sym, escopo);
+        printf("%d | %s | %s (%d)\n", symbol_table[i].position, symbol_table[i].sym, escopo, symbol_table[i].scope);
     }
 };
 
@@ -120,8 +121,9 @@ PRINT "print"'('{VAR_DECL}')'|"print"'('({LETRA}{DIGITO})*')'
     printf("<SEPARADOR, %s> (tamanho %d)\n", yytext, (int)yyleng);
     if(strcmp(yytext, "{") == 0){
         current_scope++;
+        scope_stack_index++;
     } else if(strcmp(yytext, "}") == 0){
-        current_scope--;
+        scope_stack_index--;
     };
 }
 {BOOL} {

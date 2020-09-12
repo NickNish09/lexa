@@ -9,3 +9,7 @@ print(person);
 int sum(){
    return age + 20;
 };
+
+int subtract(){
+   return salary - 10.2;
+};
