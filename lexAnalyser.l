@@ -59,6 +59,7 @@ int pushSymTable(char symbol[]){
 void printSymTable(){
     char escopo[100];
     printf("\n** -- Tabela de Símbolos: -- **\n");
+    printf("Address |   Symbol   |   Scope \n");
     int i;
     for(i=0; i<symbol_table_index; i++){
         if(symbol_table[i].scope == 0){
@@ -66,7 +67,7 @@ void printSymTable(){
         } else {
             strcpy(escopo, "funcao");
         }
-        printf("%d | %s | %s (%d)\n", symbol_table[i].position, symbol_table[i].sym, escopo, symbol_table[i].scope);
+        printf("%7d | %10s | %8s (%d)\n", symbol_table[i].position, symbol_table[i].sym, escopo, symbol_table[i].scope);
     }
 };
 
