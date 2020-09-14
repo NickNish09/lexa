@@ -4,7 +4,7 @@ Para compilar o programa siga os seguintes passos:
 
 ```flex lexAnalyser.l```
 
-- Compile com gcc o arquivo .yy.c gerado?
+- Compile com gcc o arquivo .yy.c gerado:
 
 ```gcc lex.yy.c -ll  ```
 
