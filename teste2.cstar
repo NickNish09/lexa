@@ -1,4 +1,4 @@
-tuple int, float, char person;
+tuple int, float, char person1, person2;
 person1 = (50, 200.50, 'M');
 person2 = (50, 400.10, 'F');
 if(person1[1] > person2[1]){
