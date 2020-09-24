@@ -78,6 +78,7 @@ DELIM [ \t]
 ENTER [\n]
 ESPACO {DELIM}+
 SEPARADOR [;{}(),\[\]]
+ASPAS ['"]
 LETRA [A-Za-z]
 DIGITO [0-9]
 INT "-"?{DIGITO}+
@@ -129,6 +130,9 @@ PRINT "print"'('{VAR_DECL}')'|"print"'('({LETRA}{DIGITO})*')'
 }
 {BOOL} {
     printf("<BOOL, %s> (tamanho %d)\n", yytext, (int)yyleng);
+}
+{CONDICOES} {
+    printf("<CONDICOES, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 {TIPO} {
     printf("<TIPO, %s> (tamanho %d)\n", yytext, (int)yyleng);
@@ -223,6 +227,9 @@ PRINT "print"'('{VAR_DECL}')'|"print"'('({LETRA}{DIGITO})*')'
 {ENTER} {
     lin++;
     col = 1;
+}
+{ASPAS} {
+    printf("<ASPAS, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 . {
     errors++;
