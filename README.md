@@ -16,4 +16,4 @@ Os arquivos de teste que tem um _error são os que possuem erros, conforme descr
 
 ## Especificações
 Para executar estes passos é preciso ter instalado em sua máquina o flex versão 2.5.35 e um sistema baseado em unix
-como MacOS ou Ubuntu.
+como MacOS ou Ubuntu
