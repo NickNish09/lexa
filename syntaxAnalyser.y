@@ -1,10 +1,16 @@
-%{
-  #include <stdio.h>
+%error-verbose
+%debug
+%locations
 
+%{
+  #include <stdlib.h>
+  #include <stdio.h>
+  
+  int yylex();
   void yyerror(const char* msg) {
     fprintf(stderr, "%s\n", msg);
   }
-  int yylex();
+  extern FILE *yyin;
 
 %}
 
@@ -17,23 +23,24 @@
 %token INT FLOAT
 %token ID
 %token DIGITO LETRA
+%token SEPARADOR
 
 %start programa
 
 %%
 programa: 
-  declaracao ';' { printf("%d", $1);}
+  declaracao { $$ = $1; printf("kkk %d", $1); }
 | func_decl
 ;
 declaracao:
   declaracao var_decl
-| var_decl
-| TIPO ',' declaracao
-| "tuple" declaracao 
+| var_decl { printf("var_decl\n"); }
+| TIPO ',' declaracao { printf("TIPO\n"); }
+| "tuple" declaracao  { printf("tuple\n"); }
 ;
 
 var_decl:
-  TIPO ID
+  TIPO ID ';'
 ;
 
 func_decl:
@@ -54,17 +61,17 @@ cod_block:
   "if" '(' expressao ')' '{' cod_block '}'
 | "if" '(' expressao ')' '{' cod_block '}' "else" '{' cod_block '}'
 | "while" '(' expressao ')' '{' cod_block '}'
-| RETORNO ';'
-| RETORNO expressao ';'
-| assign ';'
-| ID '(' expressao ')' ';'
-| ID '(' ')' ';'
+| RETORNO SEPARADOR
+| RETORNO expressao SEPARADOR
+| assign SEPARADOR
+| ID '(' expressao ')' SEPARADOR
+| ID '(' ')' SEPARADOR
 | scan
 | print
 ;
 
 assign:
-  ID '=' expressao
+  ID OP_ASSIGN expressao
 | ID '[' INT ']' OP_ASSIGN expressao
 ;
 
@@ -95,7 +102,18 @@ palavra:
 
 %%
 
-int _main() {
+int main(int argc, char **argv){
+  ++argv, --argc;
+  if( argc > 0 ){
+      yyin = fopen( argv[0], "r" );
+  }
+  else{
+      yyin = stdin;
+  }
+
+  yylex();
+  // printErrors();
+  // printSymTable();
   yyparse();
 
   return 0;

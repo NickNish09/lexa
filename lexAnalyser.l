@@ -5,6 +5,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "syntaxAnalyser.tab.h"
 #define SYM_SIZE 100
 #define SYM_TABLE_SIZE 700
 
@@ -124,18 +125,28 @@ PRINT "print"'('{VAR_DECL}')'|"print"'('({LETRA}{DIGITO})*')'
     if(strcmp(yytext, "{") == 0){
         current_scope++;
         scope_stack_index++;
+        return '{';
     } else if(strcmp(yytext, "}") == 0){
         scope_stack_index--;
+        return '}';
+    } else if(strcmp(yytext, ";") == 0){
+        return ';';
+    } else if(strcmp(yytext, "(") == 0){
+        return '(';
+    } else if(strcmp(yytext, ")") == 0){
+        return ')';
     };
 }
 {BOOL} {
     printf("<BOOL, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    return BOOL;
 }
 {CONDICOES} {
     printf("<CONDICOES, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 {TIPO} {
     printf("<TIPO, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    return TIPO;
 }
 {PARAM_TIPOS} {
     printf("<PARAM_TIPOS, %s> (tamanho %d)\n", yytext, (int)yyleng);
@@ -145,15 +156,19 @@ PRINT "print"'('{VAR_DECL}')'|"print"'('({LETRA}{DIGITO})*')'
 }
 {OP_ARITM} {
     printf("<OP_ARITM, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    return OP_ARITM;
 }
 {OP_COMP} {
     printf("<OP_COMP, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    return OP_COMP;
 }
 {OP_LOG} {
     printf("<OP_LOG, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    return OP_LOG;
 }
 {OP_ASSIGN} {
     printf("<OP_ASSIGN, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    return OP_ASSIGN;
 }
 {SCAN} {
     printf("<SCAN, %s> (tamanho %d)\n", yytext, (int)yyleng);
@@ -167,12 +182,14 @@ PRINT "print"'('{VAR_DECL}')'|"print"'('({LETRA}{DIGITO})*')'
 {ID} {
     int address = pushSymTable(yytext);
     printf("<ID, %d> (tamanho %d)\n", address, (int)yyleng);
+    return ID;
 }
 {INT} {
     BEGIN(INTEIRO);
     printf("<INT, %s> (tamanho %d)\n", yytext, (int)yyleng);
     strcpy(bad_pattern, yytext);
     bad_pattern_index = (int)yyleng;
+    return INT;
 }
 <INTEIRO>{DIGITO} { }
 <INTEIRO>{DELIM} { 
@@ -223,6 +240,7 @@ PRINT "print"'('{VAR_DECL}')'|"print"'('({LETRA}{DIGITO})*')'
  }
 {FLOAT} {
     printf("<FLOAT, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    return FLOAT;
 }
 {ENTER} {
     lin++;
@@ -242,18 +260,18 @@ PRINT "print"'('{VAR_DECL}')'|"print"'('({LETRA}{DIGITO})*')'
 
 %%
 
-int main( int argc, char **argv ) {
-    ++argv, --argc;
-    if( argc > 0 ){
-        yyin = fopen( argv[0], "r" );
-    }
-    else{
-        yyin = stdin;
-    }
+// int main( int argc, char **argv ) {
+//     ++argv, --argc;
+//     if( argc > 0 ){
+//         yyin = fopen( argv[0], "r" );
+//     }
+//     else{
+//         yyin = stdin;
+//     }
 
-    yylex();
-    printErrors();
-    printSymTable();
+//     yylex();
+//     printErrors();
+//     printSymTable();
 
-    return 0;
-}
+//     return 0;
+// }

@@ -52,7 +52,8 @@
      FLOAT = 268,
      ID = 269,
      DIGITO = 270,
-     LETRA = 271
+     LETRA = 271,
+     SEPARADOR = 272
    };
 #endif
 /* Tokens.  */
@@ -70,6 +71,7 @@
 #define ID 269
 #define DIGITO 270
 #define LETRA 271
+#define SEPARADOR 272
 
 
 
@@ -83,3 +85,17 @@ typedef int YYSTYPE;
 
 extern YYSTYPE yylval;
 
+#if ! defined YYLTYPE && ! defined YYLTYPE_IS_DECLARED
+typedef struct YYLTYPE
+{
+  int first_line;
+  int first_column;
+  int last_line;
+  int last_column;
+} YYLTYPE;
+# define yyltype YYLTYPE /* obsolescent; will be withdrawn */
+# define YYLTYPE_IS_DECLARED 1
+# define YYLTYPE_IS_TRIVIAL 1
+#endif
+
+extern YYLTYPE yylloc;
