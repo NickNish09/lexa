@@ -29,18 +29,22 @@
 
 %%
 programa: 
-  declaracao { $$ = $1; printf("kkk %d", $1); }
-| func_decl
+  declaracoes { $$ = $1; printf("kkk %d\n", $1); }
 ;
+
+declaracoes:
+  declaracoes declaracao
+| declaracao
+;
+
 declaracao:
-  declaracao var_decl
-| var_decl { printf("var_decl\n"); }
-| TIPO ',' declaracao { printf("TIPO\n"); }
+  var_decl { printf("\nvar_decl\n"); }
 | "tuple" declaracao  { printf("tuple\n"); }
+| func_decl
 ;
 
 var_decl:
-  TIPO ID ';'
+  TIPO ID ';' { printf("TIPO ID %s %s", $1, $2); }
 ;
 
 func_decl:
