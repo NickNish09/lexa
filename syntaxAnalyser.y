@@ -15,15 +15,25 @@
 
 %}
 
+%union {
+  char *id;
+  char *tipo;
+  char *operador;
+
+  char *str;
+}
+
+%type <str> programa declaracoes declaracao var_decl func_decl parm_tipos cod_block assign expressao scan print
+
 %token OP_ARITM OP_COMP OP_LOG OP_ASSIGN
 %token BOOL
-%token TIPO
+%token <tipo> TIPO
 %token CONDICOES
 %token LACOS
 %token RETORNO
-%token INT FLOAT
-%token ID
-%token DIGITO LETRA
+%token <str> INT FLOAT
+%token <id> ID
+%token <str> DIGITO LETRA
 %token SEPARADOR
 
 %start programa
@@ -45,7 +55,7 @@ declaracao:
 ;
 
 var_decl:
-  TIPO ID ';' { $$ = NULL; printf("TIPO ID %s %s", $1, $2); }
+  TIPO ID ';' { printf("TIPO ID %d %d", $1, $2); }
 ;
 
 func_decl:

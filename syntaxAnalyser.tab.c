@@ -137,7 +137,18 @@
 #endif
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+typedef union YYSTYPE
+#line 18 "syntaxAnalyser.y"
+{
+  char *id;
+  char *tipo;
+  char *operador;
+
+  char *str;
+}
+/* Line 193 of yacc.c.  */
+#line 151 "syntaxAnalyser.tab.c"
+	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
 # define YYSTYPE_IS_TRIVIAL 1
@@ -161,7 +172,7 @@ typedef struct YYLTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 165 "syntaxAnalyser.tab.c"
+#line 176 "syntaxAnalyser.tab.c"
 
 #ifdef short
 # undef short
@@ -458,9 +469,9 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    33,    33,    37,    38,    42,    43,    44,    48,    52,
-      53,    54,    55,    59,    60,    61,    62,    69,    73,    74,
-      75,    93,    97,    98,   102,   103,   104,   105
+       0,    43,    43,    47,    48,    52,    53,    54,    58,    62,
+      63,    64,    65,    69,    70,    71,    72,    79,    83,    84,
+      85,   103,   107,   108,   112,   113,   114,   115
 };
 #endif
 
@@ -1416,28 +1427,28 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 33 "syntaxAnalyser.y"
-    { (yyval) = (yyvsp[(1) - (1)]); printf("kkk %d\n", (yyvsp[(1) - (1)])); ;}
+#line 43 "syntaxAnalyser.y"
+    { (yyval.str) = (yyvsp[(1) - (1)].str); printf("kkk %d\n", (yyvsp[(1) - (1)].str)); ;}
     break;
 
   case 5:
-#line 42 "syntaxAnalyser.y"
+#line 52 "syntaxAnalyser.y"
     { printf("\nvar_decl\n"); ;}
     break;
 
   case 6:
-#line 43 "syntaxAnalyser.y"
+#line 53 "syntaxAnalyser.y"
     { printf("tuple\n"); ;}
     break;
 
   case 8:
-#line 48 "syntaxAnalyser.y"
-    { (yyval) = NULL; printf("TIPO ID %s %s", (yyvsp[(1) - (3)]), (yyvsp[(2) - (3)])); ;}
+#line 58 "syntaxAnalyser.y"
+    { printf("TIPO ID %d %d", (yyvsp[(1) - (3)].tipo), (yyvsp[(2) - (3)].id)); ;}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1441 "syntaxAnalyser.tab.c"
+#line 1452 "syntaxAnalyser.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1657,7 +1668,7 @@ yyreturn:
 }
 
 
-#line 108 "syntaxAnalyser.y"
+#line 118 "syntaxAnalyser.y"
 
 
 int main(int argc, char **argv){
