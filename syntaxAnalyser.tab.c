@@ -1600,7 +1600,7 @@ yyreturn:
 #line 96 "syntaxAnalyser.y"
 
 
-int main() {
+int _main() {
   yyparse();
 
   return 0;
