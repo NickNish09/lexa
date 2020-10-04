@@ -1432,7 +1432,7 @@ yyreduce:
 
   case 8:
 #line 48 "syntaxAnalyser.y"
-    { printf("TIPO ID %s %s", (yyvsp[(1) - (3)]), (yyvsp[(2) - (3)])); ;}
+    { (yyval) = NULL; printf("TIPO ID %s %s", (yyvsp[(1) - (3)]), (yyvsp[(2) - (3)])); ;}
     break;
 
 

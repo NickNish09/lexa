@@ -45,7 +45,7 @@ declaracao:
 ;
 
 var_decl:
-  TIPO ID ';' { printf("TIPO ID %s %s", $1, $2); }
+  TIPO ID ';' { $$ = NULL; printf("TIPO ID %s %s", $1, $2); }
 ;
 
 func_decl:

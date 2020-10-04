@@ -1,0 +1,9 @@
+tuple int, char person;
+
+int age(tuple p){
+    return p[0];
+};
+
+int gender(tuple p){
+    return p[1];
+};
