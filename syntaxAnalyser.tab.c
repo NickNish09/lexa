@@ -110,8 +110,9 @@
   #include <stdio.h>
   
   int yylex();
+  extern int lin;
   void yyerror(const char* msg) {
-    fprintf(stderr, "%s\n", msg);
+    fprintf(stderr, "ERRO na linha %d: %s\n", lin, msg);
   }
   extern FILE *yyin;
 
@@ -160,7 +161,7 @@ typedef struct YYLTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 164 "syntaxAnalyser.tab.c"
+#line 165 "syntaxAnalyser.tab.c"
 
 #ifdef short
 # undef short
@@ -457,9 +458,9 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    32,    32,    36,    37,    41,    42,    43,    47,    51,
-      52,    53,    54,    58,    59,    60,    61,    68,    72,    73,
-      74,    92,    96,    97,   101,   102,   103,   104
+       0,    33,    33,    37,    38,    42,    43,    44,    48,    52,
+      53,    54,    55,    59,    60,    61,    62,    69,    73,    74,
+      75,    93,    97,    98,   102,   103,   104,   105
 };
 #endif
 
@@ -1415,28 +1416,28 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 32 "syntaxAnalyser.y"
+#line 33 "syntaxAnalyser.y"
     { (yyval) = (yyvsp[(1) - (1)]); printf("kkk %d\n", (yyvsp[(1) - (1)])); ;}
     break;
 
   case 5:
-#line 41 "syntaxAnalyser.y"
+#line 42 "syntaxAnalyser.y"
     { printf("\nvar_decl\n"); ;}
     break;
 
   case 6:
-#line 42 "syntaxAnalyser.y"
+#line 43 "syntaxAnalyser.y"
     { printf("tuple\n"); ;}
     break;
 
   case 8:
-#line 47 "syntaxAnalyser.y"
+#line 48 "syntaxAnalyser.y"
     { printf("TIPO ID %s %s", (yyvsp[(1) - (3)]), (yyvsp[(2) - (3)])); ;}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1440 "syntaxAnalyser.tab.c"
+#line 1441 "syntaxAnalyser.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1656,7 +1657,7 @@ yyreturn:
 }
 
 
-#line 107 "syntaxAnalyser.y"
+#line 108 "syntaxAnalyser.y"
 
 
 int main(int argc, char **argv){

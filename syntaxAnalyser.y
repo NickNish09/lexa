@@ -7,8 +7,9 @@
   #include <stdio.h>
   
   int yylex();
+  extern int lin;
   void yyerror(const char* msg) {
-    fprintf(stderr, "%s\n", msg);
+    fprintf(stderr, "ERRO na linha %d: %s\n", lin, msg);
   }
   extern FILE *yyin;
 
