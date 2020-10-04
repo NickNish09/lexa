@@ -34,6 +34,8 @@ var_decl:
 func_decl:
   TIPO ID '(' parm_tipos ')'
 | TIPO ID '(' ')'
+| TIPO ID '(' parm_tipos ')' '{' cod_block '}'
+| TIPO ID '(' ')' '{' cod_block '}'
 ;
 
 parm_tipos:
@@ -41,3 +43,47 @@ parm_tipos:
 | parm_tipos TIPO ID '[' ']'
 | TIPO ID
 | TIPO ID '[' ']'
+;
+
+cod_block:
+  "if" '(' expressao ')' '{' cod_block '}'
+| "if" '(' expressao ')' '{' cod_block '}' "else" '{' cod_block '}'
+| "while" '(' expressao ')' '{' cod_block '}'
+| RETORNO ';'
+| RETORNO expressao ';'
+| assign ';'
+| ID '(' expressao ')' ';'
+| ID '(' ')' ';'
+| scan
+| print
+;
+
+assign:
+  ID '=' expressao
+| ID '[' INT ']' OP_ASSIGN expressao
+;
+
+expressao:
+  OP_ARITM expressao
+| OP_LOG expressao
+| '!' expressao
+| expressao OP_ARITM expressao
+| expressao OP_COMP expressao
+| '(' expressao ')'
+;
+
+scan:
+  "scan" '(' ID ')'
+;
+
+print:
+  "print" '(' ID ')'
+| "print" '(' palavra ')'
+;
+
+palavra:
+  palavra LETRA
+| palavra DIGITO
+| LETRA
+| DIGITO
+;
