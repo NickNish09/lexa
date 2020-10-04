@@ -51,7 +51,7 @@ declaracoes:
 declaracao:
   var_decl { printf("\nvar_decl\n"); }
 | "tuple" declaracao  { printf("tuple\n"); }
-| func_decl
+| func_decl { printf("\nfunc_decl\n"); }
 ;
 
 var_decl:
@@ -76,11 +76,11 @@ cod_block:
   "if" '(' expressao ')' '{' cod_block '}'
 | "if" '(' expressao ')' '{' cod_block '}' "else" '{' cod_block '}'
 | "while" '(' expressao ')' '{' cod_block '}'
-| RETORNO SEPARADOR
-| RETORNO expressao SEPARADOR
-| assign SEPARADOR
-| ID '(' expressao ')' SEPARADOR
-| ID '(' ')' SEPARADOR
+| RETORNO ';'
+| RETORNO expressao ';'
+| assign ';'
+| ID '(' expressao ')' ';'
+| ID '(' ')' ';'
 | scan
 | print
 ;
