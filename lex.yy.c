@@ -2251,4 +2251,6 @@ int main( int argc, char **argv ) {
     yylex();
     printErrors();
     printSymTable();
+
+    return 0;
 }

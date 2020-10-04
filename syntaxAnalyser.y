@@ -1,6 +1,10 @@
 %{
-#include <stdio.h>
+  #include <stdio.h>
 
+  void yyerror(const char* msg) {
+    fprintf(stderr, "%s\n", msg);
+  }
+  int yylex();
 
 %}
 
@@ -12,12 +16,13 @@
 %token RETORNO
 %token INT FLOAT
 %token ID
+%token DIGITO LETRA
 
 %start programa
 
 %%
 programa: 
-  declaracao ';'
+  declaracao ';' { printf("%d", $1);}
 | func_decl
 ;
 declaracao:
@@ -87,3 +92,11 @@ palavra:
 | LETRA
 | DIGITO
 ;
+
+%%
+
+int _main() {
+  yyparse();
+
+  return 0;
+}
