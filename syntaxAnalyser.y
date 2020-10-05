@@ -36,8 +36,6 @@
 %token <str> DIGITO LETRA
 %token SEPARADOR
 
-%start programa
-
 %%
 programa: 
   declaracoes { $$ = $1; printf("kkk %d\n", $1); }
@@ -126,7 +124,7 @@ int main(int argc, char **argv){
       yyin = stdin;
   }
 
-  yylex();
+  // yylex();
   // printErrors();
   // printSymTable();
   yyparse();

@@ -469,9 +469,9 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    43,    43,    47,    48,    52,    53,    54,    58,    62,
-      63,    64,    65,    69,    70,    71,    72,    79,    83,    84,
-      85,   103,   107,   108,   112,   113,   114,   115
+       0,    41,    41,    45,    46,    50,    51,    52,    56,    60,
+      61,    62,    63,    67,    68,    69,    70,    77,    81,    82,
+      83,   101,   105,   106,   110,   111,   112,   113
 };
 #endif
 
@@ -1427,27 +1427,27 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 43 "syntaxAnalyser.y"
+#line 41 "syntaxAnalyser.y"
     { (yyval.str) = (yyvsp[(1) - (1)].str); printf("kkk %d\n", (yyvsp[(1) - (1)].str)); ;}
     break;
 
   case 5:
-#line 52 "syntaxAnalyser.y"
+#line 50 "syntaxAnalyser.y"
     { printf("\nvar_decl\n"); ;}
     break;
 
   case 6:
-#line 53 "syntaxAnalyser.y"
+#line 51 "syntaxAnalyser.y"
     { printf("tuple\n"); ;}
     break;
 
   case 7:
-#line 54 "syntaxAnalyser.y"
+#line 52 "syntaxAnalyser.y"
     { printf("\nfunc_decl\n"); ;}
     break;
 
   case 8:
-#line 58 "syntaxAnalyser.y"
+#line 56 "syntaxAnalyser.y"
     { printf("TIPO ID %d %d", (yyvsp[(1) - (3)].tipo), (yyvsp[(2) - (3)].id)); ;}
     break;
 
@@ -1673,7 +1673,7 @@ yyreturn:
 }
 
 
-#line 118 "syntaxAnalyser.y"
+#line 116 "syntaxAnalyser.y"
 
 
 int main(int argc, char **argv){
@@ -1685,7 +1685,7 @@ int main(int argc, char **argv){
       yyin = stdin;
   }
 
-  yylex();
+  // yylex();
   // printErrors();
   // printSymTable();
   yyparse();
