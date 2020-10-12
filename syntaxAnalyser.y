@@ -13,6 +13,15 @@
   }
   extern FILE *yyin;
 
+
+  typedef struct node {
+    int type;
+    node *left;
+    node *right;
+    node *middle;
+    char *val;
+
+  } node;
 %}
 
 %union {
