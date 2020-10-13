@@ -26,6 +26,25 @@
 
   node *parser_tree = NULL;
 
+  void insert_node(node ** tree, int node_type, char node_kind, char *node_val, int is_left) {
+  node *aux = NULL;
+  if(!(*tree)) {
+    aux = (node *)malloc(sizeof(node));
+    aux->left = aux->right = NULL;
+    aux->type = node_type;
+    aux->kind = node_kind;
+    aux->val = node_val;
+    *tree = aux;
+    return;
+  }
+ 
+  if(is_left) {
+       insert_node(&(*tree)->left, node_type, node_kind, node_val, is_left);
+    } else {
+      insert_node(&(*tree)->right, node_type, node_kind, node_val, is_left);
+    }
+  }
+
   void create_node(int node_type, char node_kind, char *node_val){
     node *aux;
 
