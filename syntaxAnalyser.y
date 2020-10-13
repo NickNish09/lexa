@@ -15,13 +15,29 @@
 
 
   typedef struct node {
-    int type;
-    node *left;
-    node *right;
-    node *middle;
+    int type; //int, float, char, tuple
+    char kind; // function, var, code_block...
+    struct node *left;
+    struct node *right;
+    struct node *middle;
     char *val;
 
   } node;
+
+  node *parser_tree = NULL;
+
+  void create_node(int node_type, char node_kind, char *node_val){
+    node *aux;
+
+    // set the aux parameters
+    aux->type = node_type;
+    aux->kind = node_kind;
+    aux->val = node_val;
+
+    if(parser_tree == NULL){
+      parser_tree = aux;
+    };
+  }
 %}
 
 %union {

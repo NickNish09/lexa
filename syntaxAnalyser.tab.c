@@ -117,6 +117,31 @@
   extern FILE *yyin;
 
 
+  typedef struct node {
+    int type; //int, float, char, tuple
+    char kind; // function, var, code_block...
+    struct node *left;
+    struct node *right;
+    struct node *middle;
+    char *val;
+
+  } node;
+
+  node *parser_tree = NULL;
+
+  void create_node(int node_type, char node_kind, char *node_val){
+    node *aux;
+
+    // set the aux parameters
+    aux->type = node_type;
+    aux->kind = node_kind;
+    aux->val = node_val;
+
+    if(parser_tree == NULL){
+      parser_tree = aux;
+    };
+  }
+
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -138,7 +163,7 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 18 "syntaxAnalyser.y"
+#line 43 "syntaxAnalyser.y"
 {
   char *id;
   char *tipo;
@@ -147,7 +172,7 @@ typedef union YYSTYPE
   char *str;
 }
 /* Line 193 of yacc.c.  */
-#line 151 "syntaxAnalyser.tab.c"
+#line 176 "syntaxAnalyser.tab.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -172,7 +197,7 @@ typedef struct YYLTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 176 "syntaxAnalyser.tab.c"
+#line 201 "syntaxAnalyser.tab.c"
 
 #ifdef short
 # undef short
@@ -469,9 +494,9 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    41,    41,    45,    46,    50,    51,    52,    56,    60,
-      61,    62,    63,    67,    68,    69,    70,    77,    81,    82,
-      83,   101,   105,   106,   110,   111,   112,   113
+       0,    66,    66,    70,    71,    75,    76,    77,    81,    85,
+      86,    87,    88,    92,    93,    94,    95,   102,   106,   107,
+     108,   126,   130,   131,   135,   136,   137,   138
 };
 #endif
 
@@ -1427,33 +1452,33 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 41 "syntaxAnalyser.y"
+#line 66 "syntaxAnalyser.y"
     { (yyval.str) = (yyvsp[(1) - (1)].str); printf("kkk %d\n", (yyvsp[(1) - (1)].str)); ;}
     break;
 
   case 5:
-#line 50 "syntaxAnalyser.y"
+#line 75 "syntaxAnalyser.y"
     { printf("\nvar_decl\n"); ;}
     break;
 
   case 6:
-#line 51 "syntaxAnalyser.y"
+#line 76 "syntaxAnalyser.y"
     { printf("tuple\n"); ;}
     break;
 
   case 7:
-#line 52 "syntaxAnalyser.y"
+#line 77 "syntaxAnalyser.y"
     { printf("\nfunc_decl\n"); ;}
     break;
 
   case 8:
-#line 56 "syntaxAnalyser.y"
+#line 81 "syntaxAnalyser.y"
     { printf("TIPO ID %d %d", (yyvsp[(1) - (3)].tipo), (yyvsp[(2) - (3)].id)); ;}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1457 "syntaxAnalyser.tab.c"
+#line 1482 "syntaxAnalyser.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1673,7 +1698,7 @@ yyreturn:
 }
 
 
-#line 116 "syntaxAnalyser.y"
+#line 141 "syntaxAnalyser.y"
 
 
 int main(int argc, char **argv){
