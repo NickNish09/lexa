@@ -57,6 +57,14 @@
       parser_tree = aux;
     };
   }
+
+  void print_tree(node * tree) {
+    if (tree) {
+    print_tree(tree->left);
+    printf("kind:%c type: %d\n",tree->kind, tree->type);
+    print_tree(tree->right);
+    }
+  }
 %}
 
 %union {
