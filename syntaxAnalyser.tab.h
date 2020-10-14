@@ -78,7 +78,7 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 70 "syntaxAnalyser.y"
+#line 68 "syntaxAnalyser.y"
 {
   char *id;
   char *tipo;

@@ -26,7 +26,7 @@
 
   node *parser_tree = NULL;
 
-  void insert_node(node ** tree, int node_type, char node_kind, char *node_val, int is_left) {
+  node* insert_node(node ** tree, int node_type, char node_kind, char *node_val, int is_left) {
   node *aux = NULL;
   if(!(*tree)) {
     aux = (node *)malloc(sizeof(node));
@@ -35,7 +35,7 @@
     aux->kind = node_kind;
     aux->val = node_val;
     *tree = aux;
-    return;
+    return *tree;
   }
  
   if(is_left) {
@@ -45,18 +45,16 @@
     }
   }
 
-  void create_node(int node_type, char node_kind, char *node_val){
-    node *aux;
+  node* ins_node(int node_type, char node_kind, node *left, node *right){
+    node* aux_node = (node*)calloc(1, sizeof(node));
 
-    // set the aux parameters
-    aux->type = node_type;
-    aux->kind = node_kind;
-    aux->val = node_val;
+    aux_node->left = left;
+    aux_node->right = right;
+    aux_node->type = node_type;
+    aux_node->kind = node_kind;
 
-    if(parser_tree == NULL){
-      parser_tree = aux;
-    };
-  }
+  return aux_node;
+}
 
   void print_tree(node * tree) {
     if (tree) {
@@ -90,22 +88,22 @@
 
 %%
 programa: 
-  declaracoes { $$ = $1; printf("tree initialized\n"); }
+  declaracoes { parser_tree = $1; printf("tree initialized\n"); }
 ;
 
 declaracoes:
-  declaracoes declaracao { printf("declaracoes \n"); }
-| declaracao { printf("declaracao \n"); }
+  declaracoes declaracao { printf("declaracoes \n"); $$ = ins_node(0, 'A', $1, $2); }
+| declaracao { printf("declaracao \n"); $$ = $1; }
 ;
 
 declaracao:
-  var_decl { printf("var_decl\n"); }
+  var_decl { printf("var_decl\n"); $$ = $1; }
 | "tuple" declaracao  { printf("tuple\n"); }
-| func_decl { printf("func_decl\n"); }
+| func_decl { printf("func_decl\n"); $$ = $1; }
 ;
 
 var_decl:
-  TIPO ID ';' { printf("var_decl \n"); }
+  TIPO ID ';' { printf("var_decl \n"); $$ = NULL; }
 ;
 
 func_decl:
@@ -181,6 +179,8 @@ int main(int argc, char **argv){
   // printErrors();
   // printSymTable();
   yyparse();
+  printf("Abstract Syntax Tree:\n");
+  print_tree(parser_tree);
 
   return 0;
 }
