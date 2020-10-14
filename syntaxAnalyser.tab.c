@@ -163,9 +163,9 @@
 
   void print_tree(node * tree) {
     if (tree) {
-    print_tree(tree->left);
-    printf("kind:%c type: %d\n",tree->kind, tree->type);
-    print_tree(tree->right);
+      print_tree(tree->left);
+      printf("kind:%c type: %d\n",tree->kind, tree->type);
+      print_tree(tree->right);
     }
   }
 
@@ -1480,7 +1480,17 @@ yyreduce:
     {
         case 2:
 #line 93 "syntaxAnalyser.y"
-    { (yyval.str) = (yyvsp[(1) - (1)].str); printf("kkk %d\n", (yyvsp[(1) - (1)].str)); ;}
+    { (yyval.str) = (yyvsp[(1) - (1)].str); printf("tree initialized\n"); ;}
+    break;
+
+  case 3:
+#line 97 "syntaxAnalyser.y"
+    { printf("declaracoes \n"); ;}
+    break;
+
+  case 4:
+#line 98 "syntaxAnalyser.y"
+    { printf("declaracao \n"); ;}
     break;
 
   case 5:
@@ -1505,7 +1515,7 @@ yyreduce:
 
 
 /* Line 1267 of yacc.c.  */
-#line 1509 "syntaxAnalyser.tab.c"
+#line 1519 "syntaxAnalyser.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);

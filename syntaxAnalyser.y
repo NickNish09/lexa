@@ -60,9 +60,9 @@
 
   void print_tree(node * tree) {
     if (tree) {
-    print_tree(tree->left);
-    printf("kind:%c type: %d\n",tree->kind, tree->type);
-    print_tree(tree->right);
+      print_tree(tree->left);
+      printf("kind:%c type: %d\n",tree->kind, tree->type);
+      print_tree(tree->right);
     }
   }
 %}
@@ -90,12 +90,12 @@
 
 %%
 programa: 
-  declaracoes { $$ = $1; printf("kkk %d\n", $1); }
+  declaracoes { $$ = $1; printf("tree initialized\n"); }
 ;
 
 declaracoes:
-  declaracoes declaracao
-| declaracao
+  declaracoes declaracao { printf("declaracoes \n"); }
+| declaracao { printf("declaracao \n"); }
 ;
 
 declaracao:
