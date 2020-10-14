@@ -1,2 +1,6 @@
 int a;
-int b;
+float b;
+
+int sum(){
+    return(a + b);
+}

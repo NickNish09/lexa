@@ -16,7 +16,7 @@
 
   typedef struct node {
     int var_type; // 0 int, 1 float, 2 char, 3 tuple
-    char node_kind; // 'F' function, 'V' var, 'C' code_block...
+    char node_kind; // 'F' function, 'V' var, 'C' code_block..., 'D' declaration, 'E' expression
     char node_type; // 'S' for symbol | 'R' for regular
     struct node *left;
     struct node *right;
@@ -30,14 +30,28 @@
   /* Definitions 
     node
   */
-  node* ins_node(int var_type, char node_type, char node_kind, node *left, node *right){
-    node* aux_node = (node*)calloc(1, sizeof(node));
+node* ins_node(int var_type, char node_type, char node_kind, node *left, node *right){
+  node* aux_node = (node*)calloc(1, sizeof(node));
 
-    aux_node->left = left;
-    aux_node->right = right;
-    aux_node->var_type = var_type;
-    aux_node->node_type = node_type;
-    aux_node->node_kind = node_kind;
+  aux_node->left = left;
+  aux_node->right = right;
+  aux_node->var_type = var_type;
+  aux_node->node_type = node_type;
+  aux_node->node_kind = node_kind;
+
+  return aux_node;
+}
+
+node* ins_node_symbol(char* var_type, char node_type, char node_kind, char* id){
+  node* aux_node = (node*)calloc(1, sizeof(node));
+
+  // printf("tipo_var: %s", var_type);
+  aux_node->left = NULL;
+  aux_node->right = NULL;
+  aux_node->var_type = 0;
+  aux_node->val = id;
+  aux_node->node_type = node_type;
+  aux_node->node_kind = node_kind;
 
   return aux_node;
 }
@@ -45,7 +59,7 @@
   void print_tree(node * tree) {
     if (tree) {
       print_tree(tree->left);
-      printf("var_type: %d kind:%c type: %c\n",tree->var_type, tree->node_kind, tree->node_type);
+      printf("\nvar_type: %d\n kind:%c\n type: %c\n val: %s\n",tree->var_type, tree->node_kind, tree->node_type, tree->val);
       print_tree(tree->right);
     }
   }
@@ -57,9 +71,10 @@
   char *operador;
 
   char *str;
+  struct node* nd;
 }
 
-%type <str> programa declaracoes declaracao var_decl func_decl parm_tipos cod_block assign expressao scan print
+%type <nd> programa declaracoes declaracao var_decl func_decl parm_tipos cod_block assign expressao scan print
 
 %token OP_ARITM OP_COMP OP_LOG OP_ASSIGN
 %token BOOL
@@ -84,19 +99,19 @@ declaracoes:
 
 declaracao:
   var_decl { printf("var_decl\n"); $$ = $1; }
-| "tuple" declaracao  { printf("tuple\n"); }
+| "tuple" declaracao  { printf("tuple\n"); $$ = $2; }
 | func_decl { printf("func_decl\n"); $$ = $1; }
 ;
 
 var_decl:
-  TIPO ID ';' { printf("var_decl \n"); $$ = NULL; }
+  TIPO ID ';' { printf("var_decl \n"); $$ = NULL; $$ = ins_node_symbol($1, 'S','D', $2); }
 ;
 
 func_decl:
   TIPO ID '(' parm_tipos ')' { printf("func_decl #1 \n"); }
 | TIPO ID '(' ')' { printf("func_decl #2 \n"); }
 | TIPO ID '(' parm_tipos ')' '{' cod_block '}' { printf("func_decl #3 \n"); }
-| TIPO ID '(' ')' '{' cod_block '}' { printf("func_decl #4 \n"); }
+| TIPO ID '(' ')' '{' cod_block '}' { printf("func_decl #4 \n"); $$ = $6}
 ;
 
 parm_tipos:
@@ -113,7 +128,7 @@ cod_block:
 | RETORNO ';' { printf("cod_block #4 \n"); }
 | RETORNO expressao ';' { printf("cod_block #5 \n"); }
 | assign ';' { printf("cod_block #6 \n"); }
-| ID '(' expressao ')' ';' { printf("cod_block #7 \n"); }
+| ID '(' expressao ')' ';' { printf("cod_block #7 \n"); $$ = $3}
 | ID '(' ')' ';' { printf("cod_block #8 \n"); }
 | scan { printf("cod_block #9 \n"); }
 | print { printf("cod_block #10 \n"); }
@@ -125,13 +140,13 @@ assign:
 ;
 
 expressao:
-  OP_ARITM expressao { printf("expressao #1 \n"); }
-| OP_LOG expressao { printf("expressao #2 \n"); }
-| '!' expressao { printf("expressao #3 \n"); }
-| expressao OP_ARITM expressao { printf("expressao #4 \n"); }
-| expressao OP_COMP expressao { printf("expressao #5 \n"); }
-| '(' expressao ')' { printf("expressao #6 \n"); }
-| ID { printf("expressao #7 \n"); }
+  OP_ARITM expressao { printf("expressao #1 \n"); $$ = $2; }
+| OP_LOG expressao { printf("expressao #2 \n"); $$ = $2; }
+| '!' expressao { printf("expressao #3 \n"); $$ = $2; }
+| expressao OP_ARITM expressao { printf("expressao #4 \n"); $$ = ins_node(27, 'E', 'R', $1, $3); }
+| expressao OP_COMP expressao { printf("expressao #5 \n"); $$ = ins_node(27, 'E', 'R', $1, $3); }
+| '(' expressao ')' { printf("expressao #6 \n"); $$ = $2 }
+| ID { printf("expressao #7 \n"); $$ = NULL }
 ;
 
 scan:

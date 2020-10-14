@@ -146,6 +146,7 @@ PRINT "print"'('{VAR_DECL}')'|"print"'('({LETRA}{DIGITO})*')'
 }
 {TIPO} {
     // printf("<TIPO, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    yylval.tipo = (char *) strdup(yytext);
     return TIPO;
 }
 {PARAM_TIPOS} {
