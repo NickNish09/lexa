@@ -109,60 +109,60 @@ var_decl:
 ;
 
 func_decl:
-  TIPO ID '(' parm_tipos ')'
-| TIPO ID '(' ')'
-| TIPO ID '(' parm_tipos ')' '{' cod_block '}'
-| TIPO ID '(' ')' '{' cod_block '}'
+  TIPO ID '(' parm_tipos ')' { printf("func_decl #1 \n"); }
+| TIPO ID '(' ')' { printf("func_decl #2 \n"); }
+| TIPO ID '(' parm_tipos ')' '{' cod_block '}' { printf("func_decl #3 \n"); }
+| TIPO ID '(' ')' '{' cod_block '}' { printf("func_decl #4 \n"); }
 ;
 
 parm_tipos:
-  parm_tipos TIPO ID
-| parm_tipos TIPO ID '[' ']'
-| TIPO ID
-| TIPO ID '[' ']'
+  parm_tipos TIPO ID { printf("parm_tipos #1 \n"); }
+| parm_tipos TIPO ID '[' ']' { printf("parm_tipos #2 \n"); }
+| TIPO ID { printf("parm_tipos #3 \n"); }
+| TIPO ID '[' ']' { printf("parm_tipos #4 \n"); }
 ;
 
 cod_block:
-  "if" '(' expressao ')' '{' cod_block '}'
-| "if" '(' expressao ')' '{' cod_block '}' "else" '{' cod_block '}'
-| "while" '(' expressao ')' '{' cod_block '}'
-| RETORNO ';'
-| RETORNO expressao ';'
-| assign ';'
-| ID '(' expressao ')' ';'
-| ID '(' ')' ';'
-| scan
-| print
+  "if" '(' expressao ')' '{' cod_block '}' { printf("cod_block #1 \n"); }
+| "if" '(' expressao ')' '{' cod_block '}' "else" '{' cod_block '}' { printf("cod_block #2 \n"); }
+| "while" '(' expressao ')' '{' cod_block '}' { printf("cod_block #3 \n"); }
+| RETORNO ';' { printf("cod_block #4 \n"); }
+| RETORNO expressao ';' { printf("cod_block #5 \n"); }
+| assign ';' { printf("cod_block #6 \n"); }
+| ID '(' expressao ')' ';' { printf("cod_block #7 \n"); }
+| ID '(' ')' ';' { printf("cod_block #8 \n"); }
+| scan { printf("cod_block #9 \n"); }
+| print { printf("cod_block #10 \n"); }
 ;
 
 assign:
-  ID OP_ASSIGN expressao
-| ID '[' INT ']' OP_ASSIGN expressao
+  ID OP_ASSIGN expressao { printf("assign #1 \n"); }
+| ID '[' INT ']' OP_ASSIGN expressao { printf("assign #2 \n"); }
 ;
 
 expressao:
-  OP_ARITM expressao
-| OP_LOG expressao
-| '!' expressao
-| expressao OP_ARITM expressao
-| expressao OP_COMP expressao
-| '(' expressao ')'
+  OP_ARITM expressao { printf("expressao #1 \n"); }
+| OP_LOG expressao { printf("expressao #2 \n"); }
+| '!' expressao { printf("expressao #3 \n"); }
+| expressao OP_ARITM expressao { printf("expressao #4 \n"); }
+| expressao OP_COMP expressao { printf("expressao #5 \n"); }
+| '(' expressao ')' { printf("expressao #6 \n"); }
 ;
 
 scan:
-  "scan" '(' ID ')'
+  "scan" '(' ID ')' { printf("scan #1 \n"); }
 ;
 
 print:
-  "print" '(' ID ')'
-| "print" '(' palavra ')'
+  "print" '(' ID ')' { printf("print #1 \n"); }
+| "print" '(' palavra ')' { printf("print #2 \n"); }
 ;
 
 palavra:
-  palavra LETRA
-| palavra DIGITO
-| LETRA
-| DIGITO
+  palavra LETRA { printf("palavra #1 \n"); }
+| palavra DIGITO { printf("palavra #2 \n"); }
+| LETRA { printf("palavra #3 \n"); }
+| DIGITO { printf("palavra #4 \n"); }
 ;
 
 %%

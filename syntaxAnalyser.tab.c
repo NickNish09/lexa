@@ -1513,9 +1513,104 @@ yyreduce:
     { printf("TIPO ID %d %d", (yyvsp[(1) - (3)].tipo), (yyvsp[(2) - (3)].id)); ;}
     break;
 
+  case 9:
+#line 112 "syntaxAnalyser.y"
+    { printf("func_decl #1 \n"); ;}
+    break;
+
+  case 10:
+#line 113 "syntaxAnalyser.y"
+    { printf("func_decl #2 \n"); ;}
+    break;
+
+  case 11:
+#line 114 "syntaxAnalyser.y"
+    { printf("func_decl #3 \n"); ;}
+    break;
+
+  case 12:
+#line 115 "syntaxAnalyser.y"
+    { printf("func_decl #4 \n"); ;}
+    break;
+
+  case 13:
+#line 119 "syntaxAnalyser.y"
+    { printf("parm_tipos #1 \n"); ;}
+    break;
+
+  case 14:
+#line 120 "syntaxAnalyser.y"
+    { printf("parm_tipos #2 \n"); ;}
+    break;
+
+  case 15:
+#line 121 "syntaxAnalyser.y"
+    { printf("parm_tipos #3 \n"); ;}
+    break;
+
+  case 16:
+#line 122 "syntaxAnalyser.y"
+    { printf("parm_tipos #4 \n"); ;}
+    break;
+
+  case 17:
+#line 129 "syntaxAnalyser.y"
+    { printf("cod_block #4 \n"); ;}
+    break;
+
+  case 18:
+#line 133 "syntaxAnalyser.y"
+    { printf("cod_block #8 \n"); ;}
+    break;
+
+  case 19:
+#line 134 "syntaxAnalyser.y"
+    { printf("cod_block #9 \n"); ;}
+    break;
+
+  case 20:
+#line 135 "syntaxAnalyser.y"
+    { printf("cod_block #10 \n"); ;}
+    break;
+
+  case 21:
+#line 153 "syntaxAnalyser.y"
+    { printf("scan #1 \n"); ;}
+    break;
+
+  case 22:
+#line 157 "syntaxAnalyser.y"
+    { printf("print #1 \n"); ;}
+    break;
+
+  case 23:
+#line 158 "syntaxAnalyser.y"
+    { printf("print #2 \n"); ;}
+    break;
+
+  case 24:
+#line 162 "syntaxAnalyser.y"
+    { printf("palavra #1 \n"); ;}
+    break;
+
+  case 25:
+#line 163 "syntaxAnalyser.y"
+    { printf("palavra #2 \n"); ;}
+    break;
+
+  case 26:
+#line 164 "syntaxAnalyser.y"
+    { printf("palavra #3 \n"); ;}
+    break;
+
+  case 27:
+#line 165 "syntaxAnalyser.y"
+    { printf("palavra #4 \n"); ;}
+    break;
+
 
 /* Line 1267 of yacc.c.  */
-#line 1519 "syntaxAnalyser.tab.c"
+#line 1614 "syntaxAnalyser.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
