@@ -99,13 +99,13 @@ declaracoes:
 ;
 
 declaracao:
-  var_decl { printf("\nvar_decl\n"); }
+  var_decl { printf("var_decl\n"); }
 | "tuple" declaracao  { printf("tuple\n"); }
-| func_decl { printf("\nfunc_decl\n"); }
+| func_decl { printf("func_decl\n"); }
 ;
 
 var_decl:
-  TIPO ID ';' { printf("TIPO ID %d %d", $1, $2); }
+  TIPO ID ';' { printf("var_decl \n"); }
 ;
 
 func_decl:
@@ -147,6 +147,7 @@ expressao:
 | expressao OP_ARITM expressao { printf("expressao #4 \n"); }
 | expressao OP_COMP expressao { printf("expressao #5 \n"); }
 | '(' expressao ')' { printf("expressao #6 \n"); }
+| ID { printf("expressao #7 \n"); }
 ;
 
 scan:
