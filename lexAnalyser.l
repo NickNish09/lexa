@@ -39,12 +39,12 @@ struct symbol_item symbol_table[SYM_TABLE_SIZE];
 void printErrors(){
     int i;
     for(i=0; i<errors; i++){
-        printf("\nErro número %d\n", i+1);
-        printf("Simbolo: %s\n", err[i].sym);
-        printf("%s\n", err[i].type);
-        printf("%s\n", err[i].msg);
-        printf("Linha: %d\n", err[i].line);
-        printf("\n");
+        // printf("\nErro número %d\n", i+1);
+        // printf("Simbolo: %s\n", err[i].sym);
+        // printf("%s\n", err[i].type);
+        // printf("%s\n", err[i].msg);
+        // printf("Linha: %d\n", err[i].line);
+        // printf("\n");
     }
 };
 
@@ -53,14 +53,14 @@ int pushSymTable(char symbol[]){
     symbol_table[symbol_table_index].position = symbol_table_index;
     symbol_table[symbol_table_index].scope = current_scope;
     symbol_table_index++;
-    printf("%s adicionado à tabela\n", symbol);
+    // printf("%s adicionado à tabela\n", symbol);
     return symbol_table_index;
 };
 
 void printSymTable(){
     char escopo[100];
-    printf("\n** -- Tabela de Símbolos: -- **\n");
-    printf("Address |   Symbol   |   Scope \n");
+    // printf("\n** -- Tabela de Símbolos: -- **\n");
+    // printf("Address |   Symbol   |   Scope \n");
     int i;
     for(i=0; i<symbol_table_index; i++){
         if(symbol_table[i].scope == 0){
@@ -68,7 +68,7 @@ void printSymTable(){
         } else {
             strcpy(escopo, "funcao");
         }
-        printf("%7d | %10s | %8s (%d)\n", symbol_table[i].position, symbol_table[i].sym, escopo, symbol_table[i].scope);
+        // printf("%7d | %10s | %8s (%d)\n", symbol_table[i].position, symbol_table[i].sym, escopo, symbol_table[i].scope);
     }
 };
 
@@ -118,10 +118,10 @@ PRINT "print"'('{VAR_DECL}')'|"print"'('({LETRA}{DIGITO})*')'
     
 }
 {ESPACO} {
-    printf("<ESPACO, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    // printf("<ESPACO, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 {SEPARADOR} {
-    printf("<SEPARADOR, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    // printf("<SEPARADOR, %s> (tamanho %d)\n", yytext, (int)yyleng);
     if(strcmp(yytext, "{") == 0){
         current_scope++;
         scope_stack_index++;
@@ -138,55 +138,55 @@ PRINT "print"'('{VAR_DECL}')'|"print"'('({LETRA}{DIGITO})*')'
     };
 }
 {BOOL} {
-    printf("<BOOL, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    // printf("<BOOL, %s> (tamanho %d)\n", yytext, (int)yyleng);
     return BOOL;
 }
 {CONDICOES} {
-    printf("<CONDICOES, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    // printf("<CONDICOES, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 {TIPO} {
-    printf("<TIPO, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    // printf("<TIPO, %s> (tamanho %d)\n", yytext, (int)yyleng);
     return TIPO;
 }
 {PARAM_TIPOS} {
-    printf("<PARAM_TIPOS, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    // printf("<PARAM_TIPOS, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 {FUNC_DECL} {
-    printf("<FUNC_DECL, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    // printf("<FUNC_DECL, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 {OP_ARITM} {
-    printf("<OP_ARITM, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    // printf("<OP_ARITM, %s> (tamanho %d)\n", yytext, (int)yyleng);
     return OP_ARITM;
 }
 {OP_COMP} {
-    printf("<OP_COMP, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    // printf("<OP_COMP, %s> (tamanho %d)\n", yytext, (int)yyleng);
     return OP_COMP;
 }
 {OP_LOG} {
-    printf("<OP_LOG, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    // printf("<OP_LOG, %s> (tamanho %d)\n", yytext, (int)yyleng);
     return OP_LOG;
 }
 {OP_ASSIGN} {
-    printf("<OP_ASSIGN, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    // printf("<OP_ASSIGN, %s> (tamanho %d)\n", yytext, (int)yyleng);
     return OP_ASSIGN;
 }
 {SCAN} {
-    printf("<SCAN, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    // printf("<SCAN, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 {PRINT} {
-    printf("<PRINT, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    // printf("<PRINT, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 {VAR_DECL} {
-    printf("<VAR_DECL, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    // printf("<VAR_DECL, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 {ID} {
     int address = pushSymTable(yytext);
-    printf("<ID, %d> (tamanho %d)\n", address, (int)yyleng);
+    // printf("<ID, %d> (tamanho %d)\n", address, (int)yyleng);
     return ID;
 }
 {INT} {
     BEGIN(INTEIRO);
-    printf("<INT, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    // printf("<INT, %s> (tamanho %d)\n", yytext, (int)yyleng);
     strcpy(bad_pattern, yytext);
     bad_pattern_index = (int)yyleng;
     return INT;
@@ -239,7 +239,7 @@ PRINT "print"'('{VAR_DECL}')'|"print"'('({LETRA}{DIGITO})*')'
     bad_pattern_bool = 1;
  }
 {FLOAT} {
-    printf("<FLOAT, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    // printf("<FLOAT, %s> (tamanho %d)\n", yytext, (int)yyleng);
     return FLOAT;
 }
 {ENTER} {
@@ -247,7 +247,7 @@ PRINT "print"'('{VAR_DECL}')'|"print"'('({LETRA}{DIGITO})*')'
     col = 1;
 }
 {ASPAS} {
-    printf("<ASPAS, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    // printf("<ASPAS, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 . {
     errors++;

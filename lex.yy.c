@@ -671,12 +671,12 @@ struct symbol_item symbol_table[SYM_TABLE_SIZE];
 void printErrors(){
     int i;
     for(i=0; i<errors; i++){
-        printf("\nErro número %d\n", i+1);
-        printf("Simbolo: %s\n", err[i].sym);
-        printf("%s\n", err[i].type);
-        printf("%s\n", err[i].msg);
-        printf("Linha: %d\n", err[i].line);
-        printf("\n");
+        // printf("\nErro número %d\n", i+1);
+        // printf("Simbolo: %s\n", err[i].sym);
+        // printf("%s\n", err[i].type);
+        // printf("%s\n", err[i].msg);
+        // printf("Linha: %d\n", err[i].line);
+        // printf("\n");
     }
 };
 
@@ -685,14 +685,14 @@ int pushSymTable(char symbol[]){
     symbol_table[symbol_table_index].position = symbol_table_index;
     symbol_table[symbol_table_index].scope = current_scope;
     symbol_table_index++;
-    printf("%s adicionado à tabela\n", symbol);
+    // printf("%s adicionado à tabela\n", symbol);
     return symbol_table_index;
 };
 
 void printSymTable(){
     char escopo[100];
-    printf("\n** -- Tabela de Símbolos: -- **\n");
-    printf("Address |   Symbol   |   Scope \n");
+    // printf("\n** -- Tabela de Símbolos: -- **\n");
+    // printf("Address |   Symbol   |   Scope \n");
     int i;
     for(i=0; i<symbol_table_index; i++){
         if(symbol_table[i].scope == 0){
@@ -700,7 +700,7 @@ void printSymTable(){
         } else {
             strcpy(escopo, "funcao");
         }
-        printf("%7d | %10s | %8s (%d)\n", symbol_table[i].position, symbol_table[i].sym, escopo, symbol_table[i].scope);
+        // printf("%7d | %10s | %8s (%d)\n", symbol_table[i].position, symbol_table[i].sym, escopo, symbol_table[i].scope);
     }
 };
 
@@ -1011,14 +1011,14 @@ case 6:
 YY_RULE_SETUP
 #line 120 "lexAnalyser.l"
 {
-    printf("<ESPACO, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    // printf("<ESPACO, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 123 "lexAnalyser.l"
 {
-    printf("<SEPARADOR, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    // printf("<SEPARADOR, %s> (tamanho %d)\n", yytext, (int)yyleng);
     if(strcmp(yytext, "{") == 0){
         current_scope++;
         scope_stack_index++;
@@ -1039,7 +1039,7 @@ case 8:
 YY_RULE_SETUP
 #line 140 "lexAnalyser.l"
 {
-    printf("<BOOL, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    // printf("<BOOL, %s> (tamanho %d)\n", yytext, (int)yyleng);
     return BOOL;
 }
 	YY_BREAK
@@ -1047,14 +1047,14 @@ case 9:
 YY_RULE_SETUP
 #line 144 "lexAnalyser.l"
 {
-    printf("<CONDICOES, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    // printf("<CONDICOES, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
 #line 147 "lexAnalyser.l"
 {
-    printf("<TIPO, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    // printf("<TIPO, %s> (tamanho %d)\n", yytext, (int)yyleng);
     return TIPO;
 }
 	YY_BREAK
@@ -1062,21 +1062,21 @@ case 11:
 YY_RULE_SETUP
 #line 151 "lexAnalyser.l"
 {
-    printf("<PARAM_TIPOS, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    // printf("<PARAM_TIPOS, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
 #line 154 "lexAnalyser.l"
 {
-    printf("<FUNC_DECL, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    // printf("<FUNC_DECL, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
 #line 157 "lexAnalyser.l"
 {
-    printf("<OP_ARITM, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    // printf("<OP_ARITM, %s> (tamanho %d)\n", yytext, (int)yyleng);
     return OP_ARITM;
 }
 	YY_BREAK
@@ -1084,7 +1084,7 @@ case 14:
 YY_RULE_SETUP
 #line 161 "lexAnalyser.l"
 {
-    printf("<OP_COMP, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    // printf("<OP_COMP, %s> (tamanho %d)\n", yytext, (int)yyleng);
     return OP_COMP;
 }
 	YY_BREAK
@@ -1092,7 +1092,7 @@ case 15:
 YY_RULE_SETUP
 #line 165 "lexAnalyser.l"
 {
-    printf("<OP_LOG, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    // printf("<OP_LOG, %s> (tamanho %d)\n", yytext, (int)yyleng);
     return OP_LOG;
 }
 	YY_BREAK
@@ -1100,7 +1100,7 @@ case 16:
 YY_RULE_SETUP
 #line 169 "lexAnalyser.l"
 {
-    printf("<OP_ASSIGN, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    // printf("<OP_ASSIGN, %s> (tamanho %d)\n", yytext, (int)yyleng);
     return OP_ASSIGN;
 }
 	YY_BREAK
@@ -1108,21 +1108,21 @@ case 17:
 YY_RULE_SETUP
 #line 173 "lexAnalyser.l"
 {
-    printf("<SCAN, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    // printf("<SCAN, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 176 "lexAnalyser.l"
 {
-    printf("<PRINT, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    // printf("<PRINT, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
 #line 179 "lexAnalyser.l"
 {
-    printf("<VAR_DECL, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    // printf("<VAR_DECL, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 20:
@@ -1130,7 +1130,7 @@ YY_RULE_SETUP
 #line 182 "lexAnalyser.l"
 {
     int address = pushSymTable(yytext);
-    printf("<ID, %d> (tamanho %d)\n", address, (int)yyleng);
+    // printf("<ID, %d> (tamanho %d)\n", address, (int)yyleng);
     return ID;
 }
 	YY_BREAK
@@ -1139,7 +1139,7 @@ YY_RULE_SETUP
 #line 187 "lexAnalyser.l"
 {
     BEGIN(INTEIRO);
-    printf("<INT, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    // printf("<INT, %s> (tamanho %d)\n", yytext, (int)yyleng);
     strcpy(bad_pattern, yytext);
     bad_pattern_index = (int)yyleng;
     return INT;
@@ -1217,7 +1217,7 @@ case 27:
 YY_RULE_SETUP
 #line 241 "lexAnalyser.l"
 {
-    printf("<FLOAT, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    // printf("<FLOAT, %s> (tamanho %d)\n", yytext, (int)yyleng);
     return FLOAT;
 }
 	YY_BREAK
@@ -1234,7 +1234,7 @@ case 29:
 YY_RULE_SETUP
 #line 249 "lexAnalyser.l"
 {
-    printf("<ASPAS, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    // printf("<ASPAS, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 30:
