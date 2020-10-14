@@ -15,8 +15,9 @@
 
 
   typedef struct node {
-    int type; //int, float, char, tuple
-    char kind; // function, var, code_block...
+    int var_type; // 0 int, 1 float, 2 char, 3 tuple
+    char node_kind; // 'F' function, 'V' var, 'C' code_block...
+    char node_type; // 'S' for symbol | 'R' for regular
     struct node *left;
     struct node *right;
     struct node *middle;
@@ -26,32 +27,17 @@
 
   node *parser_tree = NULL;
 
-  node* insert_node(node ** tree, int node_type, char node_kind, char *node_val, int is_left) {
-  node *aux = NULL;
-  if(!(*tree)) {
-    aux = (node *)malloc(sizeof(node));
-    aux->left = aux->right = NULL;
-    aux->type = node_type;
-    aux->kind = node_kind;
-    aux->val = node_val;
-    *tree = aux;
-    return *tree;
-  }
- 
-  if(is_left) {
-       insert_node(&(*tree)->left, node_type, node_kind, node_val, is_left);
-    } else {
-      insert_node(&(*tree)->right, node_type, node_kind, node_val, is_left);
-    }
-  }
-
-  node* ins_node(int node_type, char node_kind, node *left, node *right){
+  /* Definitions 
+    node
+  */
+  node* ins_node(int var_type, char node_type, char node_kind, node *left, node *right){
     node* aux_node = (node*)calloc(1, sizeof(node));
 
     aux_node->left = left;
     aux_node->right = right;
-    aux_node->type = node_type;
-    aux_node->kind = node_kind;
+    aux_node->var_type = var_type;
+    aux_node->node_type = node_type;
+    aux_node->node_kind = node_kind;
 
   return aux_node;
 }
@@ -59,7 +45,7 @@
   void print_tree(node * tree) {
     if (tree) {
       print_tree(tree->left);
-      printf("kind:%c type: %d\n",tree->kind, tree->type);
+      printf("var_type: %d kind:%c type: %c\n",tree->var_type, tree->node_kind, tree->node_type);
       print_tree(tree->right);
     }
   }
@@ -92,7 +78,7 @@ programa:
 ;
 
 declaracoes:
-  declaracoes declaracao { printf("declaracoes \n"); $$ = ins_node(0, 'A', $1, $2); }
+  declaracoes declaracao { printf("declaracoes \n"); $$ = ins_node(27, 'R','D', $1, $2); }
 | declaracao { printf("declaracao \n"); $$ = $1; }
 ;
 
