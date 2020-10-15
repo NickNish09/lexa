@@ -72,11 +72,12 @@ node* ins_node_symbol(char* var_type, char node_type, char node_kind, char* id){
   char *operador;
 
   char *str;
+  int itype;
   struct node* nd;
 }
 
 %type <nd> programa declaracoes declaracao var_decl func_decl parm_tipos cod_block assign expressao scan print
-%type <nd> cod_blocks expressao_logica
+%type <nd> cod_blocks expressao_logica termo op_expressao
 
 %token OP_ARITM OP_COMP OP_LOG OP_ASSIGN
 %token BOOL
@@ -132,8 +133,9 @@ cod_blocks:
 cod_block:
   "if" '(' expressao ')' '{' cod_blocks '}' { printf("cod_block #1 \n"); }
 | "if" '(' expressao ')' '{' cod_blocks '}' "else" '{' cod_blocks '}' { printf("cod_block #2 \n"); }
-| "while" '(' expressao_logica ')' '{' cod_block '}' { printf("cod_block #3 \n"); }
+| LACOS '(' expressao_logica ')' '{' cod_block '}' { printf("cod_block #3 \n"); $$ = ins_node("x", 'R','L', $3, $6, "while") }
 | RETORNO ';' { printf("cod_block #4 \n"); }
+| RETORNO termo ';' { printf("cod_block #4.5 \n"); }
 | RETORNO '(' expressao ')' ';' { printf("cod_block #5 \n"); $$ = ins_node("x", 'R','R', NULL, $3, "retorno") }
 | assign ';' { printf("cod_block #6 \n"); }
 | print '(' ID ')' ';' { printf("cod_block #7 \n"); $$ = $1}
@@ -155,17 +157,26 @@ expressao:
 | expressao OP_ARITM expressao { printf("expressao #4 \n"); $$ = ins_node("x", 'E', 'R', $1, $3, "-"); }
 | expressao OP_COMP expressao { printf("expressao #5 \n"); $$ = ins_node("x", 'E', 'R', $1, $3, "-"); }
 | '(' expressao ')' { printf("expressao #6 \n"); $$ = $2 }
-| ID { printf("expressao #7 \n"); $$ = NULL }
+| termo { printf("expressao #7 \n"); $$ = NULL }
 ;
 
 expressao_logica:
-  OP_LOG expressao_logica { printf("expressao_logica #2 \n"); $$ = $2; }
-| '!' expressao_logica { printf("expressao_logica #3 \n"); $$ = $2; }
-| expressao_logica OP_COMP expressao_logica { printf("expressao_logica #5 \n"); $$ = ins_node("x", 'E', 'R', $1, $3, "-"); }
-| '(' expressao_logica ')' { printf("expressao_logica #6 \n"); $$ = $2 }
-| ID { printf("expressao_logica #7 \n"); $$ = NULL }
-| INT { printf("expressao_logica #7 \n"); $$ = NULL }
-| FLOAT { printf("expressao_logica #7 \n"); $$ = NULL }
+  OP_LOG op_expressao { printf("expressao_logica #1 \n"); $$ = $2; }
+| '!' op_expressao { printf("expressao_logica #2 \n"); $$ = $2; }
+| op_expressao OP_COMP op_expressao { printf("expressao_logica #3 \n"); $$ = ins_node("x", 'E', 'R', $1, $3, "op_expressao"); }
+| '(' op_expressao ')' { printf("expressao_logica #4 \n"); $$ = $2 }
+| op_expressao { printf("expressao_logica #5\n"); $$ = $1; }
+;
+
+op_expressao:
+  op_expressao OP_ARITM termo { printf("op_expressao #1\n"); $$ = ins_node("x", 'E', 'R', $1, $3, "op_expressao_termo"); }
+| termo { printf("op_expressao #2\n"); $$ = $1; }
+;
+
+termo:
+  ID { printf("termo #1 \n"); $$ = ins_node_symbol($1, 'S','D', $1); }
+| INT { printf("termo #2 \n"); $$ = NULL }
+| FLOAT { printf("termo #3 \n"); $$ = NULL }
 ;
 
 scan:

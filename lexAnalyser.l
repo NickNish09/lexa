@@ -141,6 +141,10 @@ PRINT "print"'('{VAR_DECL}')'|"print"'('({LETRA}{DIGITO})*')'
     // printf("<BOOL, %s> (tamanho %d)\n", yytext, (int)yyleng);
     return BOOL;
 }
+{LACOS} {
+    // printf("<LACOS, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    return LACOS;
+}
 {RETORNO} {
     // printf("<RETORNO, %s> (tamanho %d)\n", yytext, (int)yyleng);
     yylval.str = (char *) strdup(yytext);
@@ -194,10 +198,11 @@ PRINT "print"'('{VAR_DECL}')'|"print"'('({LETRA}{DIGITO})*')'
     return ID;
 }
 {INT} {
-    BEGIN(INTEIRO);
+    // BEGIN(INTEIRO);
     // printf("<INT, %s> (tamanho %d)\n", yytext, (int)yyleng);
-    strcpy(bad_pattern, yytext);
-    bad_pattern_index = (int)yyleng;
+    // strcpy(bad_pattern, yytext);
+    // bad_pattern_index = (int)yyleng;
+    yylval.itype = atoi(yytext);
     return INT;
 }
 <INTEIRO>{DIGITO} { }

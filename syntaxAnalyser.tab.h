@@ -89,10 +89,11 @@ typedef union YYSTYPE
   char *operador;
 
   char *str;
+  int itype;
   struct node* nd;
 }
 /* Line 1529 of yacc.c.  */
-#line 96 "syntaxAnalyser.tab.h"
+#line 97 "syntaxAnalyser.tab.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
