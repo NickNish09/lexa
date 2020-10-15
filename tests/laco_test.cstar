@@ -3,5 +3,5 @@ int main(){
         print("oi");
     }
 
-    return 0 ;
+    return 0;
 }

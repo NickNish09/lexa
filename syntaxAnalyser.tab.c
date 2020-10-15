@@ -178,7 +178,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
   void print_tree(node * tree, int prof) {
     int j;
     for(j=0;j<prof;j++){
-      printf("\t");
+      printf("  ");
     }
     if (tree) {
       printf("| var_type: %s | kind: %c | type: %s | val: %s |\n",tree->var_type, tree->node_kind, stringBasedOnNumber(tree->node_type), tree->val);
@@ -1676,12 +1676,12 @@ yyreduce:
 
   case 22:
 #line 156 "syntaxAnalyser.y"
-    { printf("cod_block #4 \n"); ;}
+    { printf("cod_block #4 \n"); (yyval.nd) = NULL ;}
     break;
 
   case 23:
 #line 157 "syntaxAnalyser.y"
-    { printf("cod_block #4.5 \n"); ;}
+    { printf("cod_block #4.5 \n"); (yyval.nd) = ins_node("x", REGULAR_NODE,'R', NULL, (yyvsp[(2) - (3)].nd), "retorno");}
     break;
 
   case 24:
@@ -2089,6 +2089,7 @@ int main(int argc, char **argv){
   yyparse();
   printf("Abstract Syntax Tree:\n");
   print_tree(parser_tree, 0);
+  printf("\n");
 
   return 0;
 }

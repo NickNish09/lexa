@@ -71,7 +71,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
   void print_tree(node * tree, int prof) {
     int j;
     for(j=0;j<prof;j++){
-      printf("\t");
+      printf("  ");
     }
     if (tree) {
       printf("| var_type: %s | kind: %c | type: %s | val: %s |\n",tree->var_type, tree->node_kind, stringBasedOnNumber(tree->node_type), tree->val);
@@ -153,8 +153,8 @@ cod_block:
   "if" '(' expressao ')' '{' cod_blocks '}' { printf("cod_block #1 \n"); }
 | "if" '(' expressao ')' '{' cod_blocks '}' "else" '{' cod_blocks '}' { printf("cod_block #2 \n"); }
 | LACOS '(' expressao_logica ')' '{' cod_block '}' { printf("cod_block #3 \n"); $$ = ins_node("x", REGULAR_NODE,'L', $3, $6, "while") }
-| RETORNO ';' { printf("cod_block #4 \n"); }
-| RETORNO termo ';' { printf("cod_block #4.5 \n"); }
+| RETORNO ';' { printf("cod_block #4 \n"); $$ = NULL }
+| RETORNO termo ';' { printf("cod_block #4.5 \n"); $$ = ins_node("x", REGULAR_NODE,'R', NULL, $2, "retorno")}
 | RETORNO '(' expressao ')' ';' { printf("cod_block #5 \n"); $$ = ins_node("x", REGULAR_NODE,'R', NULL, $3, "retorno") }
 | assign ';' { printf("cod_block #6 \n"); }
 | print '(' ID ')' ';' { printf("cod_block #7 \n"); $$ = $1}
@@ -231,6 +231,7 @@ int main(int argc, char **argv){
   yyparse();
   printf("Abstract Syntax Tree:\n");
   print_tree(parser_tree, 0);
+  printf("\n");
 
   return 0;
 }
