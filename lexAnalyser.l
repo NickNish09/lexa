@@ -183,6 +183,7 @@ PRINT "print"'('{VAR_DECL}')'|"print"'('({LETRA}{DIGITO})*')'
 {ID} {
     int address = pushSymTable(yytext);
     // printf("<ID, %d> (tamanho %d)\n", address, (int)yyleng);
+    yylval.id = (char *) strdup(yytext);
     return ID;
 }
 {INT} {

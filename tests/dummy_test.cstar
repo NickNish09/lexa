@@ -1,6 +1,8 @@
-int a;
-float b;
+int moutinho;
+float soneca;
 
+int dummy();
 int sum(){
+    print (moutinho);
     return(a + b);
 }

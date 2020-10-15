@@ -1132,12 +1132,13 @@ YY_RULE_SETUP
 {
     int address = pushSymTable(yytext);
     // printf("<ID, %d> (tamanho %d)\n", address, (int)yyleng);
+    yylval.id = (char *) strdup(yytext);
     return ID;
 }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 188 "lexAnalyser.l"
+#line 189 "lexAnalyser.l"
 {
     BEGIN(INTEIRO);
     // printf("<INT, %s> (tamanho %d)\n", yytext, (int)yyleng);
@@ -1148,12 +1149,12 @@ YY_RULE_SETUP
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 195 "lexAnalyser.l"
+#line 196 "lexAnalyser.l"
 { }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 196 "lexAnalyser.l"
+#line 197 "lexAnalyser.l"
 { 
     BEGIN(INITIAL);
     if(bad_pattern_bool){
@@ -1172,7 +1173,7 @@ YY_RULE_SETUP
 case 24:
 /* rule 24 can match eol */
 YY_RULE_SETUP
-#line 210 "lexAnalyser.l"
+#line 211 "lexAnalyser.l"
 { 
     BEGIN(INITIAL);
     if(bad_pattern_bool){
@@ -1190,7 +1191,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 224 "lexAnalyser.l"
+#line 225 "lexAnalyser.l"
 { 
     BEGIN(INITIAL);
     if(bad_pattern_bool){
@@ -1208,7 +1209,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 238 "lexAnalyser.l"
+#line 239 "lexAnalyser.l"
 { 
     bad_pattern[bad_pattern_index++] = *yytext;
     bad_pattern_bool = 1;
@@ -1216,7 +1217,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 242 "lexAnalyser.l"
+#line 243 "lexAnalyser.l"
 {
     // printf("<FLOAT, %s> (tamanho %d)\n", yytext, (int)yyleng);
     return FLOAT;
@@ -1225,7 +1226,7 @@ YY_RULE_SETUP
 case 28:
 /* rule 28 can match eol */
 YY_RULE_SETUP
-#line 246 "lexAnalyser.l"
+#line 247 "lexAnalyser.l"
 {
     lin++;
     col = 1;
@@ -1233,14 +1234,14 @@ YY_RULE_SETUP
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 250 "lexAnalyser.l"
+#line 251 "lexAnalyser.l"
 {
     // printf("<ASPAS, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 253 "lexAnalyser.l"
+#line 254 "lexAnalyser.l"
 {
     errors++;
     strcpy(err[error_index].type, "nsym");
@@ -1252,10 +1253,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 262 "lexAnalyser.l"
+#line 263 "lexAnalyser.l"
 ECHO;
 	YY_BREAK
-#line 1259 "lex.yy.c"
+#line 1260 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(COMENTARIO):
 case YY_STATE_EOF(INTEIRO):
@@ -2254,7 +2255,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 262 "lexAnalyser.l"
+#line 263 "lexAnalyser.l"
 
 
 
