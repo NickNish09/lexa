@@ -1672,7 +1672,7 @@ yyreduce:
 
   case 28:
 #line 142 "syntaxAnalyser.y"
-    { printf("cod_block #10 \n"); ;}
+    { printf("cod_block #10 \n"); (yyval.nd) = ins_node("x", 'C','R', NULL, NULL, "call");}
     break;
 
   case 29:

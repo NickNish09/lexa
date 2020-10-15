@@ -139,7 +139,7 @@ cod_block:
 | print '(' ID ')' ';' { printf("cod_block #7 \n"); $$ = $1}
 | print '(' palavra ')' ';' { printf("cod_block #8 \n"); $$ = $1}
 | ID '(' expressao ')' ';' { printf("cod_block #9 \n"); $$ = $3}
-| ID '(' ')' ';' { printf("cod_block #10 \n"); }
+| ID '(' ')' ';' { printf("cod_block #10 \n"); $$ = ins_node("x", 'C','R', NULL, NULL, "call")}
 | scan '(' ID ')' ';' { printf("cod_block #11 \n"); }
 ;
 
