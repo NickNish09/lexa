@@ -68,12 +68,15 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
   return aux_node;
 }
 
-  void print_tree(node * tree) {
-    printf("\t");
+  void print_tree(node * tree, int prof) {
+    int j;
+    for(j=0;j<prof;j++){
+      printf("\t");
+    }
     if (tree) {
-      printf("\n var_type: %s\n kind:%c\n type: %s\n val: %s\n",tree->var_type, tree->node_kind, stringBasedOnNumber(tree->node_type), tree->val);
-      print_tree(tree->left);
-      print_tree(tree->right);
+      printf("| var_type: %s | kind: %c | type: %s | val: %s |\n",tree->var_type, tree->node_kind, stringBasedOnNumber(tree->node_type), tree->val);
+      print_tree(tree->left, prof+1);
+      print_tree(tree->right, prof+1);
     }
   }
 %}
@@ -227,7 +230,7 @@ int main(int argc, char **argv){
   // printSymTable();
   yyparse();
   printf("Abstract Syntax Tree:\n");
-  print_tree(parser_tree);
+  print_tree(parser_tree, 0);
 
   return 0;
 }
