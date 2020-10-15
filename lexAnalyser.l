@@ -141,6 +141,11 @@ PRINT "print"'('{VAR_DECL}')'|"print"'('({LETRA}{DIGITO})*')'
     // printf("<BOOL, %s> (tamanho %d)\n", yytext, (int)yyleng);
     return BOOL;
 }
+{RETORNO} {
+    // printf("<RETORNO, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    yylval.str = (char *) strdup(yytext);
+    return RETORNO;
+}
 {CONDICOES} {
     // printf("<CONDICOES, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
@@ -173,9 +178,11 @@ PRINT "print"'('{VAR_DECL}')'|"print"'('({LETRA}{DIGITO})*')'
 }
 {SCAN} {
     // printf("<SCAN, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    return SCAN;
 }
 {PRINT} {
     // printf("<PRINT, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    return PRINT;
 }
 {VAR_DECL} {
     // printf("<VAR_DECL, %s> (tamanho %d)\n", yytext, (int)yyleng);

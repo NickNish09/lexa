@@ -33,14 +33,14 @@
 node* ins_node(char* var_type, char node_type, char node_kind, node *left, node *right, char* node_val){
   node* aux_node = (node*)calloc(1, sizeof(node));
 
-  aux_node->left = left;
-  aux_node->right = right;
-  aux_node->var_type = var_type;
-  aux_node->node_type = node_type;
-  aux_node->node_kind = node_kind;
-  aux_node->val = node_val;
+    aux_node->left = left;
+    aux_node->right = right;
+    aux_node->var_type = var_type;
+    aux_node->node_type = node_type;
+    aux_node->node_kind = node_kind;
+    aux_node->val = node_val;
 
-  return aux_node;
+    return aux_node;
 }
 
 node* ins_node_symbol(char* var_type, char node_type, char node_kind, char* id){
@@ -83,11 +83,12 @@ node* ins_node_symbol(char* var_type, char node_type, char node_kind, char* id){
 %token <tipo> TIPO
 %token CONDICOES
 %token LACOS
-%token RETORNO
+%token <str> RETORNO
 %token <str> INT FLOAT
 %token <id> ID
 %token <str> DIGITO LETRA
 %token SEPARADOR
+%token PRINT SCAN
 
 %%
 programa: 
@@ -110,8 +111,8 @@ var_decl:
 ;
 
 func_decl:
-  TIPO ID '(' parm_tipos ')' { printf("func_decl #1 \n"); $$ = ins_node_symbol($1, 'S','F', $2); }
-| TIPO ID '(' ')' { printf("func_decl #2 \n"); $$ = ins_node_symbol($1, 'S','F', $2); }
+  TIPO ID '(' parm_tipos ')' ';'{ printf("func_decl #1 \n"); $$ = ins_node_symbol($1, 'S','F', $2); }
+| TIPO ID '(' ')' ';' { printf("func_decl #2 \n"); $$ = ins_node_symbol($1, 'S','F', $2); }
 | TIPO ID '(' parm_tipos ')' '{' cod_blocks '}' { printf("func_decl #3 \n"); $$ = $7; }
 | TIPO ID '(' ')' '{' cod_blocks '}' { printf("func_decl #4 \n"); $$ = $6}
 ;
@@ -124,8 +125,8 @@ parm_tipos:
 ;
 
 cod_blocks:
-  cod_blocks cod_block { printf("cod_blocks #1")}
-| cod_block  { printf("cod_blocks #2")}
+  cod_blocks cod_block { printf("cod_blocks #1\n"); $$ = ins_node("x", 'R','C', $1, $2, "cb"); }
+| cod_block  { printf("cod_blocks #2\n"); $$ = $1; }
 ;
 
 cod_block:
@@ -133,13 +134,13 @@ cod_block:
 | "if" '(' expressao ')' '{' cod_blocks '}' "else" '{' cod_blocks '}' { printf("cod_block #2 \n"); }
 | "while" '(' expressao ')' '{' cod_block '}' { printf("cod_block #3 \n"); }
 | RETORNO ';' { printf("cod_block #4 \n"); }
-| RETORNO expressao ';' { printf("cod_block #5 \n"); }
+| RETORNO '(' expressao ')' ';' { printf("cod_block #5 \n"); $$ = ins_node("x", 'R','R', NULL, $3, "retorno") }
 | assign ';' { printf("cod_block #6 \n"); }
-| print '(' ID ')' ';' { printf("cod_block #10 \n"); }
-| print '(' palavra ')' ';' { printf("cod_block #10 \n"); }
-| ID '(' expressao ')' ';' { printf("cod_block #7 \n"); $$ = $3}
-| ID '(' ')' ';' { printf("cod_block #8 \n"); }
-| scan '(' ID ')' ';' { printf("cod_block #9 \n"); }
+| print '(' ID ')' ';' { printf("cod_block #7 \n"); $$ = $1}
+| print '(' palavra ')' ';' { printf("cod_block #8 \n"); $$ = $1}
+| ID '(' expressao ')' ';' { printf("cod_block #9 \n"); $$ = $3}
+| ID '(' ')' ';' { printf("cod_block #10 \n"); }
+| scan '(' ID ')' ';' { printf("cod_block #11 \n"); }
 ;
 
 assign:
@@ -158,12 +159,12 @@ expressao:
 ;
 
 scan:
-  "scan" '(' ID ')' { printf("scan #1 \n"); }
+  SCAN '(' ID ')' { printf("scan #1 \n"); }
 ;
 
 print:
-  "print" '(' ID ')' { printf("print #1 \n"); $$ = ins_node("x", 'P', 'R', NULL, NULL, "print") }
-| "print" '(' palavra ')' { printf("print #2 \n"); }
+  PRINT '(' ID ')' { printf("print #1 \n"); $$ = ins_node("x", 'P', 'R', NULL, NULL, "print"); }
+| PRINT '(' palavra ')' { printf("print #2 \n"); $$ = ins_node("x", 'P', 'R', NULL, NULL, "print"); }
 ;
 
 palavra:

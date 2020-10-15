@@ -53,7 +53,9 @@
      ID = 269,
      DIGITO = 270,
      LETRA = 271,
-     SEPARADOR = 272
+     SEPARADOR = 272,
+     PRINT = 273,
+     SCAN = 274
    };
 #endif
 /* Tokens.  */
@@ -72,6 +74,8 @@
 #define DIGITO 270
 #define LETRA 271
 #define SEPARADOR 272
+#define PRINT 273
+#define SCAN 274
 
 
 
@@ -88,7 +92,7 @@ typedef union YYSTYPE
   struct node* nd;
 }
 /* Line 1529 of yacc.c.  */
-#line 92 "syntaxAnalyser.tab.h"
+#line 96 "syntaxAnalyser.tab.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

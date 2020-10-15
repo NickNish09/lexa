@@ -3,6 +3,6 @@ float soneca;
 
 int dummy();
 int sum(){
-    print (moutinho);
+    print(moutinho);
     return(a + b);
 }
