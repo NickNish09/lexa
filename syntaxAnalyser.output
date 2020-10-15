@@ -5,11 +5,7 @@ Terminals which are not used
    SEPARADOR
 
 
-State 92 conflicts: 2 shift/reduce
-State 93 conflicts: 2 shift/reduce
 State 95 conflicts: 2 shift/reduce
-State 116 conflicts: 2 shift/reduce
-State 117 conflicts: 2 shift/reduce
 
 
 Grammar
@@ -1081,11 +1077,8 @@ state 92
    35          | expressao . OP_ARITM expressao
    36          | expressao . OP_COMP expressao
 
-    OP_ARITM  shift, and go to state 96
-    OP_COMP   shift, and go to state 97
+    OP_COMP  shift, and go to state 97
 
-    OP_ARITM  [reduce using rule 32 (expressao)]
-    OP_COMP   [reduce using rule 32 (expressao)]
     $default  reduce using rule 32 (expressao)
 
 
@@ -1095,11 +1088,8 @@ state 93
    35          | expressao . OP_ARITM expressao
    36          | expressao . OP_COMP expressao
 
-    OP_ARITM  shift, and go to state 96
-    OP_COMP   shift, and go to state 97
+    OP_COMP  shift, and go to state 97
 
-    OP_ARITM  [reduce using rule 33 (expressao)]
-    OP_COMP   [reduce using rule 33 (expressao)]
     $default  reduce using rule 33 (expressao)
 
 
@@ -1306,11 +1296,8 @@ state 116
    35          | expressao OP_ARITM expressao .
    36          | expressao . OP_COMP expressao
 
-    OP_ARITM  shift, and go to state 96
-    OP_COMP   shift, and go to state 97
+    OP_COMP  shift, and go to state 97
 
-    OP_ARITM  [reduce using rule 35 (expressao)]
-    OP_COMP   [reduce using rule 35 (expressao)]
     $default  reduce using rule 35 (expressao)
 
 
@@ -1320,11 +1307,6 @@ state 117
    36          | expressao . OP_COMP expressao
    36          | expressao OP_COMP expressao .
 
-    OP_ARITM  shift, and go to state 96
-    OP_COMP   shift, and go to state 97
-
-    OP_ARITM  [reduce using rule 36 (expressao)]
-    OP_COMP   [reduce using rule 36 (expressao)]
     $default  reduce using rule 36 (expressao)
 
 

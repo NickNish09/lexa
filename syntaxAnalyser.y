@@ -5,6 +5,8 @@
 %{
   #include <stdlib.h>
   #include <stdio.h>
+  #define SYMBOL_NODE 888
+  #define REGULAR_NODE 889
   
   int yylex();
   extern int lin;
@@ -17,7 +19,7 @@
   typedef struct node {
     char* var_type; //
     char node_kind; // 'F' function, 'V' var, 'C' code_block..., 'D' declaration, 'E' expression
-    char node_type; // 'S' for symbol | 'R' for regular
+    int node_type; // 'S' for symbol | 'R' for regular
     struct node *left;
     struct node *right;
     struct node *middle;
@@ -30,7 +32,16 @@
   /* Definitions 
     node
   */
-node* ins_node(char* var_type, char node_type, char node_kind, node *left, node *right, char* node_val){
+  const char * stringBasedOnNumber(int number)
+  {
+    if(number == SYMBOL_NODE){
+      return "Symbol Node";
+    } else if(number == REGULAR_NODE){
+      return "Regular Node";
+    }
+    return "Not Found";
+  }
+node* ins_node(char* var_type, int node_type, char node_kind, node *left, node *right, char* node_val){
   node* aux_node = (node*)calloc(1, sizeof(node));
 
     aux_node->left = left;
@@ -43,7 +54,7 @@ node* ins_node(char* var_type, char node_type, char node_kind, node *left, node 
     return aux_node;
 }
 
-node* ins_node_symbol(char* var_type, char node_type, char node_kind, char* id){
+node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
   node* aux_node = (node*)calloc(1, sizeof(node));
 
   // printf("tipo_var: %s", var_type);
@@ -58,8 +69,9 @@ node* ins_node_symbol(char* var_type, char node_type, char node_kind, char* id){
 }
 
   void print_tree(node * tree) {
+    printf("\t");
     if (tree) {
-      printf("\nvar_type: %s\n kind:%c\n type: %c\n val: %s\n",tree->var_type, tree->node_kind, tree->node_type, tree->val);
+      printf("\n var_type: %s\n kind:%c\n type: %s\n val: %s\n",tree->var_type, tree->node_kind, stringBasedOnNumber(tree->node_type), tree->val);
       print_tree(tree->left);
       print_tree(tree->right);
     }
@@ -91,13 +103,17 @@ node* ins_node_symbol(char* var_type, char node_type, char node_kind, char* id){
 %token SEPARADOR
 %token PRINT SCAN
 
+%left OP_ARITM
+%left OP_LOG
+%left OP_COMP
+
 %%
 programa: 
   declaracoes { parser_tree = $1; printf("tree initialized\n"); }
 ;
 
 declaracoes:
-  declaracoes declaracao { printf("declaracoes \n"); $$ = ins_node("x", 'R','D', $1, $2, "-"); }
+  declaracoes declaracao { printf("declaracoes \n"); $$ = ins_node("x", REGULAR_NODE,'D', $1, $2, "-"); }
 | declaracao { printf("declaracao \n"); $$ = $1; }
 ;
 
@@ -108,12 +124,12 @@ declaracao:
 ;
 
 var_decl:
-  TIPO ID ';' { printf("var_decl \n"); $$ = ins_node_symbol($1, 'S','D', $2); }
+  TIPO ID ';' { printf("var_decl \n"); $$ = ins_node_symbol($1, SYMBOL_NODE,'D', $2); }
 ;
 
 func_decl:
-  TIPO ID '(' parm_tipos ')' ';'{ printf("func_decl #1 \n"); $$ = ins_node_symbol($1, 'S','F', $2); }
-| TIPO ID '(' ')' ';' { printf("func_decl #2 \n"); $$ = ins_node_symbol($1, 'S','F', $2); }
+  TIPO ID '(' parm_tipos ')' ';'{ printf("func_decl #1 \n"); $$ = ins_node_symbol($1, SYMBOL_NODE,'F', $2); }
+| TIPO ID '(' ')' ';' { printf("func_decl #2 \n"); $$ = ins_node_symbol($1, SYMBOL_NODE,'F', $2); }
 | TIPO ID '(' parm_tipos ')' '{' cod_blocks '}' { printf("func_decl #3 \n"); $$ = $7; }
 | TIPO ID '(' ')' '{' cod_blocks '}' { printf("func_decl #4 \n"); $$ = $6}
 ;
@@ -126,17 +142,17 @@ parm_tipos:
 ;
 
 cod_blocks:
-  cod_blocks cod_block { printf("cod_blocks #1\n"); $$ = ins_node("x", 'R','C', $1, $2, "cb"); }
+  cod_blocks cod_block { printf("cod_blocks #1\n"); $$ = ins_node("x", REGULAR_NODE,'C', $1, $2, "cb"); }
 | cod_block  { printf("cod_blocks #2\n"); $$ = $1; }
 ;
 
 cod_block:
   "if" '(' expressao ')' '{' cod_blocks '}' { printf("cod_block #1 \n"); }
 | "if" '(' expressao ')' '{' cod_blocks '}' "else" '{' cod_blocks '}' { printf("cod_block #2 \n"); }
-| LACOS '(' expressao_logica ')' '{' cod_block '}' { printf("cod_block #3 \n"); $$ = ins_node("x", 'R','L', $3, $6, "while") }
+| LACOS '(' expressao_logica ')' '{' cod_block '}' { printf("cod_block #3 \n"); $$ = ins_node("x", REGULAR_NODE,'L', $3, $6, "while") }
 | RETORNO ';' { printf("cod_block #4 \n"); }
 | RETORNO termo ';' { printf("cod_block #4.5 \n"); }
-| RETORNO '(' expressao ')' ';' { printf("cod_block #5 \n"); $$ = ins_node("x", 'R','R', NULL, $3, "retorno") }
+| RETORNO '(' expressao ')' ';' { printf("cod_block #5 \n"); $$ = ins_node("x", REGULAR_NODE,'R', NULL, $3, "retorno") }
 | assign ';' { printf("cod_block #6 \n"); }
 | print '(' ID ')' ';' { printf("cod_block #7 \n"); $$ = $1}
 | print '(' palavra ')' ';' { printf("cod_block #8 \n"); $$ = $1}
@@ -154,8 +170,8 @@ expressao:
   OP_ARITM expressao { printf("expressao #1 \n"); $$ = $2; }
 | OP_LOG expressao { printf("expressao #2 \n"); $$ = $2; }
 | '!' expressao { printf("expressao #3 \n"); $$ = $2; }
-| expressao OP_ARITM expressao { printf("expressao #4 \n"); $$ = ins_node("x", 'E', 'R', $1, $3, "-"); }
-| expressao OP_COMP expressao { printf("expressao #5 \n"); $$ = ins_node("x", 'E', 'R', $1, $3, "-"); }
+| expressao OP_ARITM expressao { printf("expressao #4 \n"); $$ = ins_node("x", REGULAR_NODE, 'E', $1, $3, "-"); }
+| expressao OP_COMP expressao { printf("expressao #5 \n"); $$ = ins_node("x", REGULAR_NODE, 'E', $1, $3, "-"); }
 | '(' expressao ')' { printf("expressao #6 \n"); $$ = $2 }
 | termo { printf("expressao #7 \n"); $$ = NULL }
 ;
@@ -163,13 +179,13 @@ expressao:
 expressao_logica:
   OP_LOG op_expressao { printf("expressao_logica #1 \n"); $$ = $2; }
 | '!' op_expressao { printf("expressao_logica #2 \n"); $$ = $2; }
-| op_expressao OP_COMP op_expressao { printf("expressao_logica #3 \n"); $$ = ins_node("x", 'E', 'R', $1, $3, "op_expressao"); }
+| op_expressao OP_COMP op_expressao { printf("expressao_logica #3 \n"); $$ = ins_node("x", REGULAR_NODE, 'E', $1, $3, "op_expressao"); }
 | '(' op_expressao ')' { printf("expressao_logica #4 \n"); $$ = $2 }
 | op_expressao { printf("expressao_logica #5\n"); $$ = $1; }
 ;
 
 op_expressao:
-  op_expressao OP_ARITM termo { printf("op_expressao #1\n"); $$ = ins_node("x", 'E', 'R', $1, $3, "op_expressao_termo"); }
+  op_expressao OP_ARITM termo { printf("op_expressao #1\n"); $$ = ins_node("x", REGULAR_NODE, 'E', $1, $3, "op_expressao_termo"); }
 | termo { printf("op_expressao #2\n"); $$ = $1; }
 ;
 
@@ -184,8 +200,8 @@ scan:
 ;
 
 print:
-  PRINT '(' ID ')' { printf("print #1 \n"); $$ = ins_node("x", 'P', 'R', NULL, NULL, "print"); }
-| PRINT '(' palavra ')' { printf("print #2 \n"); $$ = ins_node("x", 'P', 'R', NULL, NULL, "print"); }
+  PRINT '(' ID ')' { printf("print #1 \n"); $$ = ins_node("x", REGULAR_NODE, 'P', NULL, NULL, "print"); }
+| PRINT '(' palavra ')' { printf("print #2 \n"); $$ = ins_node("x", REGULAR_NODE, 'P', NULL, NULL, "print"); }
 ;
 
 palavra:
