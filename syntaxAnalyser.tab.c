@@ -1693,7 +1693,7 @@ yyreduce:
 
   case 13:
 #line 208 "syntaxAnalyser.y"
-    { printf("func_decl #3 \n"); (yyval.nd) = (yyvsp[(7) - (8)].nd); ;}
+    { printf("func_decl #3 \n"); (yyval.nd) = ins_node((yyvsp[(1) - (8)].tipo), REGULAR_NODE,'F', (yyvsp[(4) - (8)].nd), (yyvsp[(7) - (8)].nd), (yyvsp[(2) - (8)].id)); ;}
     break;
 
   case 14:
@@ -1703,27 +1703,27 @@ yyreduce:
 
   case 15:
 #line 213 "syntaxAnalyser.y"
-    { printf("parm_tipos #1 \n"); ;}
+    { printf("parm_tipos #1 \n"); (yyval.nd) = (yyvsp[(1) - (3)].nd); ;}
     break;
 
   case 16:
 #line 214 "syntaxAnalyser.y"
-    { printf("parm_tipos #2 \n"); ;}
+    { printf("parm_tipos #2 \n"); (yyval.nd) = (yyvsp[(1) - (5)].nd); ;}
     break;
 
   case 17:
 #line 215 "syntaxAnalyser.y"
-    { printf("parm_tipos #3 \n"); ;}
+    { printf("parm_tipos #3 \n"); (yyval.nd) = NULL; ;}
     break;
 
   case 18:
 #line 216 "syntaxAnalyser.y"
-    { printf("parm_tipos #4 \n"); ;}
+    { printf("parm_tipos #4 \n"); (yyval.nd) = NULL; ;}
     break;
 
   case 19:
 #line 217 "syntaxAnalyser.y"
-    { printf("parm_tipos #5 \n"); ;}
+    { printf("parm_tipos #5 \n"); (yyval.nd) = NULL; ;}
     break;
 
   case 20:

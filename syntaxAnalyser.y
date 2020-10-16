@@ -205,16 +205,16 @@ var_decl:
 func_decl:
   TIPO ID '(' parm_tipos ')' ';'{ printf("func_decl #1 \n"); $$ = ins_node_symbol($1, SYMBOL_NODE,'F', $2); }
 | TIPO ID '(' ')' ';' { printf("func_decl #2 \n"); $$ = ins_node_symbol($1, SYMBOL_NODE,'F', $2); }
-| TIPO ID '(' parm_tipos ')' '{' cod_blocks '}' { printf("func_decl #3 \n"); $$ = $7; }
+| TIPO ID '(' parm_tipos ')' '{' cod_blocks '}' { printf("func_decl #3 \n"); $$ = ins_node($1, REGULAR_NODE,'F', $4, $7, $2); }
 | TIPO ID '(' ')' '{' cod_blocks '}' { printf("func_decl #4 \n"); $$ = $6}
 ;
 
 parm_tipos:
-  parm_tipos TIPO ID { printf("parm_tipos #1 \n"); }
-| parm_tipos TIPO ID '[' ']' { printf("parm_tipos #2 \n"); }
-| TIPO ID ',' { printf("parm_tipos #3 \n"); }
-| TIPO ID { printf("parm_tipos #4 \n"); }
-| TIPO ID '[' ']' { printf("parm_tipos #5 \n"); }
+  parm_tipos TIPO ID { printf("parm_tipos #1 \n"); $$ = $1; }
+| parm_tipos TIPO ID '[' ']' { printf("parm_tipos #2 \n"); $$ = $1; }
+| TIPO ID ',' { printf("parm_tipos #3 \n"); $$ = NULL; }
+| TIPO ID { printf("parm_tipos #4 \n"); $$ = NULL; }
+| TIPO ID '[' ']' { printf("parm_tipos #5 \n"); $$ = NULL; }
 ;
 
 cod_blocks:
