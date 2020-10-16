@@ -1,0 +1,132 @@
+DELIM [ \t]
+ENTER [\n]
+ESPACO {DELIM}+
+SEPARADOR [;{}(),\[\]]
+ASPAS ['"]
+LETRA [A-Za-z]
+DIGITO [0-9]
+INT "-"?{DIGITO}+
+FLOAT "-"?{DIGITO}+("."{DIGITO}+)*
+ID {LETRA}({LETRA}|{DIGITO})*
+VAR_DECL {ID}['['({DIGITO})+']']
+BOOL "true"|"false"
+TIPO "float"|"int"|"char"|"bool"|"void"
+TUPLE "tuple"
+CONDICOES "if"|"else"
+LACOS "while"|"for"
+RETORNO "return"
+OP_ARITM "+"|"-"|"*"|"/"
+OP_COMP "=="|"!="|"<="|"<"|">="|">"
+OP_LOG "&&"|"||"
+OP_ASSIGN "="
+SCAN "scan"
+PRINT "print"
+
+programa: 
+  declaracoes { parser_tree = $1; printf("tree initialized\n"); }
+;
+
+declaracoes:
+  declaracoes declaracao
+| declaracao
+;
+
+declaracao:
+  var_decl
+| TUPLE declaracao_tupla
+| func_decl
+;
+
+declaracao_tupla:
+  TIPO ',' declaracao_tupla
+| var_decl
+;
+
+var_decl:
+  TIPO ID ';'
+;
+
+func_decl:
+  TIPO ID '(' parm_tipos ')' ';
+| TIPO ID '(' ')' ';'
+| TIPO ID '(' parm_tipos ')' '{' cod_blocks '}' ';'
+| TIPO ID '(' ')' '{' cod_blocks '}' ';'
+;
+
+parm_tipos:
+  parm_tipos TIPO ID
+| parm_tipos TIPO ID '[' ']'
+| TIPO ID ','
+| TIPO ID
+| TIPO ID '[' ']'
+| TUPLE ID
+;
+
+cod_blocks:
+  cod_blocks cod_block
+| cod_block 
+;
+
+cod_block:
+  "if" '(' expressao_logica ')' '{' cod_blocks '}'
+| "if" '(' expressao_logica ')' '{' cod_blocks '}' "else" '{' cod_blocks '}'
+| LACOS '(' expressao_logica ')' '{' cod_block '}'
+| RETORNO ';'
+| RETORNO termo ';'
+| RETORNO '(' expressao ')' ';'
+| assign ';'
+| print
+| ID '(' expressao ')' ';'
+| ID '(' ')' ';'
+| scan '(' ID ')' ';'
+| declaracoes { $$ = $1 }
+;
+
+assign:
+  ID OP_ASSIGN expressao
+| ID '[' INT ']' OP_ASSIGN expressao
+;
+
+expressao:
+  // OP_ARITM op_expressao
+// | expressao OP_ARITM expressao
+// | op_expressao OP_COMP op_expressao
+  op_expressao
+| '(' expressao ')'
+;
+
+expressao_logica:
+  OP_LOG op_expressao
+| '!' op_expressao
+| op_expressao OP_COMP op_expressao
+| '(' op_expressao ')'
+| op_expressao
+;
+
+op_expressao:
+  op_expressao OP_ARITM termo
+| termo
+;
+
+termo:
+  ID
+| INT
+| FLOAT
+| ID '[' INT ']'
+;
+
+scan:
+  SCAN '(' ID ')'
+;
+
+print:
+  PRINT '(' termo ')' ';'
+| PRINT '(' palavra ')' ';'
+;
+
+palavra:
+  palavra LETRA
+| palavra DIGITO
+| LETRA
+| DIGITO
+;

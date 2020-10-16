@@ -71,12 +71,6 @@ TUPLE "tuple"
 CONDICOES "if"|"else"
 LACOS "while"|"for"
 RETORNO "return"
-PARAM_TIPOS "void"|{TIPO}" "{ID}['['']']" "(','{TIPO}" "{ID}['['']'])*
-
-/* tuple sendo declarada a partir da palavra reservada */
-DECLARACAO {TIPO} {VAR_DECL}(','{VAR_DECL})*|"tuple" {TIPO}(','{TIPO})* VAR_DECL
-
-FUNC_DECL {TIPO}" "{ID}'('" "{PARAM_TIPOS}" "')'
 /* COD_BLOCK IF'('EXPRESSION')'COD_BLOCK[ else COD_BLOCK] */
 OP_ARITM "+"|"-"|"*"|"/"
 OP_COMP "=="|"!="|"<="|"<"|">="|">"
@@ -146,12 +140,6 @@ PRINT "print"
     // printf("<TIPO, %s> (tamanho %d)\n", yytext, (int)yyleng);
     yylval.tipo = (char *) strdup(yytext);
     return TIPO;
-}
-{PARAM_TIPOS} {
-    // printf("<PARAM_TIPOS, %s> (tamanho %d)\n", yytext, (int)yyleng);
-}
-{FUNC_DECL} {
-    // printf("<FUNC_DECL, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 {OP_ARITM} {
     // printf("<OP_ARITM, %s> (tamanho %d)\n", yytext, (int)yyleng);
