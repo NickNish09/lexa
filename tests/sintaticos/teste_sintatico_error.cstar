@@ -1,2 +1,4 @@
-person = 43;
+int main(){
+  person = 43;
+};
 tuple variavel;

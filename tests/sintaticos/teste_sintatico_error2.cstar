@@ -1,6 +1,4 @@
-tuple aluno = (20, 500.50, 'F');
-int abacaxi = 0
-
-void tuple funcao(){
-    return;
-};
+global = 0
+int main(){
+    return 0;
+}

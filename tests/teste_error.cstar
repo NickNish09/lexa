@@ -1,2 +1,3 @@
-int num = 59320;
+int num;
+num = 59320;
 int 5algo;
