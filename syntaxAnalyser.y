@@ -5,6 +5,7 @@
 %{
   #include <stdlib.h>
   #include <stdio.h>
+  #include <string.h>
   #include "uthash.h"
   #define SYMBOL_NODE 888
   #define REGULAR_NODE 889
@@ -17,6 +18,18 @@
     fprintf(stderr, "ERRO na linha %d: %s\n", lin, msg);
   }
   extern FILE *yyin;
+
+  // HELPERS
+
+  char* concat(const char *s1, const char *s2)
+  {
+      char *result = malloc(strlen(s1) + strlen(s2) + 1); // +1 for the null-terminator
+      // in real code you would check for errors in malloc here
+      strcpy(result, s1);
+      strcat(result, s2);
+      return result;
+  }
+
   const char * stringBasedOnNumber(int number)
   {
     if(number == SYMBOL_NODE){
@@ -44,10 +57,13 @@
 
   void add_to_s_table(char* id, char* var_type, int s_node_type, int scope){
     s_node *s;
-    HASH_FIND_STR(s_table, id, s);
+    char scope_string[5];
+    sprintf(scope_string, "%d", scope);
+    char *identifier = concat(id, scope_string);
+    HASH_FIND_STR(s_table, identifier, s);
     if(s == NULL){ // variavel ainda nao esta na tabela
       s_node *s = (s_node *)malloc(sizeof *s);
-      s->id = id;
+      s->id = identifier;
       s->var_type = var_type;
       s->s_node_type = s_node_type;
       s->scope = scope;
