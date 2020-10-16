@@ -66,7 +66,7 @@ Grammar
 
    43 scan: SCAN '(' ID ')'
 
-   44 print: PRINT '(' ID ')' ';'
+   44 print: PRINT '(' termo ')' ';'
    45      | PRINT '(' palavra ')' ';'
 
    46 palavra: palavra LETRA
@@ -98,7 +98,7 @@ LACOS (265) 20
 RETORNO (266) 21 22 23
 INT (267) 30 41
 FLOAT (268) 42
-ID (269) 7 8 9 10 11 12 13 14 15 26 27 28 29 30 40 43 44
+ID (269) 7 8 9 10 11 12 13 14 15 26 27 28 29 30 40 43
 DIGITO (270) 47 49
 LETRA (271) 46 48
 SEPARADOR (272)
@@ -138,7 +138,7 @@ expressao_logica (42)
 op_expressao (43)
     on left: 38 39, on right: 31 33 34 35 36 37 38
 termo (44)
-    on left: 40 41 42, on right: 22 38 39
+    on left: 40 41 42, on right: 22 38 39 44
 scan (45)
     on left: 43, on right: 28
 print (46)
@@ -403,7 +403,7 @@ state 25
 
 state 26
 
-   44 print: PRINT . '(' ID ')' ';'
+   44 print: PRINT . '(' termo ')' ';'
    45      | PRINT . '(' palavra ')' ';'
 
     '('  shift, and go to state 48
@@ -617,13 +617,16 @@ state 47
 
 state 48
 
-   44 print: PRINT '(' . ID ')' ';'
+   44 print: PRINT '(' . termo ')' ';'
    45      | PRINT '(' . palavra ')' ';'
 
-    ID      shift, and go to state 71
-    DIGITO  shift, and go to state 72
-    LETRA   shift, and go to state 73
+    INT     shift, and go to state 39
+    FLOAT   shift, and go to state 40
+    ID      shift, and go to state 41
+    DIGITO  shift, and go to state 71
+    LETRA   shift, and go to state 72
 
+    termo    go to state 73
     palavra  go to state 74
 
 
@@ -835,23 +838,23 @@ state 70
 
 state 71
 
-   44 print: PRINT '(' ID . ')' ';'
-
-    ')'  shift, and go to state 91
-
-
-state 72
-
    49 palavra: DIGITO .
 
     $default  reduce using rule 49 (palavra)
 
 
-state 73
+state 72
 
    48 palavra: LETRA .
 
     $default  reduce using rule 48 (palavra)
+
+
+state 73
+
+   44 print: PRINT '(' termo . ')' ';'
+
+    ')'  shift, and go to state 91
 
 
 state 74
@@ -997,7 +1000,7 @@ state 90
 
 state 91
 
-   44 print: PRINT '(' ID ')' . ';'
+   44 print: PRINT '(' termo ')' . ';'
 
     ';'  shift, and go to state 106
 
@@ -1123,7 +1126,7 @@ state 105
 
 state 106
 
-   44 print: PRINT '(' ID ')' ';' .
+   44 print: PRINT '(' termo ')' ';' .
 
     $default  reduce using rule 44 (print)
 

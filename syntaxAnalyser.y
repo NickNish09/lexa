@@ -117,7 +117,7 @@ programa:
 ;
 
 declaracoes:
-  declaracoes declaracao { printf("declaracoes \n"); $$ = ins_node("x", REGULAR_NODE,'D', $1, $2, "-"); }
+  declaracoes declaracao { printf("declaracoes \n"); $$ = ins_node("x", REGULAR_NODE,'D', $1, $2, "decl"); }
 | declaracao { printf("declaracao \n"); $$ = $1; }
 ;
 
@@ -201,7 +201,7 @@ scan:
 ;
 
 print:
-  PRINT '(' ID ')' ';' { printf("print #1 \n"); $$ = ins_node("x", REGULAR_NODE, 'P', NULL, NULL, "print"); }
+  PRINT '(' termo ')' ';' { printf("print #1 \n"); $$ = ins_node("x", REGULAR_NODE, 'P', NULL, $3, "print"); }
 | PRINT '(' palavra ')' ';' { printf("print #2 \n"); $$ = ins_node("x", REGULAR_NODE, 'P', NULL, NULL, $3); }
 ;
 
