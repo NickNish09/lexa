@@ -5,8 +5,11 @@
 %{
   #include <stdlib.h>
   #include <stdio.h>
+  #include "uthash.h"
   #define SYMBOL_NODE 888
   #define REGULAR_NODE 889
+  #define VARIABLE_TYPE 1001
+  #define FUNCTION_TYPE 1002
   
   int yylex();
   extern int lin;
@@ -14,7 +17,55 @@
     fprintf(stderr, "ERRO na linha %d: %s\n", lin, msg);
   }
   extern FILE *yyin;
+  const char * stringBasedOnNumber(int number)
+  {
+    if(number == SYMBOL_NODE){
+      return "Symbol Node";
+    } else if(number == REGULAR_NODE){
+      return "Regular Node";
+    } else if(number == FUNCTION_TYPE){
+      return "Function";
+    } else if(number == VARIABLE_TYPE){
+      return "Variable";
+    }
+    return "Not Found";
+  }
 
+  // REFERENTE A TABELA DE SIMBOLOS
+  typedef struct s_node {
+    char* id;
+    char* var_type;
+    int s_node_type;
+    int scope; // 0 = global
+    UT_hash_handle hh;
+  } s_node;
+
+  struct s_node *s_table = NULL;
+
+  void add_to_s_table(char* id, char* var_type, int s_node_type, int scope){
+    s_node *s;
+    HASH_FIND_STR(s_table, id, s);
+    if(s == NULL){ // variavel ainda nao esta na tabela
+      s_node *s = (s_node *)malloc(sizeof *s);
+      s->id = id;
+      s->var_type = var_type;
+      s->s_node_type = s_node_type;
+      s->scope = scope;
+      HASH_ADD_STR(s_table, id, s);
+    }
+  }
+
+  void print_s_table() {
+    s_node *s;
+
+    printf("Tabela de Símbolos:\n");
+    // printf("NAME\t\tTYPE\t\tSYMBOL_TYPE\t\tSCOPE SYMBOLS\n");
+    for(s=s_table; s != NULL; s=s->hh.next) {
+      printf("id: %s | var_type: %s | s_node_type: %s | scope: %d\n", s->id, s->var_type, stringBasedOnNumber(s->s_node_type), s->scope);
+    }
+  }
+
+  // END REFERENTE A TABELA DE SIMBOLOS
 
   typedef struct node {
     char* var_type; //
@@ -32,15 +83,6 @@
   /* Definitions 
     node
   */
-  const char * stringBasedOnNumber(int number)
-  {
-    if(number == SYMBOL_NODE){
-      return "Symbol Node";
-    } else if(number == REGULAR_NODE){
-      return "Regular Node";
-    }
-    return "Not Found";
-  }
 node* ins_node(char* var_type, int node_type, char node_kind, node *left, node *right, char* node_val){
   node* aux_node = (node*)calloc(1, sizeof(node));
 
@@ -64,6 +106,12 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
   aux_node->val = id;
   aux_node->node_type = node_type;
   aux_node->node_kind = node_kind;
+
+  int t = FUNCTION_TYPE;
+  if(node_kind == 'V'){
+    t = VARIABLE_TYPE;
+  }
+  add_to_s_table(id, var_type, t, 0);
 
   return aux_node;
 }
@@ -133,7 +181,7 @@ declaracao_tupla:
 ;
 
 var_decl:
-  TIPO ID ';' { printf("var_decl \n"); $$ = ins_node_symbol($1, SYMBOL_NODE,'D', $2); }
+  TIPO ID ';' { printf("var_decl \n"); $$ = ins_node_symbol($1, SYMBOL_NODE,'V', $2); }
 ;
 
 func_decl:
@@ -197,7 +245,7 @@ op_expressao:
 ;
 
 termo:
-  ID { printf("termo #1 \n"); $$ = ins_node_symbol($1, 'S','D', $1); }
+  ID { printf("termo #1 \n"); $$ = ins_node_symbol($1, 'S','V', $1); }
 | INT { printf("termo #2 \n"); $$ = NULL }
 | FLOAT { printf("termo #3 \n"); $$ = NULL }
 ;
@@ -237,5 +285,6 @@ int main(int argc, char **argv){
   print_tree(parser_tree, 0);
   printf("\n");
 
+  print_s_table();
   return 0;
 }
