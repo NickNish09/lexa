@@ -203,7 +203,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
 
 %token BOOL
 %token <tipo> TIPO
-%token CONDICOES
+%token <str> IF ELSE
 %token LACOS
 %token <str> RETORNO
 %token <str> INT FLOAT TUPLE
@@ -264,8 +264,8 @@ cod_blocks:
 ;
 
 cod_block:
-  "if" '(' expressao_logica ')' '{' cod_blocks '}' { printf("cod_block #1 \n"); }
-| "if" '(' expressao_logica ')' '{' cod_blocks '}' "else" '{' cod_blocks '}' { printf("cod_block #2 \n"); }
+  IF '(' expressao_logica ')' '{' cod_blocks '}' { printf("cod_block #1 \n"); $$ = ins_node("-", REGULAR_NODE,'I', $3, $6, "if"); }
+| IF '(' expressao_logica ')' '{' cod_blocks '}' ELSE '{' cod_blocks '}' { printf("cod_block #2 \n"); $$ = ins_node("-", REGULAR_NODE,'I', $3, ins_node("-", REGULAR_NODE,'I', $6, $10, "cb"), "if-else"); }
 | LACOS '(' expressao_logica ')' '{' cod_block '}' { printf("cod_block #3 \n"); $$ = ins_node("-", REGULAR_NODE,'L', $3, $6, "while") }
 | RETORNO ';' { printf("cod_block #4 \n"); $$ = NULL }
 | RETORNO termo ';' { printf("cod_block #4.5 \n"); $$ = ins_node("-", REGULAR_NODE,'R', NULL, $2, "retorno")}
@@ -337,12 +337,8 @@ int main(int argc, char **argv){
   else{
       yyin = stdin;
   }
-
-  // yylex();
-  // printErrors();
-  // printSymTable();
+  // system("clear");
   yyparse();
-  printf("\e[1;1H\e[2J");
   printErrors();
   printf("\n\nAbstract Syntax Tree:\n");
   print_tree(parser_tree, 0);

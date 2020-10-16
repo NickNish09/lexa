@@ -41,43 +41,45 @@
    enum yytokentype {
      BOOL = 258,
      TIPO = 259,
-     CONDICOES = 260,
-     LACOS = 261,
-     RETORNO = 262,
-     INT = 263,
-     FLOAT = 264,
-     TUPLE = 265,
-     ID = 266,
-     DIGITO = 267,
-     LETRA = 268,
-     SEPARADOR = 269,
-     PRINT = 270,
-     SCAN = 271,
-     OP_ASSIGN = 272,
-     OP_ARITM = 273,
-     OP_LOG = 274,
-     OP_COMP = 275
+     IF = 260,
+     ELSE = 261,
+     LACOS = 262,
+     RETORNO = 263,
+     INT = 264,
+     FLOAT = 265,
+     TUPLE = 266,
+     ID = 267,
+     DIGITO = 268,
+     LETRA = 269,
+     SEPARADOR = 270,
+     PRINT = 271,
+     SCAN = 272,
+     OP_ASSIGN = 273,
+     OP_ARITM = 274,
+     OP_LOG = 275,
+     OP_COMP = 276
    };
 #endif
 /* Tokens.  */
 #define BOOL 258
 #define TIPO 259
-#define CONDICOES 260
-#define LACOS 261
-#define RETORNO 262
-#define INT 263
-#define FLOAT 264
-#define TUPLE 265
-#define ID 266
-#define DIGITO 267
-#define LETRA 268
-#define SEPARADOR 269
-#define PRINT 270
-#define SCAN 271
-#define OP_ASSIGN 272
-#define OP_ARITM 273
-#define OP_LOG 274
-#define OP_COMP 275
+#define IF 260
+#define ELSE 261
+#define LACOS 262
+#define RETORNO 263
+#define INT 264
+#define FLOAT 265
+#define TUPLE 266
+#define ID 267
+#define DIGITO 268
+#define LETRA 269
+#define SEPARADOR 270
+#define PRINT 271
+#define SCAN 272
+#define OP_ASSIGN 273
+#define OP_ARITM 274
+#define OP_LOG 275
+#define OP_COMP 276
 
 
 
@@ -95,7 +97,7 @@ typedef union YYSTYPE
   struct node* nd;
 }
 /* Line 1529 of yacc.c.  */
-#line 99 "syntaxAnalyser.tab.h"
+#line 101 "syntaxAnalyser.tab.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

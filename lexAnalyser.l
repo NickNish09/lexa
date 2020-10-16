@@ -130,6 +130,12 @@ PRINT "print"
 }
 {CONDICOES} {
     // printf("<CONDICOES, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    yylval.str = (char *) strdup(yytext);
+    if(strcmp(yytext, "if") == 0){
+        return IF;
+    } else if(strcmp(yytext, "else") == 0){
+        return ELSE;
+    };
 }
 {TUPLE} {
     // printf("<TUPLE, %s> (tamanho %d)\n", yytext, (int)yyleng);
