@@ -205,8 +205,8 @@ var_decl:
 func_decl:
   TIPO ID '(' parm_tipos ')' ';'{ printf("func_decl #1 \n"); $$ = ins_node_symbol($1, SYMBOL_NODE,'F', $2); }
 | TIPO ID '(' ')' ';' { printf("func_decl #2 \n"); $$ = ins_node_symbol($1, SYMBOL_NODE,'F', $2); }
-| TIPO ID '(' parm_tipos ')' '{' cod_blocks '}' { printf("func_decl #3 \n"); $$ = ins_node($1, REGULAR_NODE,'F', $4, $7, $2); add_to_s_table($2, $2, FUNCTION_TYPE, 0); }
-| TIPO ID '(' ')' '{' cod_blocks '}' { printf("func_decl #4 \n"); $$ = $6}
+| TIPO ID '(' parm_tipos ')' '{' cod_blocks '}' ';' { printf("func_decl #3 \n"); $$ = ins_node($1, REGULAR_NODE,'F', $4, $7, $2); add_to_s_table($2, $2, FUNCTION_TYPE, 0); }
+| TIPO ID '(' ')' '{' cod_blocks '}' ';' { printf("func_decl #4 \n"); $$ = ins_node($1, REGULAR_NODE,'F', NULL, $6, $2); add_to_s_table($2, $2, FUNCTION_TYPE, 0); }
 ;
 
 parm_tipos:
@@ -215,6 +215,7 @@ parm_tipos:
 | TIPO ID ',' { printf("parm_tipos #3 \n"); $$ = NULL; }
 | TIPO ID { printf("parm_tipos #4 \n"); $$ = NULL; }
 | TIPO ID '[' ']' { printf("parm_tipos #5 \n"); $$ = NULL; }
+| TUPLE ID { printf("parm_tipos #6\n"); $$ = NULL; }
 ;
 
 cod_blocks:
@@ -267,6 +268,7 @@ termo:
   ID { printf("termo #1 \n"); $$ = ins_node_symbol($1, 'S','V', $1); }
 | INT { printf("termo #2 \n"); $$ = NULL }
 | FLOAT { printf("termo #3 \n"); $$ = NULL }
+| ID '[' INT ']' { printf("termo #4 \n"); $$ = NULL }
 ;
 
 scan:

@@ -136,6 +136,10 @@ PRINT "print"
         return '(';
     } else if(strcmp(yytext, ")") == 0){
         return ')';
+    } else if(strcmp(yytext, "[") == 0){
+        return '[';
+    } else if(strcmp(yytext, "]") == 0){
+        return ']';
     } else if(strcmp(yytext, ",") == 0){
         return ',';
     };
