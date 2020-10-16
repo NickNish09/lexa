@@ -2190,6 +2190,7 @@ int main(int argc, char **argv){
   // printErrors();
   // printSymTable();
   yyparse();
+  printf("\e[1;1H\e[2J");
   printErrors();
   printf("\n\nAbstract Syntax Tree:\n");
   print_tree(parser_tree, 0);
