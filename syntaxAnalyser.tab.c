@@ -1649,7 +1649,7 @@ yyreduce:
 
   case 3:
 #line 186 "syntaxAnalyser.y"
-    { printf("declaracoes \n"); (yyval.nd) = ins_node("x", REGULAR_NODE,'D', (yyvsp[(1) - (2)].nd), (yyvsp[(2) - (2)].nd), "decl"); ;}
+    { printf("declaracoes \n"); (yyval.nd) = ins_node("-", REGULAR_NODE,'D', (yyvsp[(1) - (2)].nd), (yyvsp[(2) - (2)].nd), "decl"); ;}
     break;
 
   case 4:
@@ -1674,12 +1674,12 @@ yyreduce:
 
   case 8:
 #line 197 "syntaxAnalyser.y"
-    { printf("declaracao_tupla #1"); (yyval.nd) = (yyvsp[(3) - (3)].nd); ;}
+    { printf("declaracao_tupla #1\n"); (yyval.nd) = (yyvsp[(3) - (3)].nd); ;}
     break;
 
   case 9:
 #line 198 "syntaxAnalyser.y"
-    { printf("declaracao_tupla #2"); (yyval.nd) = (yyvsp[(1) - (1)].nd);;}
+    { printf("declaracao_tupla #2\n"); (yyval.nd) = (yyvsp[(1) - (1)].nd);;}
     break;
 
   case 10:
@@ -1739,7 +1739,7 @@ yyreduce:
 
   case 21:
 #line 222 "syntaxAnalyser.y"
-    { printf("cod_blocks #1\n"); (yyval.nd) = ins_node("x", REGULAR_NODE,'C', (yyvsp[(1) - (2)].nd), (yyvsp[(2) - (2)].nd), "cb"); ;}
+    { printf("cod_blocks #1\n"); (yyval.nd) = ins_node("-", REGULAR_NODE,'C', (yyvsp[(1) - (2)].nd), (yyvsp[(2) - (2)].nd), "cb"); ;}
     break;
 
   case 22:
@@ -1759,7 +1759,7 @@ yyreduce:
 
   case 25:
 #line 229 "syntaxAnalyser.y"
-    { printf("cod_block #3 \n"); (yyval.nd) = ins_node("x", REGULAR_NODE,'L', (yyvsp[(3) - (7)].nd), (yyvsp[(6) - (7)].nd), "while") ;}
+    { printf("cod_block #3 \n"); (yyval.nd) = ins_node("-", REGULAR_NODE,'L', (yyvsp[(3) - (7)].nd), (yyvsp[(6) - (7)].nd), "while") ;}
     break;
 
   case 26:
@@ -1769,12 +1769,12 @@ yyreduce:
 
   case 27:
 #line 231 "syntaxAnalyser.y"
-    { printf("cod_block #4.5 \n"); (yyval.nd) = ins_node("x", REGULAR_NODE,'R', NULL, (yyvsp[(2) - (3)].nd), "retorno");}
+    { printf("cod_block #4.5 \n"); (yyval.nd) = ins_node("-", REGULAR_NODE,'R', NULL, (yyvsp[(2) - (3)].nd), "retorno");}
     break;
 
   case 28:
 #line 232 "syntaxAnalyser.y"
-    { printf("cod_block #5 \n"); (yyval.nd) = ins_node("x", REGULAR_NODE,'R', NULL, (yyvsp[(3) - (5)].nd), "retorno") ;}
+    { printf("cod_block #5 \n"); (yyval.nd) = ins_node("-", REGULAR_NODE,'R', NULL, (yyvsp[(3) - (5)].nd), "retorno") ;}
     break;
 
   case 29:
@@ -1794,7 +1794,7 @@ yyreduce:
 
   case 32:
 #line 236 "syntaxAnalyser.y"
-    { printf("cod_block #9 \n"); (yyval.nd) = ins_node("x", 'C','R', NULL, NULL, "call");}
+    { printf("cod_block #9 \n"); (yyval.nd) = ins_node("-", 'C','R', NULL, NULL, "call");}
     break;
 
   case 33:
@@ -1834,7 +1834,7 @@ yyreduce:
 
   case 41:
 #line 257 "syntaxAnalyser.y"
-    { printf("expressao_logica #3 \n"); (yyval.nd) = ins_node("x", REGULAR_NODE, 'E', (yyvsp[(1) - (3)].nd), (yyvsp[(3) - (3)].nd), "expressao_logica"); ;}
+    { printf("expressao_logica #3 \n"); (yyval.nd) = ins_node("-", REGULAR_NODE, 'E', (yyvsp[(1) - (3)].nd), (yyvsp[(3) - (3)].nd), "expressao_logica"); ;}
     break;
 
   case 42:
@@ -1849,7 +1849,7 @@ yyreduce:
 
   case 44:
 #line 263 "syntaxAnalyser.y"
-    { printf("op_expressao #1\n"); (yyval.nd) = ins_node("x", REGULAR_NODE, 'E', (yyvsp[(1) - (3)].nd), (yyvsp[(3) - (3)].nd), (yyvsp[(2) - (3)].operador)); ;}
+    { printf("op_expressao #1\n"); (yyval.nd) = ins_node("-", REGULAR_NODE, 'E', (yyvsp[(1) - (3)].nd), (yyvsp[(3) - (3)].nd), (yyvsp[(2) - (3)].operador)); ;}
     break;
 
   case 45:
@@ -1884,12 +1884,12 @@ yyreduce:
 
   case 51:
 #line 279 "syntaxAnalyser.y"
-    { printf("print #1 \n"); (yyval.nd) = ins_node("x", REGULAR_NODE, 'P', NULL, (yyvsp[(3) - (5)].nd), "print"); ;}
+    { printf("print #1 \n"); (yyval.nd) = ins_node("-", REGULAR_NODE, 'P', NULL, (yyvsp[(3) - (5)].nd), "print"); ;}
     break;
 
   case 52:
 #line 280 "syntaxAnalyser.y"
-    { printf("print #2 \n"); (yyval.nd) = ins_node("x", REGULAR_NODE, 'P', NULL, NULL, (yyvsp[(3) - (5)].str)); ;}
+    { printf("print #2 \n"); (yyval.nd) = ins_node("-", REGULAR_NODE, 'P', NULL, NULL, (yyvsp[(3) - (5)].str)); ;}
     break;
 
   case 53:
