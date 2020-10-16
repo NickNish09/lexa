@@ -49,30 +49,6 @@ void printErrors(){
     }
 };
 
-int pushSymTable(char symbol[]){
-    strcpy(symbol_table[symbol_table_index].sym,symbol);
-    symbol_table[symbol_table_index].position = symbol_table_index;
-    symbol_table[symbol_table_index].scope = current_scope;
-    symbol_table_index++;
-    // printf("%s adicionado à tabela\n", symbol);
-    return symbol_table_index;
-};
-
-void printSymTable(){
-    char escopo[100];
-    // printf("\n** -- Tabela de Símbolos: -- **\n");
-    // printf("Address |   Symbol   |   Scope \n");
-    int i;
-    for(i=0; i<symbol_table_index; i++){
-        if(symbol_table[i].scope == 0){
-            strcpy(escopo, "global");
-        } else {
-            strcpy(escopo, "funcao");
-        }
-        // printf("%7d | %10s | %8s (%d)\n", symbol_table[i].position, symbol_table[i].sym, escopo, symbol_table[i].scope);
-    }
-};
-
 %}
 %x COMENTARIO
 %x INTEIRO
@@ -206,7 +182,6 @@ PRINT "print"
     // printf("<VAR_DECL, %s> (tamanho %d)\n", yytext, (int)yyleng);
 }
 {ID} {
-    int address = pushSymTable(yytext);
     // printf("<ID, %d> (tamanho %d)\n", address, (int)yyleng);
     yylval.id = (char *) strdup(yytext);
     return ID;
@@ -299,7 +274,6 @@ PRINT "print"
 
 //     yylex();
 //     printErrors();
-//     printSymTable();
 
 //     return 0;
 // }
