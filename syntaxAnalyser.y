@@ -135,10 +135,49 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
   return aux_node;
 }
 
+  int height(node* node) 
+  { 
+    if (node==NULL) 
+        return 0; 
+    else
+    { 
+        /* compute the height of each subtree */
+        int lheight = height(node->left); 
+        int rheight = height(node->right); 
+  
+        /* use the larger one */
+        if (lheight > rheight) 
+            return(lheight+1); 
+        else return(rheight+1); 
+    } 
+  } 
+  void printLevel(node* tree, int level) 
+  { 
+    if (tree == NULL) 
+        return; 
+    if (level == 1) 
+        printf("| var_type: %s | kind: %c | type: %s | val: %s |\n",tree->var_type, tree->node_kind, stringBasedOnNumber(tree->node_type), tree->val);
+    else if (level > 1) 
+    { 
+        printLevel(tree->left, level-1); 
+        printLevel(tree->right, level-1); 
+    } 
+  } 
+  void printLevelOrder(node* tree) 
+  { 
+      int h = height(tree); 
+      int i, j; 
+      for (i=0; i<=h; i++){
+        for(j=0;j<i;j++){
+          printf("  ");
+        }
+        printLevel(tree, i); 
+      }
+  } 
   void print_tree(node * tree, int h) {
     int j;
     for(j=0;j<h;j++){
-      printf("  ");
+      printf(" ");
     }
     if (tree) {
       printf("| var_type: %s | kind: %c | type: %s | val: %s |\n",tree->var_type, tree->node_kind, stringBasedOnNumber(tree->node_type), tree->val);
@@ -162,7 +201,6 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
 %type <nd> cod_blocks expressao_logica termo op_expressao declaracao_tupla
 %type <str> palavra
 
-%token <operador> OP_ARITM OP_COMP OP_LOG OP_ASSIGN
 %token BOOL
 %token <tipo> TIPO
 %token CONDICOES
@@ -174,9 +212,10 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
 %token SEPARADOR
 %token PRINT SCAN
 
-%left OP_ARITM
-%left OP_LOG
-%left OP_COMP
+%right <operador> OP_ASSIGN
+%left <operador> OP_ARITM
+%left <operador> OP_LOG
+%left <operador> OP_COMP
 
 %%
 programa: 
@@ -306,6 +345,7 @@ int main(int argc, char **argv){
   printErrors();
   printf("\n\nAbstract Syntax Tree:\n");
   print_tree(parser_tree, 0);
+  // printLevelOrder(parser_tree);
   printf("\n");
 
   print_s_table();

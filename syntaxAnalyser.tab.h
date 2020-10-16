@@ -39,52 +39,52 @@
    /* Put the tokens into the symbol table, so that GDB and other debuggers
       know about them.  */
    enum yytokentype {
-     OP_ARITM = 258,
-     OP_COMP = 259,
-     OP_LOG = 260,
-     OP_ASSIGN = 261,
-     BOOL = 262,
-     TIPO = 263,
-     CONDICOES = 264,
-     LACOS = 265,
-     RETORNO = 266,
-     INT = 267,
-     FLOAT = 268,
-     TUPLE = 269,
-     ID = 270,
-     DIGITO = 271,
-     LETRA = 272,
-     SEPARADOR = 273,
-     PRINT = 274,
-     SCAN = 275
+     BOOL = 258,
+     TIPO = 259,
+     CONDICOES = 260,
+     LACOS = 261,
+     RETORNO = 262,
+     INT = 263,
+     FLOAT = 264,
+     TUPLE = 265,
+     ID = 266,
+     DIGITO = 267,
+     LETRA = 268,
+     SEPARADOR = 269,
+     PRINT = 270,
+     SCAN = 271,
+     OP_ASSIGN = 272,
+     OP_ARITM = 273,
+     OP_LOG = 274,
+     OP_COMP = 275
    };
 #endif
 /* Tokens.  */
-#define OP_ARITM 258
-#define OP_COMP 259
-#define OP_LOG 260
-#define OP_ASSIGN 261
-#define BOOL 262
-#define TIPO 263
-#define CONDICOES 264
-#define LACOS 265
-#define RETORNO 266
-#define INT 267
-#define FLOAT 268
-#define TUPLE 269
-#define ID 270
-#define DIGITO 271
-#define LETRA 272
-#define SEPARADOR 273
-#define PRINT 274
-#define SCAN 275
+#define BOOL 258
+#define TIPO 259
+#define CONDICOES 260
+#define LACOS 261
+#define RETORNO 262
+#define INT 263
+#define FLOAT 264
+#define TUPLE 265
+#define ID 266
+#define DIGITO 267
+#define LETRA 268
+#define SEPARADOR 269
+#define PRINT 270
+#define SCAN 271
+#define OP_ASSIGN 272
+#define OP_ARITM 273
+#define OP_LOG 274
+#define OP_COMP 275
 
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 151 "syntaxAnalyser.y"
+#line 190 "syntaxAnalyser.y"
 {
   char *id;
   char *tipo;

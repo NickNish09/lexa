@@ -98,24 +98,24 @@ $end (0) 0
 '{' (123) 12 13 22 23 24
 '}' (125) 12 13 22 23 24
 error (256)
-OP_ARITM (258) 43
-OP_COMP (259) 40
-OP_LOG (260) 38
-OP_ASSIGN (261) 34 35
-BOOL (262)
-TIPO (263) 7 9 10 11 12 13 14 15 16 17 18
-CONDICOES (264)
-LACOS (265) 24
-RETORNO (266) 25 26 27
-INT (267) 35 46 48
-FLOAT (268) 47
-TUPLE (269) 5 19
-ID (270) 9 10 11 12 13 14 15 16 17 18 19 30 31 32 34 35 45 48 49
-DIGITO (271) 53 55
-LETRA (272) 52 54
-SEPARADOR (273)
-PRINT (274) 50 51
-SCAN (275) 49
+BOOL (258)
+TIPO (259) 7 9 10 11 12 13 14 15 16 17 18
+CONDICOES (260)
+LACOS (261) 24
+RETORNO (262) 25 26 27
+INT (263) 35 46 48
+FLOAT (264) 47
+TUPLE (265) 5 19
+ID (266) 9 10 11 12 13 14 15 16 17 18 19 30 31 32 34 35 45 48 49
+DIGITO (267) 53 55
+LETRA (268) 52 54
+SEPARADOR (269)
+PRINT (270) 50 51
+SCAN (271) 49
+OP_ASSIGN (272) 34 35
+OP_ARITM (273) 43
+OP_LOG (274) 38
+OP_COMP (275) 40
 "if" (276) 22 23
 "else" (277) 23
 
@@ -628,10 +628,10 @@ state 47
 
    24 cod_block: LACOS '(' . expressao_logica ')' '{' cod_block '}'
 
-    OP_LOG  shift, and go to state 66
     INT     shift, and go to state 48
     FLOAT   shift, and go to state 49
     ID      shift, and go to state 50
+    OP_LOG  shift, and go to state 66
     '('     shift, and go to state 67
     '!'     shift, and go to state 68
 
@@ -756,10 +756,10 @@ state 59
    22 cod_block: "if" '(' . expressao_logica ')' '{' cod_blocks '}'
    23          | "if" '(' . expressao_logica ')' '{' cod_blocks '}' "else" '{' cod_blocks '}'
 
-    OP_LOG  shift, and go to state 66
     INT     shift, and go to state 48
     FLOAT   shift, and go to state 49
     ID      shift, and go to state 50
+    OP_LOG  shift, and go to state 66
     '('     shift, and go to state 67
     '!'     shift, and go to state 68
 
