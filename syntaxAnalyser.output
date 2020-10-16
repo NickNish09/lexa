@@ -5,9 +5,6 @@ Terminals which are not used
    SEPARADOR
 
 
-State 92 conflicts: 2 shift/reduce
-
-
 Grammar
 
     0 $accept: programa $end
@@ -36,8 +33,8 @@ Grammar
    16 cod_blocks: cod_blocks cod_block
    17           | cod_block
 
-   18 cod_block: "if" '(' expressao ')' '{' cod_blocks '}'
-   19          | "if" '(' expressao ')' '{' cod_blocks '}' "else" '{' cod_blocks '}'
+   18 cod_block: "if" '(' expressao_logica ')' '{' cod_blocks '}'
+   19          | "if" '(' expressao_logica ')' '{' cod_blocks '}' "else" '{' cod_blocks '}'
    20          | LACOS '(' expressao_logica ')' '{' cod_block '}'
    21          | RETORNO ';'
    22          | RETORNO termo ';'
@@ -51,67 +48,62 @@ Grammar
    29 assign: ID OP_ASSIGN expressao
    30       | ID '[' INT ']' OP_ASSIGN expressao
 
-   31 expressao: OP_ARITM expressao
-   32          | OP_LOG expressao
-   33          | '!' expressao
-   34          | expressao OP_ARITM expressao
-   35          | expressao OP_COMP expressao
-   36          | '(' expressao ')'
-   37          | termo
+   31 expressao: op_expressao
+   32          | '(' expressao ')'
 
-   38 expressao_logica: OP_LOG op_expressao
-   39                 | '!' op_expressao
-   40                 | op_expressao OP_COMP op_expressao
-   41                 | '(' op_expressao ')'
-   42                 | op_expressao
+   33 expressao_logica: OP_LOG op_expressao
+   34                 | '!' op_expressao
+   35                 | op_expressao OP_COMP op_expressao
+   36                 | '(' op_expressao ')'
+   37                 | op_expressao
 
-   43 op_expressao: op_expressao OP_ARITM termo
-   44             | termo
+   38 op_expressao: op_expressao OP_ARITM termo
+   39             | termo
 
-   45 termo: ID
-   46      | INT
-   47      | FLOAT
+   40 termo: ID
+   41      | INT
+   42      | FLOAT
 
-   48 scan: SCAN '(' ID ')'
+   43 scan: SCAN '(' ID ')'
 
-   49 print: PRINT '(' ID ')' ';'
-   50      | PRINT '(' palavra ')' ';'
+   44 print: PRINT '(' ID ')' ';'
+   45      | PRINT '(' palavra ')' ';'
 
-   51 palavra: palavra LETRA
-   52        | palavra DIGITO
-   53        | LETRA
-   54        | DIGITO
+   46 palavra: palavra LETRA
+   47        | palavra DIGITO
+   48        | LETRA
+   49        | DIGITO
 
 
 Terminals, with rules where they appear
 
 $end (0) 0
-'!' (33) 33 39
-'(' (40) 8 9 10 11 18 19 20 23 26 27 28 36 41 48 49 50
-')' (41) 8 9 10 11 18 19 20 23 26 27 28 36 41 48 49 50
-';' (59) 7 8 9 21 22 23 24 26 27 28 49 50
+'!' (33) 34
+'(' (40) 8 9 10 11 18 19 20 23 26 27 28 32 36 43 44 45
+')' (41) 8 9 10 11 18 19 20 23 26 27 28 32 36 43 44 45
+';' (59) 7 8 9 21 22 23 24 26 27 28 44 45
 '[' (91) 13 15 30
 ']' (93) 13 15 30
 '{' (123) 10 11 18 19 20
 '}' (125) 10 11 18 19 20
 error (256)
-OP_ARITM (258) 31 34 43
-OP_COMP (259) 35 40
-OP_LOG (260) 32 38
+OP_ARITM (258) 38
+OP_COMP (259) 35
+OP_LOG (260) 33
 OP_ASSIGN (261) 29 30
 BOOL (262)
 TIPO (263) 7 8 9 10 11 12 13 14 15
 CONDICOES (264)
 LACOS (265) 20
 RETORNO (266) 21 22 23
-INT (267) 30 46
-FLOAT (268) 47
-ID (269) 7 8 9 10 11 12 13 14 15 26 27 28 29 30 45 48 49
-DIGITO (270) 52 54
-LETRA (271) 51 53
+INT (267) 30 41
+FLOAT (268) 42
+ID (269) 7 8 9 10 11 12 13 14 15 26 27 28 29 30 40 43 44
+DIGITO (270) 47 49
+LETRA (271) 46 48
 SEPARADOR (272)
-PRINT (273) 49 50
-SCAN (274) 48
+PRINT (273) 44 45
+SCAN (274) 43
 "tuple" (275) 5
 "if" (276) 18 19
 "else" (277) 19
@@ -140,20 +132,19 @@ cod_block (39)
 assign (40)
     on left: 29 30, on right: 24
 expressao (41)
-    on left: 31 32 33 34 35 36 37, on right: 18 19 23 26 29 30 31 32
-    33 34 35 36
+    on left: 31 32, on right: 23 26 29 30 32
 expressao_logica (42)
-    on left: 38 39 40 41 42, on right: 20
+    on left: 33 34 35 36 37, on right: 18 19 20
 op_expressao (43)
-    on left: 43 44, on right: 38 39 40 41 42 43
+    on left: 38 39, on right: 31 33 34 35 36 37 38
 termo (44)
-    on left: 45 46 47, on right: 22 37 43 44
+    on left: 40 41 42, on right: 22 38 39
 scan (45)
-    on left: 48, on right: 28
+    on left: 43, on right: 28
 print (46)
-    on left: 49 50, on right: 25
+    on left: 44 45, on right: 25
 palavra (47)
-    on left: 51 52 53 54, on right: 50 51 52
+    on left: 46 47 48 49, on right: 45 46 47
 
 
 state 0
@@ -412,23 +403,23 @@ state 25
 
 state 26
 
-   49 print: PRINT . '(' ID ')' ';'
-   50      | PRINT . '(' palavra ')' ';'
+   44 print: PRINT . '(' ID ')' ';'
+   45      | PRINT . '(' palavra ')' ';'
 
     '('  shift, and go to state 48
 
 
 state 27
 
-   48 scan: SCAN . '(' ID ')'
+   43 scan: SCAN . '(' ID ')'
 
     '('  shift, and go to state 49
 
 
 state 28
 
-   18 cod_block: "if" . '(' expressao ')' '{' cod_blocks '}'
-   19          | "if" . '(' expressao ')' '{' cod_blocks '}' "else" '{' cod_blocks '}'
+   18 cod_block: "if" . '(' expressao_logica ')' '{' cod_blocks '}'
+   19          | "if" . '(' expressao_logica ')' '{' cod_blocks '}' "else" '{' cod_blocks '}'
 
     '('  shift, and go to state 50
 
@@ -540,23 +531,23 @@ state 38
 
 state 39
 
-   46 termo: INT .
+   41 termo: INT .
 
-    $default  reduce using rule 46 (termo)
+    $default  reduce using rule 41 (termo)
 
 
 state 40
 
-   47 termo: FLOAT .
+   42 termo: FLOAT .
 
-    $default  reduce using rule 47 (termo)
+    $default  reduce using rule 42 (termo)
 
 
 state 41
 
-   45 termo: ID .
+   40 termo: ID .
 
-    $default  reduce using rule 45 (termo)
+    $default  reduce using rule 40 (termo)
 
 
 state 42
@@ -570,39 +561,35 @@ state 43
 
    23 cod_block: RETORNO '(' . expressao ')' ';'
 
-    OP_ARITM  shift, and go to state 63
-    OP_LOG    shift, and go to state 64
-    INT       shift, and go to state 39
-    FLOAT     shift, and go to state 40
-    ID        shift, and go to state 41
-    '('       shift, and go to state 65
-    '!'       shift, and go to state 66
+    INT    shift, and go to state 39
+    FLOAT  shift, and go to state 40
+    ID     shift, and go to state 41
+    '('    shift, and go to state 63
 
-    expressao  go to state 67
-    termo      go to state 68
+    expressao     go to state 64
+    op_expressao  go to state 65
+    termo         go to state 62
 
 
 state 44
 
    22 cod_block: RETORNO termo . ';'
 
-    ';'  shift, and go to state 69
+    ';'  shift, and go to state 66
 
 
 state 45
 
    29 assign: ID OP_ASSIGN . expressao
 
-    OP_ARITM  shift, and go to state 63
-    OP_LOG    shift, and go to state 64
-    INT       shift, and go to state 39
-    FLOAT     shift, and go to state 40
-    ID        shift, and go to state 41
-    '('       shift, and go to state 65
-    '!'       shift, and go to state 66
+    INT    shift, and go to state 39
+    FLOAT  shift, and go to state 40
+    ID     shift, and go to state 41
+    '('    shift, and go to state 63
 
-    expressao  go to state 70
-    termo      go to state 68
+    expressao     go to state 67
+    op_expressao  go to state 65
+    termo         go to state 62
 
 
 state 46
@@ -610,60 +597,58 @@ state 46
    26 cod_block: ID '(' . expressao ')' ';'
    27          | ID '(' . ')' ';'
 
-    OP_ARITM  shift, and go to state 63
-    OP_LOG    shift, and go to state 64
-    INT       shift, and go to state 39
-    FLOAT     shift, and go to state 40
-    ID        shift, and go to state 41
-    '('       shift, and go to state 65
-    ')'       shift, and go to state 71
-    '!'       shift, and go to state 66
+    INT    shift, and go to state 39
+    FLOAT  shift, and go to state 40
+    ID     shift, and go to state 41
+    '('    shift, and go to state 63
+    ')'    shift, and go to state 68
 
-    expressao  go to state 72
-    termo      go to state 68
+    expressao     go to state 69
+    op_expressao  go to state 65
+    termo         go to state 62
 
 
 state 47
 
    30 assign: ID '[' . INT ']' OP_ASSIGN expressao
 
-    INT  shift, and go to state 73
+    INT  shift, and go to state 70
 
 
 state 48
 
-   49 print: PRINT '(' . ID ')' ';'
-   50      | PRINT '(' . palavra ')' ';'
+   44 print: PRINT '(' . ID ')' ';'
+   45      | PRINT '(' . palavra ')' ';'
 
-    ID      shift, and go to state 74
-    DIGITO  shift, and go to state 75
-    LETRA   shift, and go to state 76
+    ID      shift, and go to state 71
+    DIGITO  shift, and go to state 72
+    LETRA   shift, and go to state 73
 
-    palavra  go to state 77
+    palavra  go to state 74
 
 
 state 49
 
-   48 scan: SCAN '(' . ID ')'
+   43 scan: SCAN '(' . ID ')'
 
-    ID  shift, and go to state 78
+    ID  shift, and go to state 75
 
 
 state 50
 
-   18 cod_block: "if" '(' . expressao ')' '{' cod_blocks '}'
-   19          | "if" '(' . expressao ')' '{' cod_blocks '}' "else" '{' cod_blocks '}'
+   18 cod_block: "if" '(' . expressao_logica ')' '{' cod_blocks '}'
+   19          | "if" '(' . expressao_logica ')' '{' cod_blocks '}' "else" '{' cod_blocks '}'
 
-    OP_ARITM  shift, and go to state 63
-    OP_LOG    shift, and go to state 64
-    INT       shift, and go to state 39
-    FLOAT     shift, and go to state 40
-    ID        shift, and go to state 41
-    '('       shift, and go to state 65
-    '!'       shift, and go to state 66
+    OP_LOG  shift, and go to state 57
+    INT     shift, and go to state 39
+    FLOAT   shift, and go to state 40
+    ID      shift, and go to state 41
+    '('     shift, and go to state 58
+    '!'     shift, and go to state 59
 
-    expressao  go to state 79
-    termo      go to state 68
+    expressao_logica  go to state 76
+    op_expressao      go to state 61
+    termo             go to state 62
 
 
 state 51
@@ -691,14 +676,14 @@ state 54
 
    28 cod_block: scan '(' . ID ')' ';'
 
-    ID  shift, and go to state 80
+    ID  shift, and go to state 77
 
 
 state 55
 
    13 parm_tipos: parm_tipos TIPO ID '[' . ']'
 
-    ']'  shift, and go to state 81
+    ']'  shift, and go to state 78
 
 
 state 56
@@ -711,7 +696,7 @@ state 56
     ID       shift, and go to state 25
     PRINT    shift, and go to state 26
     SCAN     shift, and go to state 27
-    '}'      shift, and go to state 82
+    '}'      shift, and go to state 79
     "if"     shift, and go to state 28
 
     cod_block  go to state 52
@@ -722,37 +707,37 @@ state 56
 
 state 57
 
-   38 expressao_logica: OP_LOG . op_expressao
+   33 expressao_logica: OP_LOG . op_expressao
 
     INT    shift, and go to state 39
     FLOAT  shift, and go to state 40
     ID     shift, and go to state 41
 
-    op_expressao  go to state 83
+    op_expressao  go to state 80
     termo         go to state 62
 
 
 state 58
 
-   41 expressao_logica: '(' . op_expressao ')'
+   36 expressao_logica: '(' . op_expressao ')'
 
     INT    shift, and go to state 39
     FLOAT  shift, and go to state 40
     ID     shift, and go to state 41
 
-    op_expressao  go to state 84
+    op_expressao  go to state 81
     termo         go to state 62
 
 
 state 59
 
-   39 expressao_logica: '!' . op_expressao
+   34 expressao_logica: '!' . op_expressao
 
     INT    shift, and go to state 39
     FLOAT  shift, and go to state 40
     ID     shift, and go to state 41
 
-    op_expressao  go to state 85
+    op_expressao  go to state 82
     termo         go to state 62
 
 
@@ -760,450 +745,314 @@ state 60
 
    20 cod_block: LACOS '(' expressao_logica . ')' '{' cod_block '}'
 
-    ')'  shift, and go to state 86
+    ')'  shift, and go to state 83
 
 
 state 61
 
-   40 expressao_logica: op_expressao . OP_COMP op_expressao
-   42                 | op_expressao .
-   43 op_expressao: op_expressao . OP_ARITM termo
+   35 expressao_logica: op_expressao . OP_COMP op_expressao
+   37                 | op_expressao .
+   38 op_expressao: op_expressao . OP_ARITM termo
 
-    OP_ARITM  shift, and go to state 87
-    OP_COMP   shift, and go to state 88
+    OP_ARITM  shift, and go to state 84
+    OP_COMP   shift, and go to state 85
 
-    $default  reduce using rule 42 (expressao_logica)
+    $default  reduce using rule 37 (expressao_logica)
 
 
 state 62
 
-   44 op_expressao: termo .
+   39 op_expressao: termo .
 
-    $default  reduce using rule 44 (op_expressao)
+    $default  reduce using rule 39 (op_expressao)
 
 
 state 63
 
-   31 expressao: OP_ARITM . expressao
+   32 expressao: '(' . expressao ')'
 
-    OP_ARITM  shift, and go to state 63
-    OP_LOG    shift, and go to state 64
-    INT       shift, and go to state 39
-    FLOAT     shift, and go to state 40
-    ID        shift, and go to state 41
-    '('       shift, and go to state 65
-    '!'       shift, and go to state 66
+    INT    shift, and go to state 39
+    FLOAT  shift, and go to state 40
+    ID     shift, and go to state 41
+    '('    shift, and go to state 63
 
-    expressao  go to state 89
-    termo      go to state 68
+    expressao     go to state 86
+    op_expressao  go to state 65
+    termo         go to state 62
 
 
 state 64
 
-   32 expressao: OP_LOG . expressao
+   23 cod_block: RETORNO '(' expressao . ')' ';'
 
-    OP_ARITM  shift, and go to state 63
-    OP_LOG    shift, and go to state 64
-    INT       shift, and go to state 39
-    FLOAT     shift, and go to state 40
-    ID        shift, and go to state 41
-    '('       shift, and go to state 65
-    '!'       shift, and go to state 66
-
-    expressao  go to state 90
-    termo      go to state 68
+    ')'  shift, and go to state 87
 
 
 state 65
 
-   36 expressao: '(' . expressao ')'
+   31 expressao: op_expressao .
+   38 op_expressao: op_expressao . OP_ARITM termo
 
-    OP_ARITM  shift, and go to state 63
-    OP_LOG    shift, and go to state 64
-    INT       shift, and go to state 39
-    FLOAT     shift, and go to state 40
-    ID        shift, and go to state 41
-    '('       shift, and go to state 65
-    '!'       shift, and go to state 66
+    OP_ARITM  shift, and go to state 84
 
-    expressao  go to state 91
-    termo      go to state 68
+    $default  reduce using rule 31 (expressao)
 
 
 state 66
-
-   33 expressao: '!' . expressao
-
-    OP_ARITM  shift, and go to state 63
-    OP_LOG    shift, and go to state 64
-    INT       shift, and go to state 39
-    FLOAT     shift, and go to state 40
-    ID        shift, and go to state 41
-    '('       shift, and go to state 65
-    '!'       shift, and go to state 66
-
-    expressao  go to state 92
-    termo      go to state 68
-
-
-state 67
-
-   23 cod_block: RETORNO '(' expressao . ')' ';'
-   34 expressao: expressao . OP_ARITM expressao
-   35          | expressao . OP_COMP expressao
-
-    OP_ARITM  shift, and go to state 93
-    OP_COMP   shift, and go to state 94
-    ')'       shift, and go to state 95
-
-
-state 68
-
-   37 expressao: termo .
-
-    $default  reduce using rule 37 (expressao)
-
-
-state 69
 
    22 cod_block: RETORNO termo ';' .
 
     $default  reduce using rule 22 (cod_block)
 
 
-state 70
+state 67
 
    29 assign: ID OP_ASSIGN expressao .
-   34 expressao: expressao . OP_ARITM expressao
-   35          | expressao . OP_COMP expressao
-
-    OP_ARITM  shift, and go to state 93
-    OP_COMP   shift, and go to state 94
 
     $default  reduce using rule 29 (assign)
 
 
-state 71
+state 68
 
    27 cod_block: ID '(' ')' . ';'
 
-    ';'  shift, and go to state 96
+    ';'  shift, and go to state 88
+
+
+state 69
+
+   26 cod_block: ID '(' expressao . ')' ';'
+
+    ')'  shift, and go to state 89
+
+
+state 70
+
+   30 assign: ID '[' INT . ']' OP_ASSIGN expressao
+
+    ']'  shift, and go to state 90
+
+
+state 71
+
+   44 print: PRINT '(' ID . ')' ';'
+
+    ')'  shift, and go to state 91
 
 
 state 72
 
-   26 cod_block: ID '(' expressao . ')' ';'
-   34 expressao: expressao . OP_ARITM expressao
-   35          | expressao . OP_COMP expressao
+   49 palavra: DIGITO .
 
-    OP_ARITM  shift, and go to state 93
-    OP_COMP   shift, and go to state 94
-    ')'       shift, and go to state 97
+    $default  reduce using rule 49 (palavra)
 
 
 state 73
 
-   30 assign: ID '[' INT . ']' OP_ASSIGN expressao
+   48 palavra: LETRA .
 
-    ']'  shift, and go to state 98
+    $default  reduce using rule 48 (palavra)
 
 
 state 74
 
-   49 print: PRINT '(' ID . ')' ';'
+   45 print: PRINT '(' palavra . ')' ';'
+   46 palavra: palavra . LETRA
+   47        | palavra . DIGITO
 
-    ')'  shift, and go to state 99
+    DIGITO  shift, and go to state 92
+    LETRA   shift, and go to state 93
+    ')'     shift, and go to state 94
 
 
 state 75
 
-   54 palavra: DIGITO .
+   43 scan: SCAN '(' ID . ')'
 
-    $default  reduce using rule 54 (palavra)
+    ')'  shift, and go to state 95
 
 
 state 76
 
-   53 palavra: LETRA .
+   18 cod_block: "if" '(' expressao_logica . ')' '{' cod_blocks '}'
+   19          | "if" '(' expressao_logica . ')' '{' cod_blocks '}' "else" '{' cod_blocks '}'
 
-    $default  reduce using rule 53 (palavra)
+    ')'  shift, and go to state 96
 
 
 state 77
 
-   50 print: PRINT '(' palavra . ')' ';'
-   51 palavra: palavra . LETRA
-   52        | palavra . DIGITO
+   28 cod_block: scan '(' ID . ')' ';'
 
-    DIGITO  shift, and go to state 100
-    LETRA   shift, and go to state 101
-    ')'     shift, and go to state 102
+    ')'  shift, and go to state 97
 
 
 state 78
-
-   48 scan: SCAN '(' ID . ')'
-
-    ')'  shift, and go to state 103
-
-
-state 79
-
-   18 cod_block: "if" '(' expressao . ')' '{' cod_blocks '}'
-   19          | "if" '(' expressao . ')' '{' cod_blocks '}' "else" '{' cod_blocks '}'
-   34 expressao: expressao . OP_ARITM expressao
-   35          | expressao . OP_COMP expressao
-
-    OP_ARITM  shift, and go to state 93
-    OP_COMP   shift, and go to state 94
-    ')'       shift, and go to state 104
-
-
-state 80
-
-   28 cod_block: scan '(' ID . ')' ';'
-
-    ')'  shift, and go to state 105
-
-
-state 81
 
    13 parm_tipos: parm_tipos TIPO ID '[' ']' .
 
     $default  reduce using rule 13 (parm_tipos)
 
 
-state 82
+state 79
 
    10 func_decl: TIPO ID '(' parm_tipos ')' '{' cod_blocks '}' .
 
     $default  reduce using rule 10 (func_decl)
 
 
+state 80
+
+   33 expressao_logica: OP_LOG op_expressao .
+   38 op_expressao: op_expressao . OP_ARITM termo
+
+    OP_ARITM  shift, and go to state 84
+
+    $default  reduce using rule 33 (expressao_logica)
+
+
+state 81
+
+   36 expressao_logica: '(' op_expressao . ')'
+   38 op_expressao: op_expressao . OP_ARITM termo
+
+    OP_ARITM  shift, and go to state 84
+    ')'       shift, and go to state 98
+
+
+state 82
+
+   34 expressao_logica: '!' op_expressao .
+   38 op_expressao: op_expressao . OP_ARITM termo
+
+    OP_ARITM  shift, and go to state 84
+
+    $default  reduce using rule 34 (expressao_logica)
+
+
 state 83
 
-   38 expressao_logica: OP_LOG op_expressao .
-   43 op_expressao: op_expressao . OP_ARITM termo
+   20 cod_block: LACOS '(' expressao_logica ')' . '{' cod_block '}'
 
-    OP_ARITM  shift, and go to state 87
-
-    $default  reduce using rule 38 (expressao_logica)
+    '{'  shift, and go to state 99
 
 
 state 84
 
-   41 expressao_logica: '(' op_expressao . ')'
-   43 op_expressao: op_expressao . OP_ARITM termo
+   38 op_expressao: op_expressao OP_ARITM . termo
 
-    OP_ARITM  shift, and go to state 87
-    ')'       shift, and go to state 106
+    INT    shift, and go to state 39
+    FLOAT  shift, and go to state 40
+    ID     shift, and go to state 41
+
+    termo  go to state 100
 
 
 state 85
 
-   39 expressao_logica: '!' op_expressao .
-   43 op_expressao: op_expressao . OP_ARITM termo
+   35 expressao_logica: op_expressao OP_COMP . op_expressao
 
-    OP_ARITM  shift, and go to state 87
+    INT    shift, and go to state 39
+    FLOAT  shift, and go to state 40
+    ID     shift, and go to state 41
 
-    $default  reduce using rule 39 (expressao_logica)
+    op_expressao  go to state 101
+    termo         go to state 62
 
 
 state 86
 
-   20 cod_block: LACOS '(' expressao_logica ')' . '{' cod_block '}'
+   32 expressao: '(' expressao . ')'
 
-    '{'  shift, and go to state 107
+    ')'  shift, and go to state 102
 
 
 state 87
 
-   43 op_expressao: op_expressao OP_ARITM . termo
+   23 cod_block: RETORNO '(' expressao ')' . ';'
 
-    INT    shift, and go to state 39
-    FLOAT  shift, and go to state 40
-    ID     shift, and go to state 41
-
-    termo  go to state 108
+    ';'  shift, and go to state 103
 
 
 state 88
-
-   40 expressao_logica: op_expressao OP_COMP . op_expressao
-
-    INT    shift, and go to state 39
-    FLOAT  shift, and go to state 40
-    ID     shift, and go to state 41
-
-    op_expressao  go to state 109
-    termo         go to state 62
-
-
-state 89
-
-   31 expressao: OP_ARITM expressao .
-   34          | expressao . OP_ARITM expressao
-   35          | expressao . OP_COMP expressao
-
-    OP_COMP  shift, and go to state 94
-
-    $default  reduce using rule 31 (expressao)
-
-
-state 90
-
-   32 expressao: OP_LOG expressao .
-   34          | expressao . OP_ARITM expressao
-   35          | expressao . OP_COMP expressao
-
-    OP_COMP  shift, and go to state 94
-
-    $default  reduce using rule 32 (expressao)
-
-
-state 91
-
-   34 expressao: expressao . OP_ARITM expressao
-   35          | expressao . OP_COMP expressao
-   36          | '(' expressao . ')'
-
-    OP_ARITM  shift, and go to state 93
-    OP_COMP   shift, and go to state 94
-    ')'       shift, and go to state 110
-
-
-state 92
-
-   33 expressao: '!' expressao .
-   34          | expressao . OP_ARITM expressao
-   35          | expressao . OP_COMP expressao
-
-    OP_ARITM  shift, and go to state 93
-    OP_COMP   shift, and go to state 94
-
-    OP_ARITM  [reduce using rule 33 (expressao)]
-    OP_COMP   [reduce using rule 33 (expressao)]
-    $default  reduce using rule 33 (expressao)
-
-
-state 93
-
-   34 expressao: expressao OP_ARITM . expressao
-
-    OP_ARITM  shift, and go to state 63
-    OP_LOG    shift, and go to state 64
-    INT       shift, and go to state 39
-    FLOAT     shift, and go to state 40
-    ID        shift, and go to state 41
-    '('       shift, and go to state 65
-    '!'       shift, and go to state 66
-
-    expressao  go to state 111
-    termo      go to state 68
-
-
-state 94
-
-   35 expressao: expressao OP_COMP . expressao
-
-    OP_ARITM  shift, and go to state 63
-    OP_LOG    shift, and go to state 64
-    INT       shift, and go to state 39
-    FLOAT     shift, and go to state 40
-    ID        shift, and go to state 41
-    '('       shift, and go to state 65
-    '!'       shift, and go to state 66
-
-    expressao  go to state 112
-    termo      go to state 68
-
-
-state 95
-
-   23 cod_block: RETORNO '(' expressao ')' . ';'
-
-    ';'  shift, and go to state 113
-
-
-state 96
 
    27 cod_block: ID '(' ')' ';' .
 
     $default  reduce using rule 27 (cod_block)
 
 
-state 97
+state 89
 
    26 cod_block: ID '(' expressao ')' . ';'
 
-    ';'  shift, and go to state 114
+    ';'  shift, and go to state 104
+
+
+state 90
+
+   30 assign: ID '[' INT ']' . OP_ASSIGN expressao
+
+    OP_ASSIGN  shift, and go to state 105
+
+
+state 91
+
+   44 print: PRINT '(' ID ')' . ';'
+
+    ';'  shift, and go to state 106
+
+
+state 92
+
+   47 palavra: palavra DIGITO .
+
+    $default  reduce using rule 47 (palavra)
+
+
+state 93
+
+   46 palavra: palavra LETRA .
+
+    $default  reduce using rule 46 (palavra)
+
+
+state 94
+
+   45 print: PRINT '(' palavra ')' . ';'
+
+    ';'  shift, and go to state 107
+
+
+state 95
+
+   43 scan: SCAN '(' ID ')' .
+
+    $default  reduce using rule 43 (scan)
+
+
+state 96
+
+   18 cod_block: "if" '(' expressao_logica ')' . '{' cod_blocks '}'
+   19          | "if" '(' expressao_logica ')' . '{' cod_blocks '}' "else" '{' cod_blocks '}'
+
+    '{'  shift, and go to state 108
+
+
+state 97
+
+   28 cod_block: scan '(' ID ')' . ';'
+
+    ';'  shift, and go to state 109
 
 
 state 98
 
-   30 assign: ID '[' INT ']' . OP_ASSIGN expressao
+   36 expressao_logica: '(' op_expressao ')' .
 
-    OP_ASSIGN  shift, and go to state 115
+    $default  reduce using rule 36 (expressao_logica)
 
 
 state 99
-
-   49 print: PRINT '(' ID ')' . ';'
-
-    ';'  shift, and go to state 116
-
-
-state 100
-
-   52 palavra: palavra DIGITO .
-
-    $default  reduce using rule 52 (palavra)
-
-
-state 101
-
-   51 palavra: palavra LETRA .
-
-    $default  reduce using rule 51 (palavra)
-
-
-state 102
-
-   50 print: PRINT '(' palavra ')' . ';'
-
-    ';'  shift, and go to state 117
-
-
-state 103
-
-   48 scan: SCAN '(' ID ')' .
-
-    $default  reduce using rule 48 (scan)
-
-
-state 104
-
-   18 cod_block: "if" '(' expressao ')' . '{' cod_blocks '}'
-   19          | "if" '(' expressao ')' . '{' cod_blocks '}' "else" '{' cod_blocks '}'
-
-    '{'  shift, and go to state 118
-
-
-state 105
-
-   28 cod_block: scan '(' ID ')' . ';'
-
-    ';'  shift, and go to state 119
-
-
-state 106
-
-   41 expressao_logica: '(' op_expressao ')' .
-
-    $default  reduce using rule 41 (expressao_logica)
-
-
-state 107
 
    20 cod_block: LACOS '(' expressao_logica ')' '{' . cod_block '}'
 
@@ -1214,104 +1063,82 @@ state 107
     SCAN     shift, and go to state 27
     "if"     shift, and go to state 28
 
-    cod_block  go to state 120
+    cod_block  go to state 110
     assign     go to state 31
     scan       go to state 32
     print      go to state 33
 
 
-state 108
+state 100
 
-   43 op_expressao: op_expressao OP_ARITM termo .
+   38 op_expressao: op_expressao OP_ARITM termo .
 
-    $default  reduce using rule 43 (op_expressao)
-
-
-state 109
-
-   40 expressao_logica: op_expressao OP_COMP op_expressao .
-   43 op_expressao: op_expressao . OP_ARITM termo
-
-    OP_ARITM  shift, and go to state 87
-
-    $default  reduce using rule 40 (expressao_logica)
+    $default  reduce using rule 38 (op_expressao)
 
 
-state 110
+state 101
 
-   36 expressao: '(' expressao ')' .
+   35 expressao_logica: op_expressao OP_COMP op_expressao .
+   38 op_expressao: op_expressao . OP_ARITM termo
 
-    $default  reduce using rule 36 (expressao)
+    OP_ARITM  shift, and go to state 84
 
-
-state 111
-
-   34 expressao: expressao . OP_ARITM expressao
-   34          | expressao OP_ARITM expressao .
-   35          | expressao . OP_COMP expressao
-
-    OP_COMP  shift, and go to state 94
-
-    $default  reduce using rule 34 (expressao)
+    $default  reduce using rule 35 (expressao_logica)
 
 
-state 112
+state 102
 
-   34 expressao: expressao . OP_ARITM expressao
-   35          | expressao . OP_COMP expressao
-   35          | expressao OP_COMP expressao .
+   32 expressao: '(' expressao ')' .
 
-    $default  reduce using rule 35 (expressao)
+    $default  reduce using rule 32 (expressao)
 
 
-state 113
+state 103
 
    23 cod_block: RETORNO '(' expressao ')' ';' .
 
     $default  reduce using rule 23 (cod_block)
 
 
-state 114
+state 104
 
    26 cod_block: ID '(' expressao ')' ';' .
 
     $default  reduce using rule 26 (cod_block)
 
 
-state 115
+state 105
 
    30 assign: ID '[' INT ']' OP_ASSIGN . expressao
 
-    OP_ARITM  shift, and go to state 63
-    OP_LOG    shift, and go to state 64
-    INT       shift, and go to state 39
-    FLOAT     shift, and go to state 40
-    ID        shift, and go to state 41
-    '('       shift, and go to state 65
-    '!'       shift, and go to state 66
+    INT    shift, and go to state 39
+    FLOAT  shift, and go to state 40
+    ID     shift, and go to state 41
+    '('    shift, and go to state 63
 
-    expressao  go to state 121
-    termo      go to state 68
+    expressao     go to state 111
+    op_expressao  go to state 65
+    termo         go to state 62
 
 
-state 116
+state 106
 
-   49 print: PRINT '(' ID ')' ';' .
+   44 print: PRINT '(' ID ')' ';' .
 
-    $default  reduce using rule 49 (print)
-
-
-state 117
-
-   50 print: PRINT '(' palavra ')' ';' .
-
-    $default  reduce using rule 50 (print)
+    $default  reduce using rule 44 (print)
 
 
-state 118
+state 107
 
-   18 cod_block: "if" '(' expressao ')' '{' . cod_blocks '}'
-   19          | "if" '(' expressao ')' '{' . cod_blocks '}' "else" '{' cod_blocks '}'
+   45 print: PRINT '(' palavra ')' ';' .
+
+    $default  reduce using rule 45 (print)
+
+
+state 108
+
+   18 cod_block: "if" '(' expressao_logica ')' '{' . cod_blocks '}'
+   19          | "if" '(' expressao_logica ')' '{' . cod_blocks '}' "else" '{' cod_blocks '}'
 
     LACOS    shift, and go to state 23
     RETORNO  shift, and go to state 24
@@ -1320,51 +1147,46 @@ state 118
     SCAN     shift, and go to state 27
     "if"     shift, and go to state 28
 
-    cod_blocks  go to state 122
+    cod_blocks  go to state 112
     cod_block   go to state 30
     assign      go to state 31
     scan        go to state 32
     print       go to state 33
 
 
-state 119
+state 109
 
    28 cod_block: scan '(' ID ')' ';' .
 
     $default  reduce using rule 28 (cod_block)
 
 
-state 120
+state 110
 
    20 cod_block: LACOS '(' expressao_logica ')' '{' cod_block . '}'
 
-    '}'  shift, and go to state 123
+    '}'  shift, and go to state 113
 
 
-state 121
+state 111
 
    30 assign: ID '[' INT ']' OP_ASSIGN expressao .
-   34 expressao: expressao . OP_ARITM expressao
-   35          | expressao . OP_COMP expressao
-
-    OP_ARITM  shift, and go to state 93
-    OP_COMP   shift, and go to state 94
 
     $default  reduce using rule 30 (assign)
 
 
-state 122
+state 112
 
    16 cod_blocks: cod_blocks . cod_block
-   18 cod_block: "if" '(' expressao ')' '{' cod_blocks . '}'
-   19          | "if" '(' expressao ')' '{' cod_blocks . '}' "else" '{' cod_blocks '}'
+   18 cod_block: "if" '(' expressao_logica ')' '{' cod_blocks . '}'
+   19          | "if" '(' expressao_logica ')' '{' cod_blocks . '}' "else" '{' cod_blocks '}'
 
     LACOS    shift, and go to state 23
     RETORNO  shift, and go to state 24
     ID       shift, and go to state 25
     PRINT    shift, and go to state 26
     SCAN     shift, and go to state 27
-    '}'      shift, and go to state 124
+    '}'      shift, and go to state 114
     "if"     shift, and go to state 28
 
     cod_block  go to state 52
@@ -1373,33 +1195,33 @@ state 122
     print      go to state 33
 
 
-state 123
+state 113
 
    20 cod_block: LACOS '(' expressao_logica ')' '{' cod_block '}' .
 
     $default  reduce using rule 20 (cod_block)
 
 
-state 124
+state 114
 
-   18 cod_block: "if" '(' expressao ')' '{' cod_blocks '}' .
-   19          | "if" '(' expressao ')' '{' cod_blocks '}' . "else" '{' cod_blocks '}'
+   18 cod_block: "if" '(' expressao_logica ')' '{' cod_blocks '}' .
+   19          | "if" '(' expressao_logica ')' '{' cod_blocks '}' . "else" '{' cod_blocks '}'
 
-    "else"  shift, and go to state 125
+    "else"  shift, and go to state 115
 
     $default  reduce using rule 18 (cod_block)
 
 
-state 125
+state 115
 
-   19 cod_block: "if" '(' expressao ')' '{' cod_blocks '}' "else" . '{' cod_blocks '}'
+   19 cod_block: "if" '(' expressao_logica ')' '{' cod_blocks '}' "else" . '{' cod_blocks '}'
 
-    '{'  shift, and go to state 126
+    '{'  shift, and go to state 116
 
 
-state 126
+state 116
 
-   19 cod_block: "if" '(' expressao ')' '{' cod_blocks '}' "else" '{' . cod_blocks '}'
+   19 cod_block: "if" '(' expressao_logica ')' '{' cod_blocks '}' "else" '{' . cod_blocks '}'
 
     LACOS    shift, and go to state 23
     RETORNO  shift, and go to state 24
@@ -1408,24 +1230,24 @@ state 126
     SCAN     shift, and go to state 27
     "if"     shift, and go to state 28
 
-    cod_blocks  go to state 127
+    cod_blocks  go to state 117
     cod_block   go to state 30
     assign      go to state 31
     scan        go to state 32
     print       go to state 33
 
 
-state 127
+state 117
 
    16 cod_blocks: cod_blocks . cod_block
-   19 cod_block: "if" '(' expressao ')' '{' cod_blocks '}' "else" '{' cod_blocks . '}'
+   19 cod_block: "if" '(' expressao_logica ')' '{' cod_blocks '}' "else" '{' cod_blocks . '}'
 
     LACOS    shift, and go to state 23
     RETORNO  shift, and go to state 24
     ID       shift, and go to state 25
     PRINT    shift, and go to state 26
     SCAN     shift, and go to state 27
-    '}'      shift, and go to state 128
+    '}'      shift, and go to state 118
     "if"     shift, and go to state 28
 
     cod_block  go to state 52
@@ -1434,8 +1256,8 @@ state 127
     print      go to state 33
 
 
-state 128
+state 118
 
-   19 cod_block: "if" '(' expressao ')' '{' cod_blocks '}' "else" '{' cod_blocks '}' .
+   19 cod_block: "if" '(' expressao_logica ')' '{' cod_blocks '}' "else" '{' cod_blocks '}' .
 
     $default  reduce using rule 19 (cod_block)

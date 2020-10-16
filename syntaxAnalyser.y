@@ -95,7 +95,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
 %type <nd> cod_blocks expressao_logica termo op_expressao
 %type <str> palavra
 
-%token OP_ARITM OP_COMP OP_LOG OP_ASSIGN
+%token <operador> OP_ARITM OP_COMP OP_LOG OP_ASSIGN
 %token BOOL
 %token <tipo> TIPO
 %token CONDICOES
@@ -151,8 +151,8 @@ cod_blocks:
 ;
 
 cod_block:
-  "if" '(' expressao ')' '{' cod_blocks '}' { printf("cod_block #1 \n"); }
-| "if" '(' expressao ')' '{' cod_blocks '}' "else" '{' cod_blocks '}' { printf("cod_block #2 \n"); }
+  "if" '(' expressao_logica ')' '{' cod_blocks '}' { printf("cod_block #1 \n"); }
+| "if" '(' expressao_logica ')' '{' cod_blocks '}' "else" '{' cod_blocks '}' { printf("cod_block #2 \n"); }
 | LACOS '(' expressao_logica ')' '{' cod_block '}' { printf("cod_block #3 \n"); $$ = ins_node("x", REGULAR_NODE,'L', $3, $6, "while") }
 | RETORNO ';' { printf("cod_block #4 \n"); $$ = NULL }
 | RETORNO termo ';' { printf("cod_block #4.5 \n"); $$ = ins_node("x", REGULAR_NODE,'R', NULL, $2, "retorno")}
@@ -170,25 +170,23 @@ assign:
 ;
 
 expressao:
-  OP_ARITM expressao { printf("expressao #1 \n"); $$ = $2; }
-| OP_LOG expressao { printf("expressao #2 \n"); $$ = $2; }
-| '!' expressao { printf("expressao #3 \n"); $$ = $2; }
-| expressao OP_ARITM expressao { printf("expressao #4 \n"); $$ = ins_node("x", REGULAR_NODE, 'E', $1, $3, "-"); }
-| expressao OP_COMP expressao { printf("expressao #5 \n"); $$ = ins_node("x", REGULAR_NODE, 'E', $1, $3, "-"); }
+  // OP_ARITM op_expressao { printf("expressao #1 \n"); $$ = $2; }
+// | expressao OP_ARITM expressao { printf("expressao #4 \n"); $$ = ins_node("x", REGULAR_NODE, 'E', $1, $3, "-"); }
+// | op_expressao OP_COMP op_expressao { printf("expressao #5 \n"); $$ = ins_node("x", REGULAR_NODE, 'E', $1, $3, "-"); }
+  op_expressao
 | '(' expressao ')' { printf("expressao #6 \n"); $$ = $2 }
-| termo { printf("expressao #7 \n"); $$ = NULL }
 ;
 
 expressao_logica:
   OP_LOG op_expressao { printf("expressao_logica #1 \n"); $$ = $2; }
 | '!' op_expressao { printf("expressao_logica #2 \n"); $$ = $2; }
-| op_expressao OP_COMP op_expressao { printf("expressao_logica #3 \n"); $$ = ins_node("x", REGULAR_NODE, 'E', $1, $3, "op_expressao"); }
+| op_expressao OP_COMP op_expressao { printf("expressao_logica #3 \n"); $$ = ins_node("x", REGULAR_NODE, 'E', $1, $3, "expressao_logica"); }
 | '(' op_expressao ')' { printf("expressao_logica #4 \n"); $$ = $2 }
 | op_expressao { printf("expressao_logica #5\n"); $$ = $1; }
 ;
 
 op_expressao:
-  op_expressao OP_ARITM termo { printf("op_expressao #1\n"); $$ = ins_node("x", REGULAR_NODE, 'E', $1, $3, "op_expressao_termo"); }
+  op_expressao OP_ARITM termo { printf("op_expressao #1\n"); $$ = ins_node("x", REGULAR_NODE, 'E', $1, $3, $2); }
 | termo { printf("op_expressao #2\n"); $$ = $1; }
 ;
 

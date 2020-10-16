@@ -166,6 +166,7 @@ PRINT "print"
 }
 {OP_ARITM} {
     // printf("<OP_ARITM, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    yylval.operador = (char *) strdup(yytext);
     return OP_ARITM;
 }
 {OP_COMP} {
