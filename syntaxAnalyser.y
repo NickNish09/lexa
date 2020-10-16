@@ -93,6 +93,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
 
 %type <nd> programa declaracoes declaracao var_decl func_decl parm_tipos cod_block assign expressao scan print
 %type <nd> cod_blocks expressao_logica termo op_expressao
+%type <str> palavra
 
 %token OP_ARITM OP_COMP OP_LOG OP_ASSIGN
 %token BOOL
@@ -157,11 +158,10 @@ cod_block:
 | RETORNO termo ';' { printf("cod_block #4.5 \n"); $$ = ins_node("x", REGULAR_NODE,'R', NULL, $2, "retorno")}
 | RETORNO '(' expressao ')' ';' { printf("cod_block #5 \n"); $$ = ins_node("x", REGULAR_NODE,'R', NULL, $3, "retorno") }
 | assign ';' { printf("cod_block #6 \n"); }
-| print '(' ID ')' ';' { printf("cod_block #7 \n"); $$ = $1}
-| print '(' palavra ')' ';' { printf("cod_block #8 \n"); $$ = $1}
-| ID '(' expressao ')' ';' { printf("cod_block #9 \n"); $$ = $3}
-| ID '(' ')' ';' { printf("cod_block #10 \n"); $$ = ins_node("x", 'C','R', NULL, NULL, "call")}
-| scan '(' ID ')' ';' { printf("cod_block #11 \n"); }
+| print { printf("cod_block #7 \n"); $$ = $1}
+| ID '(' expressao ')' ';' { printf("cod_block #8 \n"); $$ = $3}
+| ID '(' ')' ';' { printf("cod_block #9 \n"); $$ = ins_node("x", 'C','R', NULL, NULL, "call")}
+| scan '(' ID ')' ';' { printf("cod_block #10 \n"); }
 ;
 
 assign:
@@ -203,8 +203,8 @@ scan:
 ;
 
 print:
-  PRINT '(' ID ')' { printf("print #1 \n"); $$ = ins_node("x", REGULAR_NODE, 'P', NULL, NULL, "print"); }
-| PRINT '(' palavra ')' { printf("print #2 \n"); $$ = ins_node("x", REGULAR_NODE, 'P', NULL, NULL, "print"); }
+  PRINT '(' ID ')' ';' { printf("print #1 \n"); $$ = ins_node("x", REGULAR_NODE, 'P', NULL, NULL, "print"); }
+| PRINT '(' palavra ')' ';' { printf("print #2 \n"); $$ = ins_node("x", REGULAR_NODE, 'P', NULL, NULL, $3); }
 ;
 
 palavra:

@@ -104,8 +104,8 @@ OP_ARITM "+"|"-"|"*"|"/"
 OP_COMP "=="|"!="|"<="|"<"|">="|">"
 OP_LOG "&&"|"||"
 OP_ASSIGN "="
-SCAN "scan"'('{DIGITO}','{VAR_DECL}')'|"scan"'('{LETRA}','{VAR_DECL}')'
-PRINT "print"'('{VAR_DECL}')'|"print"'('({LETRA}{DIGITO})*')'
+SCAN "scan"
+PRINT "print"
 
 %%
 
