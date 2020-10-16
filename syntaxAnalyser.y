@@ -84,6 +84,7 @@
 
   // END REFERENTE A TABELA DE SIMBOLOS
 
+  // REFERENTE A ARVORE SINTATICA
   typedef struct node {
     char* var_type; //
     char node_kind; // 'F' function, 'V' var, 'C' code_block..., 'D' declaration, 'E' expression
@@ -211,8 +212,9 @@ func_decl:
 parm_tipos:
   parm_tipos TIPO ID { printf("parm_tipos #1 \n"); }
 | parm_tipos TIPO ID '[' ']' { printf("parm_tipos #2 \n"); }
-| TIPO ID { printf("parm_tipos #3 \n"); }
-| TIPO ID '[' ']' { printf("parm_tipos #4 \n"); }
+| TIPO ID ',' { printf("parm_tipos #3 \n"); }
+| TIPO ID { printf("parm_tipos #4 \n"); }
+| TIPO ID '[' ']' { printf("parm_tipos #5 \n"); }
 ;
 
 cod_blocks:
@@ -236,8 +238,8 @@ cod_block:
 ;
 
 assign:
-  ID OP_ASSIGN expressao { printf("assign #1 \n"); }
-| ID '[' INT ']' OP_ASSIGN expressao { printf("assign #2 \n"); }
+  ID OP_ASSIGN expressao { printf("assign #1 \n"); $$ = $3; }
+| ID '[' INT ']' OP_ASSIGN expressao { printf("assign #2 \n"); $$ = $6; }
 ;
 
 expressao:
@@ -298,7 +300,7 @@ int main(int argc, char **argv){
   // printErrors();
   // printSymTable();
   yyparse();
-  printf("Abstract Syntax Tree:\n");
+  printf("\n\nAbstract Syntax Tree:\n");
   print_tree(parser_tree, 0);
   printf("\n");
 
