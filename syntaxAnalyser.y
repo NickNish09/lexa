@@ -129,7 +129,7 @@ declaracao:
 
 declaracao_tupla:
   TIPO ',' declaracao_tupla { printf("declaracao_tupla #1"); $$ = $3; }
-| var_decl { printf("declaracao_tupla #2"); }
+| var_decl { printf("declaracao_tupla #2"); $$ = $1;}
 ;
 
 var_decl:
@@ -167,6 +167,7 @@ cod_block:
 | ID '(' expressao ')' ';' { printf("cod_block #8 \n"); $$ = $3}
 | ID '(' ')' ';' { printf("cod_block #9 \n"); $$ = ins_node("x", 'C','R', NULL, NULL, "call")}
 | scan '(' ID ')' ';' { printf("cod_block #10 \n"); }
+| declaracoes { $$ = $1 }
 ;
 
 assign:

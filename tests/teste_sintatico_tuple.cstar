@@ -1,1 +1,7 @@
 tuple int, float person;
+tuple int, float, char person2;
+
+int main(){
+    tuple int, float, char person3;
+    return 0;
+};
