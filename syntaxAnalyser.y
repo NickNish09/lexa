@@ -205,7 +205,7 @@ var_decl:
 func_decl:
   TIPO ID '(' parm_tipos ')' ';'{ printf("func_decl #1 \n"); $$ = ins_node_symbol($1, SYMBOL_NODE,'F', $2); }
 | TIPO ID '(' ')' ';' { printf("func_decl #2 \n"); $$ = ins_node_symbol($1, SYMBOL_NODE,'F', $2); }
-| TIPO ID '(' parm_tipos ')' '{' cod_blocks '}' { printf("func_decl #3 \n"); $$ = ins_node($1, REGULAR_NODE,'F', $4, $7, $2); }
+| TIPO ID '(' parm_tipos ')' '{' cod_blocks '}' { printf("func_decl #3 \n"); $$ = ins_node($1, REGULAR_NODE,'F', $4, $7, $2); add_to_s_table($2, $2, FUNCTION_TYPE, 0); }
 | TIPO ID '(' ')' '{' cod_blocks '}' { printf("func_decl #4 \n"); $$ = $6}
 ;
 

@@ -1693,7 +1693,7 @@ yyreduce:
 
   case 13:
 #line 208 "syntaxAnalyser.y"
-    { printf("func_decl #3 \n"); (yyval.nd) = ins_node((yyvsp[(1) - (8)].tipo), REGULAR_NODE,'F', (yyvsp[(4) - (8)].nd), (yyvsp[(7) - (8)].nd), (yyvsp[(2) - (8)].id)); ;}
+    { printf("func_decl #3 \n"); (yyval.nd) = ins_node((yyvsp[(1) - (8)].tipo), REGULAR_NODE,'F', (yyvsp[(4) - (8)].nd), (yyvsp[(7) - (8)].nd), (yyvsp[(2) - (8)].id)); add_to_s_table((yyvsp[(2) - (8)].id), (yyvsp[(2) - (8)].id), FUNCTION_TYPE, 0); ;}
     break;
 
   case 14:
