@@ -89,7 +89,8 @@ VAR_DECL {ID}['['({DIGITO})+']']
 
 /* keywords */
 BOOL "true"|"false"
-TIPO "float"|"int"|"char"|"bool"|"void"|"tuple"
+TIPO "float"|"int"|"char"|"bool"|"void"
+TUPLE "tuple"
 CONDICOES "if"|"else"
 LACOS "while"|"for"
 RETORNO "return"
@@ -135,6 +136,8 @@ PRINT "print"
         return '(';
     } else if(strcmp(yytext, ")") == 0){
         return ')';
+    } else if(strcmp(yytext, ",") == 0){
+        return ',';
     };
 }
 {BOOL} {
@@ -152,6 +155,11 @@ PRINT "print"
 }
 {CONDICOES} {
     // printf("<CONDICOES, %s> (tamanho %d)\n", yytext, (int)yyleng);
+}
+{TUPLE} {
+    // printf("<TUPLE, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    yylval.tipo = (char *) strdup(yytext);
+    return TUPLE;
 }
 {TIPO} {
     // printf("<TIPO, %s> (tamanho %d)\n", yytext, (int)yyleng);

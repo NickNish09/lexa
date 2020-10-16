@@ -92,7 +92,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
 }
 
 %type <nd> programa declaracoes declaracao var_decl func_decl parm_tipos cod_block assign expressao scan print
-%type <nd> cod_blocks expressao_logica termo op_expressao
+%type <nd> cod_blocks expressao_logica termo op_expressao declaracao_tupla
 %type <str> palavra
 
 %token <operador> OP_ARITM OP_COMP OP_LOG OP_ASSIGN
@@ -101,7 +101,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
 %token CONDICOES
 %token LACOS
 %token <str> RETORNO
-%token <str> INT FLOAT
+%token <str> INT FLOAT TUPLE
 %token <id> ID
 %token <str> DIGITO LETRA
 %token SEPARADOR
@@ -123,8 +123,13 @@ declaracoes:
 
 declaracao:
   var_decl { printf("var_decl\n"); $$ = $1; }
-| "tuple" declaracao  { printf("tuple\n"); $$ = $2; }
+| TUPLE declaracao_tupla { printf("tuple_decl\n"); $$ = $2; }
 | func_decl { printf("func_decl\n"); $$ = $1; }
+;
+
+declaracao_tupla:
+  TIPO ',' declaracao_tupla { printf("declaracao_tupla #1"); $$ = $3; }
+| var_decl { printf("declaracao_tupla #2"); }
 ;
 
 var_decl:

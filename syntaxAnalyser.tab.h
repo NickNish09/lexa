@@ -50,12 +50,13 @@
      RETORNO = 266,
      INT = 267,
      FLOAT = 268,
-     ID = 269,
-     DIGITO = 270,
-     LETRA = 271,
-     SEPARADOR = 272,
-     PRINT = 273,
-     SCAN = 274
+     TUPLE = 269,
+     ID = 270,
+     DIGITO = 271,
+     LETRA = 272,
+     SEPARADOR = 273,
+     PRINT = 274,
+     SCAN = 275
    };
 #endif
 /* Tokens.  */
@@ -70,12 +71,13 @@
 #define RETORNO 266
 #define INT 267
 #define FLOAT 268
-#define ID 269
-#define DIGITO 270
-#define LETRA 271
-#define SEPARADOR 272
-#define PRINT 273
-#define SCAN 274
+#define TUPLE 269
+#define ID 270
+#define DIGITO 271
+#define LETRA 272
+#define SEPARADOR 273
+#define PRINT 274
+#define SCAN 275
 
 
 
@@ -93,7 +95,7 @@ typedef union YYSTYPE
   struct node* nd;
 }
 /* Line 1529 of yacc.c.  */
-#line 97 "syntaxAnalyser.tab.h"
+#line 99 "syntaxAnalyser.tab.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

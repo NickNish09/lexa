@@ -15,144 +15,150 @@ Grammar
     3            | declaracao
 
     4 declaracao: var_decl
-    5           | "tuple" declaracao
+    5           | TUPLE declaracao_tupla
     6           | func_decl
 
-    7 var_decl: TIPO ID ';'
+    7 declaracao_tupla: TIPO ',' declaracao_tupla
+    8                 | var_decl
 
-    8 func_decl: TIPO ID '(' parm_tipos ')' ';'
-    9          | TIPO ID '(' ')' ';'
-   10          | TIPO ID '(' parm_tipos ')' '{' cod_blocks '}'
-   11          | TIPO ID '(' ')' '{' cod_blocks '}'
+    9 var_decl: TIPO ID ';'
 
-   12 parm_tipos: parm_tipos TIPO ID
-   13           | parm_tipos TIPO ID '[' ']'
-   14           | TIPO ID
-   15           | TIPO ID '[' ']'
+   10 func_decl: TIPO ID '(' parm_tipos ')' ';'
+   11          | TIPO ID '(' ')' ';'
+   12          | TIPO ID '(' parm_tipos ')' '{' cod_blocks '}'
+   13          | TIPO ID '(' ')' '{' cod_blocks '}'
 
-   16 cod_blocks: cod_blocks cod_block
-   17           | cod_block
+   14 parm_tipos: parm_tipos TIPO ID
+   15           | parm_tipos TIPO ID '[' ']'
+   16           | TIPO ID
+   17           | TIPO ID '[' ']'
 
-   18 cod_block: "if" '(' expressao_logica ')' '{' cod_blocks '}'
-   19          | "if" '(' expressao_logica ')' '{' cod_blocks '}' "else" '{' cod_blocks '}'
-   20          | LACOS '(' expressao_logica ')' '{' cod_block '}'
-   21          | RETORNO ';'
-   22          | RETORNO termo ';'
-   23          | RETORNO '(' expressao ')' ';'
-   24          | assign ';'
-   25          | print
-   26          | ID '(' expressao ')' ';'
-   27          | ID '(' ')' ';'
-   28          | scan '(' ID ')' ';'
+   18 cod_blocks: cod_blocks cod_block
+   19           | cod_block
 
-   29 assign: ID OP_ASSIGN expressao
-   30       | ID '[' INT ']' OP_ASSIGN expressao
+   20 cod_block: "if" '(' expressao_logica ')' '{' cod_blocks '}'
+   21          | "if" '(' expressao_logica ')' '{' cod_blocks '}' "else" '{' cod_blocks '}'
+   22          | LACOS '(' expressao_logica ')' '{' cod_block '}'
+   23          | RETORNO ';'
+   24          | RETORNO termo ';'
+   25          | RETORNO '(' expressao ')' ';'
+   26          | assign ';'
+   27          | print
+   28          | ID '(' expressao ')' ';'
+   29          | ID '(' ')' ';'
+   30          | scan '(' ID ')' ';'
 
-   31 expressao: op_expressao
-   32          | '(' expressao ')'
+   31 assign: ID OP_ASSIGN expressao
+   32       | ID '[' INT ']' OP_ASSIGN expressao
 
-   33 expressao_logica: OP_LOG op_expressao
-   34                 | '!' op_expressao
-   35                 | op_expressao OP_COMP op_expressao
-   36                 | '(' op_expressao ')'
-   37                 | op_expressao
+   33 expressao: op_expressao
+   34          | '(' expressao ')'
 
-   38 op_expressao: op_expressao OP_ARITM termo
-   39             | termo
+   35 expressao_logica: OP_LOG op_expressao
+   36                 | '!' op_expressao
+   37                 | op_expressao OP_COMP op_expressao
+   38                 | '(' op_expressao ')'
+   39                 | op_expressao
 
-   40 termo: ID
-   41      | INT
-   42      | FLOAT
+   40 op_expressao: op_expressao OP_ARITM termo
+   41             | termo
 
-   43 scan: SCAN '(' ID ')'
+   42 termo: ID
+   43      | INT
+   44      | FLOAT
 
-   44 print: PRINT '(' termo ')' ';'
-   45      | PRINT '(' palavra ')' ';'
+   45 scan: SCAN '(' ID ')'
 
-   46 palavra: palavra LETRA
-   47        | palavra DIGITO
-   48        | LETRA
-   49        | DIGITO
+   46 print: PRINT '(' termo ')' ';'
+   47      | PRINT '(' palavra ')' ';'
+
+   48 palavra: palavra LETRA
+   49        | palavra DIGITO
+   50        | LETRA
+   51        | DIGITO
 
 
 Terminals, with rules where they appear
 
 $end (0) 0
-'!' (33) 34
-'(' (40) 8 9 10 11 18 19 20 23 26 27 28 32 36 43 44 45
-')' (41) 8 9 10 11 18 19 20 23 26 27 28 32 36 43 44 45
-';' (59) 7 8 9 21 22 23 24 26 27 28 44 45
-'[' (91) 13 15 30
-']' (93) 13 15 30
-'{' (123) 10 11 18 19 20
-'}' (125) 10 11 18 19 20
+'!' (33) 36
+'(' (40) 10 11 12 13 20 21 22 25 28 29 30 34 38 45 46 47
+')' (41) 10 11 12 13 20 21 22 25 28 29 30 34 38 45 46 47
+',' (44) 7
+';' (59) 9 10 11 23 24 25 26 28 29 30 46 47
+'[' (91) 15 17 32
+']' (93) 15 17 32
+'{' (123) 12 13 20 21 22
+'}' (125) 12 13 20 21 22
 error (256)
-OP_ARITM (258) 38
-OP_COMP (259) 35
-OP_LOG (260) 33
-OP_ASSIGN (261) 29 30
+OP_ARITM (258) 40
+OP_COMP (259) 37
+OP_LOG (260) 35
+OP_ASSIGN (261) 31 32
 BOOL (262)
-TIPO (263) 7 8 9 10 11 12 13 14 15
+TIPO (263) 7 9 10 11 12 13 14 15 16 17
 CONDICOES (264)
-LACOS (265) 20
-RETORNO (266) 21 22 23
-INT (267) 30 41
-FLOAT (268) 42
-ID (269) 7 8 9 10 11 12 13 14 15 26 27 28 29 30 40 43
-DIGITO (270) 47 49
-LETRA (271) 46 48
-SEPARADOR (272)
-PRINT (273) 44 45
-SCAN (274) 43
-"tuple" (275) 5
-"if" (276) 18 19
-"else" (277) 19
+LACOS (265) 22
+RETORNO (266) 23 24 25
+INT (267) 32 43
+FLOAT (268) 44
+TUPLE (269) 5
+ID (270) 9 10 11 12 13 14 15 16 17 28 29 30 31 32 42 45
+DIGITO (271) 49 51
+LETRA (272) 48 50
+SEPARADOR (273)
+PRINT (274) 46 47
+SCAN (275) 45
+"if" (276) 20 21
+"else" (277) 21
 
 
 Nonterminals, with rules where they appear
 
-$accept (31)
+$accept (32)
     on left: 0
-programa (32)
+programa (33)
     on left: 1, on right: 0
-declaracoes (33)
+declaracoes (34)
     on left: 2 3, on right: 1 2
-declaracao (34)
-    on left: 4 5 6, on right: 2 3 5
-var_decl (35)
-    on left: 7, on right: 4
-func_decl (36)
-    on left: 8 9 10 11, on right: 6
-parm_tipos (37)
-    on left: 12 13 14 15, on right: 8 10 12 13
-cod_blocks (38)
-    on left: 16 17, on right: 10 11 16 18 19
-cod_block (39)
-    on left: 18 19 20 21 22 23 24 25 26 27 28, on right: 16 17 20
-assign (40)
-    on left: 29 30, on right: 24
-expressao (41)
-    on left: 31 32, on right: 23 26 29 30 32
-expressao_logica (42)
-    on left: 33 34 35 36 37, on right: 18 19 20
-op_expressao (43)
-    on left: 38 39, on right: 31 33 34 35 36 37 38
-termo (44)
-    on left: 40 41 42, on right: 22 38 39 44
-scan (45)
-    on left: 43, on right: 28
-print (46)
-    on left: 44 45, on right: 25
-palavra (47)
-    on left: 46 47 48 49, on right: 45 46 47
+declaracao (35)
+    on left: 4 5 6, on right: 2 3
+declaracao_tupla (36)
+    on left: 7 8, on right: 5 7
+var_decl (37)
+    on left: 9, on right: 4 8
+func_decl (38)
+    on left: 10 11 12 13, on right: 6
+parm_tipos (39)
+    on left: 14 15 16 17, on right: 10 12 14 15
+cod_blocks (40)
+    on left: 18 19, on right: 12 13 18 20 21
+cod_block (41)
+    on left: 20 21 22 23 24 25 26 27 28 29 30, on right: 18 19 22
+assign (42)
+    on left: 31 32, on right: 26
+expressao (43)
+    on left: 33 34, on right: 25 28 31 32 34
+expressao_logica (44)
+    on left: 35 36 37 38 39, on right: 20 21 22
+op_expressao (45)
+    on left: 40 41, on right: 33 35 36 37 38 39 40
+termo (46)
+    on left: 42 43 44, on right: 24 40 41 46
+scan (47)
+    on left: 45, on right: 30
+print (48)
+    on left: 46 47, on right: 27
+palavra (49)
+    on left: 48 49 50 51, on right: 47 48 49
 
 
 state 0
 
     0 $accept: . programa $end
 
-    TIPO     shift, and go to state 1
-    "tuple"  shift, and go to state 2
+    TIPO   shift, and go to state 1
+    TUPLE  shift, and go to state 2
 
     programa     go to state 3
     declaracoes  go to state 4
@@ -163,32 +169,30 @@ state 0
 
 state 1
 
-    7 var_decl: TIPO . ID ';'
-    8 func_decl: TIPO . ID '(' parm_tipos ')' ';'
-    9          | TIPO . ID '(' ')' ';'
-   10          | TIPO . ID '(' parm_tipos ')' '{' cod_blocks '}'
-   11          | TIPO . ID '(' ')' '{' cod_blocks '}'
+    9 var_decl: TIPO . ID ';'
+   10 func_decl: TIPO . ID '(' parm_tipos ')' ';'
+   11          | TIPO . ID '(' ')' ';'
+   12          | TIPO . ID '(' parm_tipos ')' '{' cod_blocks '}'
+   13          | TIPO . ID '(' ')' '{' cod_blocks '}'
 
     ID  shift, and go to state 8
 
 
 state 2
 
-    5 declaracao: "tuple" . declaracao
+    5 declaracao: TUPLE . declaracao_tupla
 
-    TIPO     shift, and go to state 1
-    "tuple"  shift, and go to state 2
+    TIPO  shift, and go to state 9
 
-    declaracao  go to state 9
-    var_decl    go to state 6
-    func_decl   go to state 7
+    declaracao_tupla  go to state 10
+    var_decl          go to state 11
 
 
 state 3
 
     0 $accept: programa . $end
 
-    $end  shift, and go to state 10
+    $end  shift, and go to state 12
 
 
 state 4
@@ -196,12 +200,12 @@ state 4
     1 programa: declaracoes .
     2 declaracoes: declaracoes . declaracao
 
-    TIPO     shift, and go to state 1
-    "tuple"  shift, and go to state 2
+    TIPO   shift, and go to state 1
+    TUPLE  shift, and go to state 2
 
     $default  reduce using rule 1 (programa)
 
-    declaracao  go to state 11
+    declaracao  go to state 13
     var_decl    go to state 6
     func_decl   go to state 7
 
@@ -229,1038 +233,1078 @@ state 7
 
 state 8
 
-    7 var_decl: TIPO ID . ';'
-    8 func_decl: TIPO ID . '(' parm_tipos ')' ';'
-    9          | TIPO ID . '(' ')' ';'
-   10          | TIPO ID . '(' parm_tipos ')' '{' cod_blocks '}'
-   11          | TIPO ID . '(' ')' '{' cod_blocks '}'
+    9 var_decl: TIPO ID . ';'
+   10 func_decl: TIPO ID . '(' parm_tipos ')' ';'
+   11          | TIPO ID . '(' ')' ';'
+   12          | TIPO ID . '(' parm_tipos ')' '{' cod_blocks '}'
+   13          | TIPO ID . '(' ')' '{' cod_blocks '}'
 
-    ';'  shift, and go to state 12
-    '('  shift, and go to state 13
+    ';'  shift, and go to state 14
+    '('  shift, and go to state 15
 
 
 state 9
 
-    5 declaracao: "tuple" declaracao .
+    7 declaracao_tupla: TIPO . ',' declaracao_tupla
+    9 var_decl: TIPO . ID ';'
+
+    ID   shift, and go to state 16
+    ','  shift, and go to state 17
+
+
+state 10
+
+    5 declaracao: TUPLE declaracao_tupla .
 
     $default  reduce using rule 5 (declaracao)
 
 
-state 10
+state 11
+
+    8 declaracao_tupla: var_decl .
+
+    $default  reduce using rule 8 (declaracao_tupla)
+
+
+state 12
 
     0 $accept: programa $end .
 
     $default  accept
 
 
-state 11
+state 13
 
     2 declaracoes: declaracoes declaracao .
 
     $default  reduce using rule 2 (declaracoes)
 
 
-state 12
-
-    7 var_decl: TIPO ID ';' .
-
-    $default  reduce using rule 7 (var_decl)
-
-
-state 13
-
-    8 func_decl: TIPO ID '(' . parm_tipos ')' ';'
-    9          | TIPO ID '(' . ')' ';'
-   10          | TIPO ID '(' . parm_tipos ')' '{' cod_blocks '}'
-   11          | TIPO ID '(' . ')' '{' cod_blocks '}'
-
-    TIPO  shift, and go to state 14
-    ')'   shift, and go to state 15
-
-    parm_tipos  go to state 16
-
-
 state 14
 
-   14 parm_tipos: TIPO . ID
-   15           | TIPO . ID '[' ']'
+    9 var_decl: TIPO ID ';' .
 
-    ID  shift, and go to state 17
+    $default  reduce using rule 9 (var_decl)
 
 
 state 15
 
-    9 func_decl: TIPO ID '(' ')' . ';'
-   11          | TIPO ID '(' ')' . '{' cod_blocks '}'
+   10 func_decl: TIPO ID '(' . parm_tipos ')' ';'
+   11          | TIPO ID '(' . ')' ';'
+   12          | TIPO ID '(' . parm_tipos ')' '{' cod_blocks '}'
+   13          | TIPO ID '(' . ')' '{' cod_blocks '}'
 
-    ';'  shift, and go to state 18
-    '{'  shift, and go to state 19
+    TIPO  shift, and go to state 18
+    ')'   shift, and go to state 19
+
+    parm_tipos  go to state 20
 
 
 state 16
 
-    8 func_decl: TIPO ID '(' parm_tipos . ')' ';'
-   10          | TIPO ID '(' parm_tipos . ')' '{' cod_blocks '}'
-   12 parm_tipos: parm_tipos . TIPO ID
-   13           | parm_tipos . TIPO ID '[' ']'
+    9 var_decl: TIPO ID . ';'
 
-    TIPO  shift, and go to state 20
-    ')'   shift, and go to state 21
+    ';'  shift, and go to state 14
 
 
 state 17
 
-   14 parm_tipos: TIPO ID .
-   15           | TIPO ID . '[' ']'
+    7 declaracao_tupla: TIPO ',' . declaracao_tupla
 
-    '['  shift, and go to state 22
+    TIPO  shift, and go to state 9
 
-    $default  reduce using rule 14 (parm_tipos)
+    declaracao_tupla  go to state 21
+    var_decl          go to state 11
 
 
 state 18
 
-    9 func_decl: TIPO ID '(' ')' ';' .
+   16 parm_tipos: TIPO . ID
+   17           | TIPO . ID '[' ']'
 
-    $default  reduce using rule 9 (func_decl)
+    ID  shift, and go to state 22
 
 
 state 19
 
-   11 func_decl: TIPO ID '(' ')' '{' . cod_blocks '}'
+   11 func_decl: TIPO ID '(' ')' . ';'
+   13          | TIPO ID '(' ')' . '{' cod_blocks '}'
 
-    LACOS    shift, and go to state 23
-    RETORNO  shift, and go to state 24
-    ID       shift, and go to state 25
-    PRINT    shift, and go to state 26
-    SCAN     shift, and go to state 27
-    "if"     shift, and go to state 28
-
-    cod_blocks  go to state 29
-    cod_block   go to state 30
-    assign      go to state 31
-    scan        go to state 32
-    print       go to state 33
+    ';'  shift, and go to state 23
+    '{'  shift, and go to state 24
 
 
 state 20
 
-   12 parm_tipos: parm_tipos TIPO . ID
-   13           | parm_tipos TIPO . ID '[' ']'
+   10 func_decl: TIPO ID '(' parm_tipos . ')' ';'
+   12          | TIPO ID '(' parm_tipos . ')' '{' cod_blocks '}'
+   14 parm_tipos: parm_tipos . TIPO ID
+   15           | parm_tipos . TIPO ID '[' ']'
 
-    ID  shift, and go to state 34
+    TIPO  shift, and go to state 25
+    ')'   shift, and go to state 26
 
 
 state 21
 
-    8 func_decl: TIPO ID '(' parm_tipos ')' . ';'
-   10          | TIPO ID '(' parm_tipos ')' . '{' cod_blocks '}'
+    7 declaracao_tupla: TIPO ',' declaracao_tupla .
 
-    ';'  shift, and go to state 35
-    '{'  shift, and go to state 36
+    $default  reduce using rule 7 (declaracao_tupla)
 
 
 state 22
 
-   15 parm_tipos: TIPO ID '[' . ']'
+   16 parm_tipos: TIPO ID .
+   17           | TIPO ID . '[' ']'
 
-    ']'  shift, and go to state 37
+    '['  shift, and go to state 27
+
+    $default  reduce using rule 16 (parm_tipos)
 
 
 state 23
 
-   20 cod_block: LACOS . '(' expressao_logica ')' '{' cod_block '}'
+   11 func_decl: TIPO ID '(' ')' ';' .
 
-    '('  shift, and go to state 38
+    $default  reduce using rule 11 (func_decl)
 
 
 state 24
 
-   21 cod_block: RETORNO . ';'
-   22          | RETORNO . termo ';'
-   23          | RETORNO . '(' expressao ')' ';'
+   13 func_decl: TIPO ID '(' ')' '{' . cod_blocks '}'
 
-    INT    shift, and go to state 39
-    FLOAT  shift, and go to state 40
-    ID     shift, and go to state 41
-    ';'    shift, and go to state 42
-    '('    shift, and go to state 43
+    LACOS    shift, and go to state 28
+    RETORNO  shift, and go to state 29
+    ID       shift, and go to state 30
+    PRINT    shift, and go to state 31
+    SCAN     shift, and go to state 32
+    "if"     shift, and go to state 33
 
-    termo  go to state 44
+    cod_blocks  go to state 34
+    cod_block   go to state 35
+    assign      go to state 36
+    scan        go to state 37
+    print       go to state 38
 
 
 state 25
 
-   26 cod_block: ID . '(' expressao ')' ';'
-   27          | ID . '(' ')' ';'
-   29 assign: ID . OP_ASSIGN expressao
-   30       | ID . '[' INT ']' OP_ASSIGN expressao
+   14 parm_tipos: parm_tipos TIPO . ID
+   15           | parm_tipos TIPO . ID '[' ']'
 
-    OP_ASSIGN  shift, and go to state 45
-    '('        shift, and go to state 46
-    '['        shift, and go to state 47
+    ID  shift, and go to state 39
 
 
 state 26
 
-   44 print: PRINT . '(' termo ')' ';'
-   45      | PRINT . '(' palavra ')' ';'
+   10 func_decl: TIPO ID '(' parm_tipos ')' . ';'
+   12          | TIPO ID '(' parm_tipos ')' . '{' cod_blocks '}'
 
-    '('  shift, and go to state 48
+    ';'  shift, and go to state 40
+    '{'  shift, and go to state 41
 
 
 state 27
 
-   43 scan: SCAN . '(' ID ')'
+   17 parm_tipos: TIPO ID '[' . ']'
 
-    '('  shift, and go to state 49
+    ']'  shift, and go to state 42
 
 
 state 28
 
-   18 cod_block: "if" . '(' expressao_logica ')' '{' cod_blocks '}'
-   19          | "if" . '(' expressao_logica ')' '{' cod_blocks '}' "else" '{' cod_blocks '}'
+   22 cod_block: LACOS . '(' expressao_logica ')' '{' cod_block '}'
 
-    '('  shift, and go to state 50
+    '('  shift, and go to state 43
 
 
 state 29
 
-   11 func_decl: TIPO ID '(' ')' '{' cod_blocks . '}'
-   16 cod_blocks: cod_blocks . cod_block
+   23 cod_block: RETORNO . ';'
+   24          | RETORNO . termo ';'
+   25          | RETORNO . '(' expressao ')' ';'
 
-    LACOS    shift, and go to state 23
-    RETORNO  shift, and go to state 24
-    ID       shift, and go to state 25
-    PRINT    shift, and go to state 26
-    SCAN     shift, and go to state 27
-    '}'      shift, and go to state 51
-    "if"     shift, and go to state 28
+    INT    shift, and go to state 44
+    FLOAT  shift, and go to state 45
+    ID     shift, and go to state 46
+    ';'    shift, and go to state 47
+    '('    shift, and go to state 48
 
-    cod_block  go to state 52
-    assign     go to state 31
-    scan       go to state 32
-    print      go to state 33
+    termo  go to state 49
 
 
 state 30
 
-   17 cod_blocks: cod_block .
+   28 cod_block: ID . '(' expressao ')' ';'
+   29          | ID . '(' ')' ';'
+   31 assign: ID . OP_ASSIGN expressao
+   32       | ID . '[' INT ']' OP_ASSIGN expressao
 
-    $default  reduce using rule 17 (cod_blocks)
+    OP_ASSIGN  shift, and go to state 50
+    '('        shift, and go to state 51
+    '['        shift, and go to state 52
 
 
 state 31
 
-   24 cod_block: assign . ';'
+   46 print: PRINT . '(' termo ')' ';'
+   47      | PRINT . '(' palavra ')' ';'
 
-    ';'  shift, and go to state 53
+    '('  shift, and go to state 53
 
 
 state 32
 
-   28 cod_block: scan . '(' ID ')' ';'
+   45 scan: SCAN . '(' ID ')'
 
     '('  shift, and go to state 54
 
 
 state 33
 
-   25 cod_block: print .
+   20 cod_block: "if" . '(' expressao_logica ')' '{' cod_blocks '}'
+   21          | "if" . '(' expressao_logica ')' '{' cod_blocks '}' "else" '{' cod_blocks '}'
 
-    $default  reduce using rule 25 (cod_block)
+    '('  shift, and go to state 55
 
 
 state 34
 
-   12 parm_tipos: parm_tipos TIPO ID .
-   13           | parm_tipos TIPO ID . '[' ']'
+   13 func_decl: TIPO ID '(' ')' '{' cod_blocks . '}'
+   18 cod_blocks: cod_blocks . cod_block
 
-    '['  shift, and go to state 55
+    LACOS    shift, and go to state 28
+    RETORNO  shift, and go to state 29
+    ID       shift, and go to state 30
+    PRINT    shift, and go to state 31
+    SCAN     shift, and go to state 32
+    '}'      shift, and go to state 56
+    "if"     shift, and go to state 33
 
-    $default  reduce using rule 12 (parm_tipos)
+    cod_block  go to state 57
+    assign     go to state 36
+    scan       go to state 37
+    print      go to state 38
 
 
 state 35
 
-    8 func_decl: TIPO ID '(' parm_tipos ')' ';' .
+   19 cod_blocks: cod_block .
 
-    $default  reduce using rule 8 (func_decl)
+    $default  reduce using rule 19 (cod_blocks)
 
 
 state 36
 
-   10 func_decl: TIPO ID '(' parm_tipos ')' '{' . cod_blocks '}'
+   26 cod_block: assign . ';'
 
-    LACOS    shift, and go to state 23
-    RETORNO  shift, and go to state 24
-    ID       shift, and go to state 25
-    PRINT    shift, and go to state 26
-    SCAN     shift, and go to state 27
-    "if"     shift, and go to state 28
-
-    cod_blocks  go to state 56
-    cod_block   go to state 30
-    assign      go to state 31
-    scan        go to state 32
-    print       go to state 33
+    ';'  shift, and go to state 58
 
 
 state 37
 
-   15 parm_tipos: TIPO ID '[' ']' .
+   30 cod_block: scan . '(' ID ')' ';'
 
-    $default  reduce using rule 15 (parm_tipos)
+    '('  shift, and go to state 59
 
 
 state 38
 
-   20 cod_block: LACOS '(' . expressao_logica ')' '{' cod_block '}'
-
-    OP_LOG  shift, and go to state 57
-    INT     shift, and go to state 39
-    FLOAT   shift, and go to state 40
-    ID      shift, and go to state 41
-    '('     shift, and go to state 58
-    '!'     shift, and go to state 59
-
-    expressao_logica  go to state 60
-    op_expressao      go to state 61
-    termo             go to state 62
-
-
-state 39
-
-   41 termo: INT .
-
-    $default  reduce using rule 41 (termo)
-
-
-state 40
-
-   42 termo: FLOAT .
-
-    $default  reduce using rule 42 (termo)
-
-
-state 41
-
-   40 termo: ID .
-
-    $default  reduce using rule 40 (termo)
-
-
-state 42
-
-   21 cod_block: RETORNO ';' .
-
-    $default  reduce using rule 21 (cod_block)
-
-
-state 43
-
-   23 cod_block: RETORNO '(' . expressao ')' ';'
-
-    INT    shift, and go to state 39
-    FLOAT  shift, and go to state 40
-    ID     shift, and go to state 41
-    '('    shift, and go to state 63
-
-    expressao     go to state 64
-    op_expressao  go to state 65
-    termo         go to state 62
-
-
-state 44
-
-   22 cod_block: RETORNO termo . ';'
-
-    ';'  shift, and go to state 66
-
-
-state 45
-
-   29 assign: ID OP_ASSIGN . expressao
-
-    INT    shift, and go to state 39
-    FLOAT  shift, and go to state 40
-    ID     shift, and go to state 41
-    '('    shift, and go to state 63
-
-    expressao     go to state 67
-    op_expressao  go to state 65
-    termo         go to state 62
-
-
-state 46
-
-   26 cod_block: ID '(' . expressao ')' ';'
-   27          | ID '(' . ')' ';'
-
-    INT    shift, and go to state 39
-    FLOAT  shift, and go to state 40
-    ID     shift, and go to state 41
-    '('    shift, and go to state 63
-    ')'    shift, and go to state 68
-
-    expressao     go to state 69
-    op_expressao  go to state 65
-    termo         go to state 62
-
-
-state 47
-
-   30 assign: ID '[' . INT ']' OP_ASSIGN expressao
-
-    INT  shift, and go to state 70
-
-
-state 48
-
-   44 print: PRINT '(' . termo ')' ';'
-   45      | PRINT '(' . palavra ')' ';'
-
-    INT     shift, and go to state 39
-    FLOAT   shift, and go to state 40
-    ID      shift, and go to state 41
-    DIGITO  shift, and go to state 71
-    LETRA   shift, and go to state 72
-
-    termo    go to state 73
-    palavra  go to state 74
-
-
-state 49
-
-   43 scan: SCAN '(' . ID ')'
-
-    ID  shift, and go to state 75
-
-
-state 50
-
-   18 cod_block: "if" '(' . expressao_logica ')' '{' cod_blocks '}'
-   19          | "if" '(' . expressao_logica ')' '{' cod_blocks '}' "else" '{' cod_blocks '}'
-
-    OP_LOG  shift, and go to state 57
-    INT     shift, and go to state 39
-    FLOAT   shift, and go to state 40
-    ID      shift, and go to state 41
-    '('     shift, and go to state 58
-    '!'     shift, and go to state 59
-
-    expressao_logica  go to state 76
-    op_expressao      go to state 61
-    termo             go to state 62
-
-
-state 51
-
-   11 func_decl: TIPO ID '(' ')' '{' cod_blocks '}' .
-
-    $default  reduce using rule 11 (func_decl)
-
-
-state 52
-
-   16 cod_blocks: cod_blocks cod_block .
-
-    $default  reduce using rule 16 (cod_blocks)
-
-
-state 53
-
-   24 cod_block: assign ';' .
-
-    $default  reduce using rule 24 (cod_block)
-
-
-state 54
-
-   28 cod_block: scan '(' . ID ')' ';'
-
-    ID  shift, and go to state 77
-
-
-state 55
-
-   13 parm_tipos: parm_tipos TIPO ID '[' . ']'
-
-    ']'  shift, and go to state 78
-
-
-state 56
-
-   10 func_decl: TIPO ID '(' parm_tipos ')' '{' cod_blocks . '}'
-   16 cod_blocks: cod_blocks . cod_block
-
-    LACOS    shift, and go to state 23
-    RETORNO  shift, and go to state 24
-    ID       shift, and go to state 25
-    PRINT    shift, and go to state 26
-    SCAN     shift, and go to state 27
-    '}'      shift, and go to state 79
-    "if"     shift, and go to state 28
-
-    cod_block  go to state 52
-    assign     go to state 31
-    scan       go to state 32
-    print      go to state 33
-
-
-state 57
-
-   33 expressao_logica: OP_LOG . op_expressao
-
-    INT    shift, and go to state 39
-    FLOAT  shift, and go to state 40
-    ID     shift, and go to state 41
-
-    op_expressao  go to state 80
-    termo         go to state 62
-
-
-state 58
-
-   36 expressao_logica: '(' . op_expressao ')'
-
-    INT    shift, and go to state 39
-    FLOAT  shift, and go to state 40
-    ID     shift, and go to state 41
-
-    op_expressao  go to state 81
-    termo         go to state 62
-
-
-state 59
-
-   34 expressao_logica: '!' . op_expressao
-
-    INT    shift, and go to state 39
-    FLOAT  shift, and go to state 40
-    ID     shift, and go to state 41
-
-    op_expressao  go to state 82
-    termo         go to state 62
-
-
-state 60
-
-   20 cod_block: LACOS '(' expressao_logica . ')' '{' cod_block '}'
-
-    ')'  shift, and go to state 83
-
-
-state 61
-
-   35 expressao_logica: op_expressao . OP_COMP op_expressao
-   37                 | op_expressao .
-   38 op_expressao: op_expressao . OP_ARITM termo
-
-    OP_ARITM  shift, and go to state 84
-    OP_COMP   shift, and go to state 85
-
-    $default  reduce using rule 37 (expressao_logica)
-
-
-state 62
-
-   39 op_expressao: termo .
-
-    $default  reduce using rule 39 (op_expressao)
-
-
-state 63
-
-   32 expressao: '(' . expressao ')'
-
-    INT    shift, and go to state 39
-    FLOAT  shift, and go to state 40
-    ID     shift, and go to state 41
-    '('    shift, and go to state 63
-
-    expressao     go to state 86
-    op_expressao  go to state 65
-    termo         go to state 62
-
-
-state 64
-
-   23 cod_block: RETORNO '(' expressao . ')' ';'
-
-    ')'  shift, and go to state 87
-
-
-state 65
-
-   31 expressao: op_expressao .
-   38 op_expressao: op_expressao . OP_ARITM termo
-
-    OP_ARITM  shift, and go to state 84
-
-    $default  reduce using rule 31 (expressao)
-
-
-state 66
-
-   22 cod_block: RETORNO termo ';' .
-
-    $default  reduce using rule 22 (cod_block)
-
-
-state 67
-
-   29 assign: ID OP_ASSIGN expressao .
-
-    $default  reduce using rule 29 (assign)
-
-
-state 68
-
-   27 cod_block: ID '(' ')' . ';'
-
-    ';'  shift, and go to state 88
-
-
-state 69
-
-   26 cod_block: ID '(' expressao . ')' ';'
-
-    ')'  shift, and go to state 89
-
-
-state 70
-
-   30 assign: ID '[' INT . ']' OP_ASSIGN expressao
-
-    ']'  shift, and go to state 90
-
-
-state 71
-
-   49 palavra: DIGITO .
-
-    $default  reduce using rule 49 (palavra)
-
-
-state 72
-
-   48 palavra: LETRA .
-
-    $default  reduce using rule 48 (palavra)
-
-
-state 73
-
-   44 print: PRINT '(' termo . ')' ';'
-
-    ')'  shift, and go to state 91
-
-
-state 74
-
-   45 print: PRINT '(' palavra . ')' ';'
-   46 palavra: palavra . LETRA
-   47        | palavra . DIGITO
-
-    DIGITO  shift, and go to state 92
-    LETRA   shift, and go to state 93
-    ')'     shift, and go to state 94
-
-
-state 75
-
-   43 scan: SCAN '(' ID . ')'
-
-    ')'  shift, and go to state 95
-
-
-state 76
-
-   18 cod_block: "if" '(' expressao_logica . ')' '{' cod_blocks '}'
-   19          | "if" '(' expressao_logica . ')' '{' cod_blocks '}' "else" '{' cod_blocks '}'
-
-    ')'  shift, and go to state 96
-
-
-state 77
-
-   28 cod_block: scan '(' ID . ')' ';'
-
-    ')'  shift, and go to state 97
-
-
-state 78
-
-   13 parm_tipos: parm_tipos TIPO ID '[' ']' .
-
-    $default  reduce using rule 13 (parm_tipos)
-
-
-state 79
-
-   10 func_decl: TIPO ID '(' parm_tipos ')' '{' cod_blocks '}' .
-
-    $default  reduce using rule 10 (func_decl)
-
-
-state 80
-
-   33 expressao_logica: OP_LOG op_expressao .
-   38 op_expressao: op_expressao . OP_ARITM termo
-
-    OP_ARITM  shift, and go to state 84
-
-    $default  reduce using rule 33 (expressao_logica)
-
-
-state 81
-
-   36 expressao_logica: '(' op_expressao . ')'
-   38 op_expressao: op_expressao . OP_ARITM termo
-
-    OP_ARITM  shift, and go to state 84
-    ')'       shift, and go to state 98
-
-
-state 82
-
-   34 expressao_logica: '!' op_expressao .
-   38 op_expressao: op_expressao . OP_ARITM termo
-
-    OP_ARITM  shift, and go to state 84
-
-    $default  reduce using rule 34 (expressao_logica)
-
-
-state 83
-
-   20 cod_block: LACOS '(' expressao_logica ')' . '{' cod_block '}'
-
-    '{'  shift, and go to state 99
-
-
-state 84
-
-   38 op_expressao: op_expressao OP_ARITM . termo
-
-    INT    shift, and go to state 39
-    FLOAT  shift, and go to state 40
-    ID     shift, and go to state 41
-
-    termo  go to state 100
-
-
-state 85
-
-   35 expressao_logica: op_expressao OP_COMP . op_expressao
-
-    INT    shift, and go to state 39
-    FLOAT  shift, and go to state 40
-    ID     shift, and go to state 41
-
-    op_expressao  go to state 101
-    termo         go to state 62
-
-
-state 86
-
-   32 expressao: '(' expressao . ')'
-
-    ')'  shift, and go to state 102
-
-
-state 87
-
-   23 cod_block: RETORNO '(' expressao ')' . ';'
-
-    ';'  shift, and go to state 103
-
-
-state 88
-
-   27 cod_block: ID '(' ')' ';' .
+   27 cod_block: print .
 
     $default  reduce using rule 27 (cod_block)
 
 
-state 89
+state 39
 
-   26 cod_block: ID '(' expressao ')' . ';'
+   14 parm_tipos: parm_tipos TIPO ID .
+   15           | parm_tipos TIPO ID . '[' ']'
 
-    ';'  shift, and go to state 104
+    '['  shift, and go to state 60
 
-
-state 90
-
-   30 assign: ID '[' INT ']' . OP_ASSIGN expressao
-
-    OP_ASSIGN  shift, and go to state 105
+    $default  reduce using rule 14 (parm_tipos)
 
 
-state 91
+state 40
 
-   44 print: PRINT '(' termo ')' . ';'
+   10 func_decl: TIPO ID '(' parm_tipos ')' ';' .
 
-    ';'  shift, and go to state 106
-
-
-state 92
-
-   47 palavra: palavra DIGITO .
-
-    $default  reduce using rule 47 (palavra)
+    $default  reduce using rule 10 (func_decl)
 
 
-state 93
+state 41
 
-   46 palavra: palavra LETRA .
+   12 func_decl: TIPO ID '(' parm_tipos ')' '{' . cod_blocks '}'
 
-    $default  reduce using rule 46 (palavra)
+    LACOS    shift, and go to state 28
+    RETORNO  shift, and go to state 29
+    ID       shift, and go to state 30
+    PRINT    shift, and go to state 31
+    SCAN     shift, and go to state 32
+    "if"     shift, and go to state 33
 
-
-state 94
-
-   45 print: PRINT '(' palavra ')' . ';'
-
-    ';'  shift, and go to state 107
-
-
-state 95
-
-   43 scan: SCAN '(' ID ')' .
-
-    $default  reduce using rule 43 (scan)
+    cod_blocks  go to state 61
+    cod_block   go to state 35
+    assign      go to state 36
+    scan        go to state 37
+    print       go to state 38
 
 
-state 96
+state 42
 
-   18 cod_block: "if" '(' expressao_logica ')' . '{' cod_blocks '}'
-   19          | "if" '(' expressao_logica ')' . '{' cod_blocks '}' "else" '{' cod_blocks '}'
+   17 parm_tipos: TIPO ID '[' ']' .
 
-    '{'  shift, and go to state 108
-
-
-state 97
-
-   28 cod_block: scan '(' ID ')' . ';'
-
-    ';'  shift, and go to state 109
+    $default  reduce using rule 17 (parm_tipos)
 
 
-state 98
+state 43
 
-   36 expressao_logica: '(' op_expressao ')' .
+   22 cod_block: LACOS '(' . expressao_logica ')' '{' cod_block '}'
 
-    $default  reduce using rule 36 (expressao_logica)
+    OP_LOG  shift, and go to state 62
+    INT     shift, and go to state 44
+    FLOAT   shift, and go to state 45
+    ID      shift, and go to state 46
+    '('     shift, and go to state 63
+    '!'     shift, and go to state 64
 
-
-state 99
-
-   20 cod_block: LACOS '(' expressao_logica ')' '{' . cod_block '}'
-
-    LACOS    shift, and go to state 23
-    RETORNO  shift, and go to state 24
-    ID       shift, and go to state 25
-    PRINT    shift, and go to state 26
-    SCAN     shift, and go to state 27
-    "if"     shift, and go to state 28
-
-    cod_block  go to state 110
-    assign     go to state 31
-    scan       go to state 32
-    print      go to state 33
+    expressao_logica  go to state 65
+    op_expressao      go to state 66
+    termo             go to state 67
 
 
-state 100
+state 44
 
-   38 op_expressao: op_expressao OP_ARITM termo .
+   43 termo: INT .
 
-    $default  reduce using rule 38 (op_expressao)
-
-
-state 101
-
-   35 expressao_logica: op_expressao OP_COMP op_expressao .
-   38 op_expressao: op_expressao . OP_ARITM termo
-
-    OP_ARITM  shift, and go to state 84
-
-    $default  reduce using rule 35 (expressao_logica)
+    $default  reduce using rule 43 (termo)
 
 
-state 102
+state 45
 
-   32 expressao: '(' expressao ')' .
+   44 termo: FLOAT .
 
-    $default  reduce using rule 32 (expressao)
+    $default  reduce using rule 44 (termo)
 
 
-state 103
+state 46
 
-   23 cod_block: RETORNO '(' expressao ')' ';' .
+   42 termo: ID .
+
+    $default  reduce using rule 42 (termo)
+
+
+state 47
+
+   23 cod_block: RETORNO ';' .
 
     $default  reduce using rule 23 (cod_block)
 
 
-state 104
+state 48
 
-   26 cod_block: ID '(' expressao ')' ';' .
+   25 cod_block: RETORNO '(' . expressao ')' ';'
+
+    INT    shift, and go to state 44
+    FLOAT  shift, and go to state 45
+    ID     shift, and go to state 46
+    '('    shift, and go to state 68
+
+    expressao     go to state 69
+    op_expressao  go to state 70
+    termo         go to state 67
+
+
+state 49
+
+   24 cod_block: RETORNO termo . ';'
+
+    ';'  shift, and go to state 71
+
+
+state 50
+
+   31 assign: ID OP_ASSIGN . expressao
+
+    INT    shift, and go to state 44
+    FLOAT  shift, and go to state 45
+    ID     shift, and go to state 46
+    '('    shift, and go to state 68
+
+    expressao     go to state 72
+    op_expressao  go to state 70
+    termo         go to state 67
+
+
+state 51
+
+   28 cod_block: ID '(' . expressao ')' ';'
+   29          | ID '(' . ')' ';'
+
+    INT    shift, and go to state 44
+    FLOAT  shift, and go to state 45
+    ID     shift, and go to state 46
+    '('    shift, and go to state 68
+    ')'    shift, and go to state 73
+
+    expressao     go to state 74
+    op_expressao  go to state 70
+    termo         go to state 67
+
+
+state 52
+
+   32 assign: ID '[' . INT ']' OP_ASSIGN expressao
+
+    INT  shift, and go to state 75
+
+
+state 53
+
+   46 print: PRINT '(' . termo ')' ';'
+   47      | PRINT '(' . palavra ')' ';'
+
+    INT     shift, and go to state 44
+    FLOAT   shift, and go to state 45
+    ID      shift, and go to state 46
+    DIGITO  shift, and go to state 76
+    LETRA   shift, and go to state 77
+
+    termo    go to state 78
+    palavra  go to state 79
+
+
+state 54
+
+   45 scan: SCAN '(' . ID ')'
+
+    ID  shift, and go to state 80
+
+
+state 55
+
+   20 cod_block: "if" '(' . expressao_logica ')' '{' cod_blocks '}'
+   21          | "if" '(' . expressao_logica ')' '{' cod_blocks '}' "else" '{' cod_blocks '}'
+
+    OP_LOG  shift, and go to state 62
+    INT     shift, and go to state 44
+    FLOAT   shift, and go to state 45
+    ID      shift, and go to state 46
+    '('     shift, and go to state 63
+    '!'     shift, and go to state 64
+
+    expressao_logica  go to state 81
+    op_expressao      go to state 66
+    termo             go to state 67
+
+
+state 56
+
+   13 func_decl: TIPO ID '(' ')' '{' cod_blocks '}' .
+
+    $default  reduce using rule 13 (func_decl)
+
+
+state 57
+
+   18 cod_blocks: cod_blocks cod_block .
+
+    $default  reduce using rule 18 (cod_blocks)
+
+
+state 58
+
+   26 cod_block: assign ';' .
 
     $default  reduce using rule 26 (cod_block)
 
 
+state 59
+
+   30 cod_block: scan '(' . ID ')' ';'
+
+    ID  shift, and go to state 82
+
+
+state 60
+
+   15 parm_tipos: parm_tipos TIPO ID '[' . ']'
+
+    ']'  shift, and go to state 83
+
+
+state 61
+
+   12 func_decl: TIPO ID '(' parm_tipos ')' '{' cod_blocks . '}'
+   18 cod_blocks: cod_blocks . cod_block
+
+    LACOS    shift, and go to state 28
+    RETORNO  shift, and go to state 29
+    ID       shift, and go to state 30
+    PRINT    shift, and go to state 31
+    SCAN     shift, and go to state 32
+    '}'      shift, and go to state 84
+    "if"     shift, and go to state 33
+
+    cod_block  go to state 57
+    assign     go to state 36
+    scan       go to state 37
+    print      go to state 38
+
+
+state 62
+
+   35 expressao_logica: OP_LOG . op_expressao
+
+    INT    shift, and go to state 44
+    FLOAT  shift, and go to state 45
+    ID     shift, and go to state 46
+
+    op_expressao  go to state 85
+    termo         go to state 67
+
+
+state 63
+
+   38 expressao_logica: '(' . op_expressao ')'
+
+    INT    shift, and go to state 44
+    FLOAT  shift, and go to state 45
+    ID     shift, and go to state 46
+
+    op_expressao  go to state 86
+    termo         go to state 67
+
+
+state 64
+
+   36 expressao_logica: '!' . op_expressao
+
+    INT    shift, and go to state 44
+    FLOAT  shift, and go to state 45
+    ID     shift, and go to state 46
+
+    op_expressao  go to state 87
+    termo         go to state 67
+
+
+state 65
+
+   22 cod_block: LACOS '(' expressao_logica . ')' '{' cod_block '}'
+
+    ')'  shift, and go to state 88
+
+
+state 66
+
+   37 expressao_logica: op_expressao . OP_COMP op_expressao
+   39                 | op_expressao .
+   40 op_expressao: op_expressao . OP_ARITM termo
+
+    OP_ARITM  shift, and go to state 89
+    OP_COMP   shift, and go to state 90
+
+    $default  reduce using rule 39 (expressao_logica)
+
+
+state 67
+
+   41 op_expressao: termo .
+
+    $default  reduce using rule 41 (op_expressao)
+
+
+state 68
+
+   34 expressao: '(' . expressao ')'
+
+    INT    shift, and go to state 44
+    FLOAT  shift, and go to state 45
+    ID     shift, and go to state 46
+    '('    shift, and go to state 68
+
+    expressao     go to state 91
+    op_expressao  go to state 70
+    termo         go to state 67
+
+
+state 69
+
+   25 cod_block: RETORNO '(' expressao . ')' ';'
+
+    ')'  shift, and go to state 92
+
+
+state 70
+
+   33 expressao: op_expressao .
+   40 op_expressao: op_expressao . OP_ARITM termo
+
+    OP_ARITM  shift, and go to state 89
+
+    $default  reduce using rule 33 (expressao)
+
+
+state 71
+
+   24 cod_block: RETORNO termo ';' .
+
+    $default  reduce using rule 24 (cod_block)
+
+
+state 72
+
+   31 assign: ID OP_ASSIGN expressao .
+
+    $default  reduce using rule 31 (assign)
+
+
+state 73
+
+   29 cod_block: ID '(' ')' . ';'
+
+    ';'  shift, and go to state 93
+
+
+state 74
+
+   28 cod_block: ID '(' expressao . ')' ';'
+
+    ')'  shift, and go to state 94
+
+
+state 75
+
+   32 assign: ID '[' INT . ']' OP_ASSIGN expressao
+
+    ']'  shift, and go to state 95
+
+
+state 76
+
+   51 palavra: DIGITO .
+
+    $default  reduce using rule 51 (palavra)
+
+
+state 77
+
+   50 palavra: LETRA .
+
+    $default  reduce using rule 50 (palavra)
+
+
+state 78
+
+   46 print: PRINT '(' termo . ')' ';'
+
+    ')'  shift, and go to state 96
+
+
+state 79
+
+   47 print: PRINT '(' palavra . ')' ';'
+   48 palavra: palavra . LETRA
+   49        | palavra . DIGITO
+
+    DIGITO  shift, and go to state 97
+    LETRA   shift, and go to state 98
+    ')'     shift, and go to state 99
+
+
+state 80
+
+   45 scan: SCAN '(' ID . ')'
+
+    ')'  shift, and go to state 100
+
+
+state 81
+
+   20 cod_block: "if" '(' expressao_logica . ')' '{' cod_blocks '}'
+   21          | "if" '(' expressao_logica . ')' '{' cod_blocks '}' "else" '{' cod_blocks '}'
+
+    ')'  shift, and go to state 101
+
+
+state 82
+
+   30 cod_block: scan '(' ID . ')' ';'
+
+    ')'  shift, and go to state 102
+
+
+state 83
+
+   15 parm_tipos: parm_tipos TIPO ID '[' ']' .
+
+    $default  reduce using rule 15 (parm_tipos)
+
+
+state 84
+
+   12 func_decl: TIPO ID '(' parm_tipos ')' '{' cod_blocks '}' .
+
+    $default  reduce using rule 12 (func_decl)
+
+
+state 85
+
+   35 expressao_logica: OP_LOG op_expressao .
+   40 op_expressao: op_expressao . OP_ARITM termo
+
+    OP_ARITM  shift, and go to state 89
+
+    $default  reduce using rule 35 (expressao_logica)
+
+
+state 86
+
+   38 expressao_logica: '(' op_expressao . ')'
+   40 op_expressao: op_expressao . OP_ARITM termo
+
+    OP_ARITM  shift, and go to state 89
+    ')'       shift, and go to state 103
+
+
+state 87
+
+   36 expressao_logica: '!' op_expressao .
+   40 op_expressao: op_expressao . OP_ARITM termo
+
+    OP_ARITM  shift, and go to state 89
+
+    $default  reduce using rule 36 (expressao_logica)
+
+
+state 88
+
+   22 cod_block: LACOS '(' expressao_logica ')' . '{' cod_block '}'
+
+    '{'  shift, and go to state 104
+
+
+state 89
+
+   40 op_expressao: op_expressao OP_ARITM . termo
+
+    INT    shift, and go to state 44
+    FLOAT  shift, and go to state 45
+    ID     shift, and go to state 46
+
+    termo  go to state 105
+
+
+state 90
+
+   37 expressao_logica: op_expressao OP_COMP . op_expressao
+
+    INT    shift, and go to state 44
+    FLOAT  shift, and go to state 45
+    ID     shift, and go to state 46
+
+    op_expressao  go to state 106
+    termo         go to state 67
+
+
+state 91
+
+   34 expressao: '(' expressao . ')'
+
+    ')'  shift, and go to state 107
+
+
+state 92
+
+   25 cod_block: RETORNO '(' expressao ')' . ';'
+
+    ';'  shift, and go to state 108
+
+
+state 93
+
+   29 cod_block: ID '(' ')' ';' .
+
+    $default  reduce using rule 29 (cod_block)
+
+
+state 94
+
+   28 cod_block: ID '(' expressao ')' . ';'
+
+    ';'  shift, and go to state 109
+
+
+state 95
+
+   32 assign: ID '[' INT ']' . OP_ASSIGN expressao
+
+    OP_ASSIGN  shift, and go to state 110
+
+
+state 96
+
+   46 print: PRINT '(' termo ')' . ';'
+
+    ';'  shift, and go to state 111
+
+
+state 97
+
+   49 palavra: palavra DIGITO .
+
+    $default  reduce using rule 49 (palavra)
+
+
+state 98
+
+   48 palavra: palavra LETRA .
+
+    $default  reduce using rule 48 (palavra)
+
+
+state 99
+
+   47 print: PRINT '(' palavra ')' . ';'
+
+    ';'  shift, and go to state 112
+
+
+state 100
+
+   45 scan: SCAN '(' ID ')' .
+
+    $default  reduce using rule 45 (scan)
+
+
+state 101
+
+   20 cod_block: "if" '(' expressao_logica ')' . '{' cod_blocks '}'
+   21          | "if" '(' expressao_logica ')' . '{' cod_blocks '}' "else" '{' cod_blocks '}'
+
+    '{'  shift, and go to state 113
+
+
+state 102
+
+   30 cod_block: scan '(' ID ')' . ';'
+
+    ';'  shift, and go to state 114
+
+
+state 103
+
+   38 expressao_logica: '(' op_expressao ')' .
+
+    $default  reduce using rule 38 (expressao_logica)
+
+
+state 104
+
+   22 cod_block: LACOS '(' expressao_logica ')' '{' . cod_block '}'
+
+    LACOS    shift, and go to state 28
+    RETORNO  shift, and go to state 29
+    ID       shift, and go to state 30
+    PRINT    shift, and go to state 31
+    SCAN     shift, and go to state 32
+    "if"     shift, and go to state 33
+
+    cod_block  go to state 115
+    assign     go to state 36
+    scan       go to state 37
+    print      go to state 38
+
+
 state 105
 
-   30 assign: ID '[' INT ']' OP_ASSIGN . expressao
+   40 op_expressao: op_expressao OP_ARITM termo .
 
-    INT    shift, and go to state 39
-    FLOAT  shift, and go to state 40
-    ID     shift, and go to state 41
-    '('    shift, and go to state 63
-
-    expressao     go to state 111
-    op_expressao  go to state 65
-    termo         go to state 62
+    $default  reduce using rule 40 (op_expressao)
 
 
 state 106
 
-   44 print: PRINT '(' termo ')' ';' .
+   37 expressao_logica: op_expressao OP_COMP op_expressao .
+   40 op_expressao: op_expressao . OP_ARITM termo
 
-    $default  reduce using rule 44 (print)
+    OP_ARITM  shift, and go to state 89
+
+    $default  reduce using rule 37 (expressao_logica)
 
 
 state 107
 
-   45 print: PRINT '(' palavra ')' ';' .
+   34 expressao: '(' expressao ')' .
 
-    $default  reduce using rule 45 (print)
+    $default  reduce using rule 34 (expressao)
 
 
 state 108
 
-   18 cod_block: "if" '(' expressao_logica ')' '{' . cod_blocks '}'
-   19          | "if" '(' expressao_logica ')' '{' . cod_blocks '}' "else" '{' cod_blocks '}'
+   25 cod_block: RETORNO '(' expressao ')' ';' .
 
-    LACOS    shift, and go to state 23
-    RETORNO  shift, and go to state 24
-    ID       shift, and go to state 25
-    PRINT    shift, and go to state 26
-    SCAN     shift, and go to state 27
-    "if"     shift, and go to state 28
-
-    cod_blocks  go to state 112
-    cod_block   go to state 30
-    assign      go to state 31
-    scan        go to state 32
-    print       go to state 33
+    $default  reduce using rule 25 (cod_block)
 
 
 state 109
 
-   28 cod_block: scan '(' ID ')' ';' .
+   28 cod_block: ID '(' expressao ')' ';' .
 
     $default  reduce using rule 28 (cod_block)
 
 
 state 110
 
-   20 cod_block: LACOS '(' expressao_logica ')' '{' cod_block . '}'
+   32 assign: ID '[' INT ']' OP_ASSIGN . expressao
 
-    '}'  shift, and go to state 113
+    INT    shift, and go to state 44
+    FLOAT  shift, and go to state 45
+    ID     shift, and go to state 46
+    '('    shift, and go to state 68
+
+    expressao     go to state 116
+    op_expressao  go to state 70
+    termo         go to state 67
 
 
 state 111
 
-   30 assign: ID '[' INT ']' OP_ASSIGN expressao .
+   46 print: PRINT '(' termo ')' ';' .
 
-    $default  reduce using rule 30 (assign)
+    $default  reduce using rule 46 (print)
 
 
 state 112
 
-   16 cod_blocks: cod_blocks . cod_block
-   18 cod_block: "if" '(' expressao_logica ')' '{' cod_blocks . '}'
-   19          | "if" '(' expressao_logica ')' '{' cod_blocks . '}' "else" '{' cod_blocks '}'
+   47 print: PRINT '(' palavra ')' ';' .
 
-    LACOS    shift, and go to state 23
-    RETORNO  shift, and go to state 24
-    ID       shift, and go to state 25
-    PRINT    shift, and go to state 26
-    SCAN     shift, and go to state 27
-    '}'      shift, and go to state 114
-    "if"     shift, and go to state 28
-
-    cod_block  go to state 52
-    assign     go to state 31
-    scan       go to state 32
-    print      go to state 33
+    $default  reduce using rule 47 (print)
 
 
 state 113
 
-   20 cod_block: LACOS '(' expressao_logica ')' '{' cod_block '}' .
+   20 cod_block: "if" '(' expressao_logica ')' '{' . cod_blocks '}'
+   21          | "if" '(' expressao_logica ')' '{' . cod_blocks '}' "else" '{' cod_blocks '}'
 
-    $default  reduce using rule 20 (cod_block)
+    LACOS    shift, and go to state 28
+    RETORNO  shift, and go to state 29
+    ID       shift, and go to state 30
+    PRINT    shift, and go to state 31
+    SCAN     shift, and go to state 32
+    "if"     shift, and go to state 33
+
+    cod_blocks  go to state 117
+    cod_block   go to state 35
+    assign      go to state 36
+    scan        go to state 37
+    print       go to state 38
 
 
 state 114
 
-   18 cod_block: "if" '(' expressao_logica ')' '{' cod_blocks '}' .
-   19          | "if" '(' expressao_logica ')' '{' cod_blocks '}' . "else" '{' cod_blocks '}'
+   30 cod_block: scan '(' ID ')' ';' .
 
-    "else"  shift, and go to state 115
-
-    $default  reduce using rule 18 (cod_block)
+    $default  reduce using rule 30 (cod_block)
 
 
 state 115
 
-   19 cod_block: "if" '(' expressao_logica ')' '{' cod_blocks '}' "else" . '{' cod_blocks '}'
+   22 cod_block: LACOS '(' expressao_logica ')' '{' cod_block . '}'
 
-    '{'  shift, and go to state 116
+    '}'  shift, and go to state 118
 
 
 state 116
 
-   19 cod_block: "if" '(' expressao_logica ')' '{' cod_blocks '}' "else" '{' . cod_blocks '}'
+   32 assign: ID '[' INT ']' OP_ASSIGN expressao .
 
-    LACOS    shift, and go to state 23
-    RETORNO  shift, and go to state 24
-    ID       shift, and go to state 25
-    PRINT    shift, and go to state 26
-    SCAN     shift, and go to state 27
-    "if"     shift, and go to state 28
-
-    cod_blocks  go to state 117
-    cod_block   go to state 30
-    assign      go to state 31
-    scan        go to state 32
-    print       go to state 33
+    $default  reduce using rule 32 (assign)
 
 
 state 117
 
-   16 cod_blocks: cod_blocks . cod_block
-   19 cod_block: "if" '(' expressao_logica ')' '{' cod_blocks '}' "else" '{' cod_blocks . '}'
+   18 cod_blocks: cod_blocks . cod_block
+   20 cod_block: "if" '(' expressao_logica ')' '{' cod_blocks . '}'
+   21          | "if" '(' expressao_logica ')' '{' cod_blocks . '}' "else" '{' cod_blocks '}'
 
-    LACOS    shift, and go to state 23
-    RETORNO  shift, and go to state 24
-    ID       shift, and go to state 25
-    PRINT    shift, and go to state 26
-    SCAN     shift, and go to state 27
-    '}'      shift, and go to state 118
-    "if"     shift, and go to state 28
+    LACOS    shift, and go to state 28
+    RETORNO  shift, and go to state 29
+    ID       shift, and go to state 30
+    PRINT    shift, and go to state 31
+    SCAN     shift, and go to state 32
+    '}'      shift, and go to state 119
+    "if"     shift, and go to state 33
 
-    cod_block  go to state 52
-    assign     go to state 31
-    scan       go to state 32
-    print      go to state 33
+    cod_block  go to state 57
+    assign     go to state 36
+    scan       go to state 37
+    print      go to state 38
 
 
 state 118
 
-   19 cod_block: "if" '(' expressao_logica ')' '{' cod_blocks '}' "else" '{' cod_blocks '}' .
+   22 cod_block: LACOS '(' expressao_logica ')' '{' cod_block '}' .
 
-    $default  reduce using rule 19 (cod_block)
+    $default  reduce using rule 22 (cod_block)
+
+
+state 119
+
+   20 cod_block: "if" '(' expressao_logica ')' '{' cod_blocks '}' .
+   21          | "if" '(' expressao_logica ')' '{' cod_blocks '}' . "else" '{' cod_blocks '}'
+
+    "else"  shift, and go to state 120
+
+    $default  reduce using rule 20 (cod_block)
+
+
+state 120
+
+   21 cod_block: "if" '(' expressao_logica ')' '{' cod_blocks '}' "else" . '{' cod_blocks '}'
+
+    '{'  shift, and go to state 121
+
+
+state 121
+
+   21 cod_block: "if" '(' expressao_logica ')' '{' cod_blocks '}' "else" '{' . cod_blocks '}'
+
+    LACOS    shift, and go to state 28
+    RETORNO  shift, and go to state 29
+    ID       shift, and go to state 30
+    PRINT    shift, and go to state 31
+    SCAN     shift, and go to state 32
+    "if"     shift, and go to state 33
+
+    cod_blocks  go to state 122
+    cod_block   go to state 35
+    assign      go to state 36
+    scan        go to state 37
+    print       go to state 38
+
+
+state 122
+
+   18 cod_blocks: cod_blocks . cod_block
+   21 cod_block: "if" '(' expressao_logica ')' '{' cod_blocks '}' "else" '{' cod_blocks . '}'
+
+    LACOS    shift, and go to state 28
+    RETORNO  shift, and go to state 29
+    ID       shift, and go to state 30
+    PRINT    shift, and go to state 31
+    SCAN     shift, and go to state 32
+    '}'      shift, and go to state 123
+    "if"     shift, and go to state 33
+
+    cod_block  go to state 57
+    assign     go to state 36
+    scan       go to state 37
+    print      go to state 38
+
+
+state 123
+
+   21 cod_block: "if" '(' expressao_logica ')' '{' cod_blocks '}' "else" '{' cod_blocks '}' .
+
+    $default  reduce using rule 21 (cod_block)
