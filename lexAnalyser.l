@@ -37,14 +37,15 @@ struct symbol_item {
 struct symbol_item symbol_table[SYM_TABLE_SIZE];
 
 void printErrors(){
+    printf("Erros léxicos:\n");
     int i;
     for(i=0; i<errors; i++){
-        // printf("\nErro número %d\n", i+1);
-        // printf("Simbolo: %s\n", err[i].sym);
-        // printf("%s\n", err[i].type);
-        // printf("%s\n", err[i].msg);
-        // printf("Linha: %d\n", err[i].line);
-        // printf("\n");
+        printf("\nErro número %d\n", i+1);
+        printf("Simbolo: %s\n", err[i].sym);
+        printf("%s\n", err[i].type);
+        printf("%s\n", err[i].msg);
+        printf("Linha: %d\n", err[i].line);
+        printf("\n");
     }
 };
 

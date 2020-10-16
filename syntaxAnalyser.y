@@ -14,6 +14,7 @@
   
   int yylex();
   extern int lin;
+  extern void printErrors();
   void yyerror(const char* msg) {
     fprintf(stderr, "ERRO na linha %d: %s\n", lin, msg);
   }
@@ -302,6 +303,7 @@ int main(int argc, char **argv){
   // printErrors();
   // printSymTable();
   yyparse();
+  printErrors();
   printf("\n\nAbstract Syntax Tree:\n");
   print_tree(parser_tree, 0);
   printf("\n");
