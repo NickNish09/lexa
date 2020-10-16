@@ -59,7 +59,8 @@
     s_node *s;
     char scope_string[5];
     sprintf(scope_string, "%d", scope);
-    char *identifier = concat(id, scope_string);
+    char *auxid = concat("::", scope_string);
+    char *identifier = concat(id, auxid);
     HASH_FIND_STR(s_table, identifier, s);
     if(s == NULL){ // variavel ainda nao esta na tabela
       s_node *s = (s_node *)malloc(sizeof *s);
