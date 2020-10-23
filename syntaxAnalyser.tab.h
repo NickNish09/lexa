@@ -1,14 +1,14 @@
-/* A Bison parser, made by GNU Bison 2.3.  */
+/* A Bison parser, made by GNU Bison 3.7.  */
 
-/* Skeleton interface for Bison's Yacc-like parsers in C
+/* Bison interface for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989, 1990, 2000, 2001, 2002, 2003, 2004, 2005, 2006
-   Free Software Foundation, Inc.
+   Copyright (C) 1984, 1989-1990, 2000-2015, 2018-2020 Free Software Foundation,
+   Inc.
 
-   This program is free software; you can redistribute it and/or modify
+   This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2, or (at your option)
-   any later version.
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
 
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -16,9 +16,7 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 51 Franklin Street, Fifth Floor,
-   Boston, MA 02110-1301, USA.  */
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 /* As a special exception, you may create a larger work that contains
    part or all of the Bison parser skeleton and distribute that work
@@ -33,61 +31,58 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-/* Tokens.  */
+/* DO NOT RELY ON FEATURES THAT ARE NOT DOCUMENTED in the manual,
+   especially those whose name start with YY_ or yy_.  They are
+   private implementation details that can be changed or removed.  */
+
+#ifndef YY_YY_SYNTAXANALYSER_TAB_H_INCLUDED
+# define YY_YY_SYNTAXANALYSER_TAB_H_INCLUDED
+/* Debug traces.  */
+#ifndef YYDEBUG
+# define YYDEBUG 1
+#endif
+#if YYDEBUG
+extern int yydebug;
+#endif
+
+/* Token kinds.  */
 #ifndef YYTOKENTYPE
 # define YYTOKENTYPE
-   /* Put the tokens into the symbol table, so that GDB and other debuggers
-      know about them.  */
-   enum yytokentype {
-     BOOL = 258,
-     TIPO = 259,
-     IF = 260,
-     ELSE = 261,
-     LACOS = 262,
-     RETORNO = 263,
-     INT = 264,
-     FLOAT = 265,
-     TUPLE = 266,
-     ID = 267,
-     DIGITO = 268,
-     LETRA = 269,
-     SEPARADOR = 270,
-     PRINT = 271,
-     SCAN = 272,
-     OP_ASSIGN = 273,
-     OP_ARITM = 274,
-     OP_LOG = 275,
-     OP_COMP = 276
-   };
+  enum yytokentype
+  {
+    YYEMPTY = -2,
+    YYEOF = 0,                     /* "end of file"  */
+    YYerror = 256,                 /* error  */
+    YYUNDEF = 257,                 /* "invalid token"  */
+    BOOL = 258,                    /* BOOL  */
+    TIPO = 259,                    /* TIPO  */
+    IF = 260,                      /* IF  */
+    ELSE = 261,                    /* ELSE  */
+    LACOS = 262,                   /* LACOS  */
+    RETORNO = 263,                 /* RETORNO  */
+    INT = 264,                     /* INT  */
+    FLOAT = 265,                   /* FLOAT  */
+    TUPLE = 266,                   /* TUPLE  */
+    ID = 267,                      /* ID  */
+    DIGITO = 268,                  /* DIGITO  */
+    LETRA = 269,                   /* LETRA  */
+    SEPARADOR = 270,               /* SEPARADOR  */
+    PRINT = 271,                   /* PRINT  */
+    SCAN = 272,                    /* SCAN  */
+    OP_ASSIGN = 273,               /* OP_ASSIGN  */
+    OP_ARITM = 274,                /* OP_ARITM  */
+    OP_LOG = 275,                  /* OP_LOG  */
+    OP_COMP = 276                  /* OP_COMP  */
+  };
+  typedef enum yytokentype yytoken_kind_t;
 #endif
-/* Tokens.  */
-#define BOOL 258
-#define TIPO 259
-#define IF 260
-#define ELSE 261
-#define LACOS 262
-#define RETORNO 263
-#define INT 264
-#define FLOAT 265
-#define TUPLE 266
-#define ID 267
-#define DIGITO 268
-#define LETRA 269
-#define SEPARADOR 270
-#define PRINT 271
-#define SCAN 272
-#define OP_ASSIGN 273
-#define OP_ARITM 274
-#define OP_LOG 275
-#define OP_COMP 276
 
-
-
-
+/* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef union YYSTYPE
-#line 190 "syntaxAnalyser.y"
+union YYSTYPE
 {
+#line 190 "syntaxAnalyser.y"
+
   char *id;
   char *tipo;
   char *operador;
@@ -95,28 +90,32 @@ typedef union YYSTYPE
   char *str;
   int itype;
   struct node* nd;
-}
-/* Line 1529 of yacc.c.  */
-#line 101 "syntaxAnalyser.tab.h"
-	YYSTYPE;
-# define yystype YYSTYPE /* obsolescent; will be withdrawn */
-# define YYSTYPE_IS_DECLARED 1
+
+#line 95 "syntaxAnalyser.tab.h"
+
+};
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
+# define YYSTYPE_IS_DECLARED 1
 #endif
 
-extern YYSTYPE yylval;
-
+/* Location type.  */
 #if ! defined YYLTYPE && ! defined YYLTYPE_IS_DECLARED
-typedef struct YYLTYPE
+typedef struct YYLTYPE YYLTYPE;
+struct YYLTYPE
 {
   int first_line;
   int first_column;
   int last_line;
   int last_column;
-} YYLTYPE;
-# define yyltype YYLTYPE /* obsolescent; will be withdrawn */
+};
 # define YYLTYPE_IS_DECLARED 1
 # define YYLTYPE_IS_TRIVIAL 1
 #endif
 
+
+extern YYSTYPE yylval;
 extern YYLTYPE yylloc;
+int yyparse (void);
+
+#endif /* !YY_YY_SYNTAXANALYSER_TAB_H_INCLUDED  */
