@@ -8,6 +8,20 @@ Para compilar o programa siga os seguintes passos:
 
 ```./program.out tests/sintaticos/teste_sintatico.cstar```
 
+Testes Certos:
+teste_sintatico.cstar
+teste_sintatico2.cstar
+teste_sintatico_aritm.cstar
+teste_sintatico_condicoes.cstar
+teste_sintatico_laco.cstar
+teste_sintatico_tuple.cstar
+dummy_test.cstar
+
+Testes Errados:
+teste_sintatico_error.cstar
+teste_sintatico_error2.cstar
+teste_sintatico_error3.cstar
+
 Os arquivos de teste que tem um _error são os que possuem erros, conforme descritos no relatório.
 
 ## Especificações
