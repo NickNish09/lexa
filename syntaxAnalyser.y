@@ -97,7 +97,7 @@
     s_node *s;
     char scope_string[5];
     sprintf(scope_string, "%d", scope);
-    char *auxid = concat("::", scope_string);
+    char *auxid = concat("::", s_stack->id);
     char *identifier = concat(id, auxid);
     HASH_FIND_STR(s_table, identifier, s);
     if(s == NULL){ // variavel ainda nao esta na tabela
@@ -107,7 +107,7 @@
       s->s_node_type = s_node_type;
       s->scope = scope;
       HASH_ADD_STR(s_table, id, s);
-    }
+    };
   }
 
   void print_s_table() {
@@ -282,18 +282,18 @@ var_decl:
 func_decl:
   TIPO ID '(' parm_tipos ')' ';'{ printf("func_decl #1 \n"); $$ = ins_node_symbol($1, SYMBOL_NODE,'F', $2); }
 | TIPO ID '(' ')' ';' { printf("func_decl #2 \n"); $$ = ins_node_symbol($1, SYMBOL_NODE,'F', $2); }
-| TIPO ID '(' parm_tipos ')' '{' cod_blocks {
+| TIPO ID '(' parm_tipos ')' '{' {
   printf("func_decl #3 \n");
   add_to_s_table($2, $2, FUNCTION_TYPE, 0); 
   s_push($2);
 }
- '}' ';' { $<nd>$ = ins_node($1, REGULAR_NODE,'F', $4, $7, $2); s_pop(); }
-| TIPO ID '(' ')' '{' cod_blocks {
+ cod_blocks '}' ';' { $<nd>$ = ins_node($1, REGULAR_NODE,'F', $4, $8, $2); s_pop(); }
+| TIPO ID '(' ')' '{' {
   printf("func_decl #4 \n");
   add_to_s_table($2, $2, FUNCTION_TYPE, 0); 
   s_push($2);
 }
- '}' ';' { $<nd>$ = ins_node($1, REGULAR_NODE,'F', NULL, $6, $2); s_pop(); }
+ cod_blocks '}' ';' { $<nd>$ = ins_node($1, REGULAR_NODE,'F', NULL, $7, $2); s_pop(); }
 ;
 
 parm_tipos:
