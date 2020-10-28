@@ -1,4 +1,4 @@
-%error-verbose
+%define parse.error verbose
 %debug
 %locations
 
@@ -44,6 +44,43 @@
     }
     return "Not Found";
   }
+
+  // ESCOPO
+  typedef struct scope {
+    int level; // 0 pra global
+    char *id; // identificador do escopo
+    struct scope *prev; // pra pilha
+  } scope;
+
+  int current_scope_level = 0; // global
+  scope * s_stack = NULL;
+
+  void initialize_s_stack(){
+    printf("initializing scope stack\n");
+    s_stack = (scope *)malloc(sizeof *s_stack);
+    s_stack->level = 0;
+    s_stack->id = "global";
+    s_stack->prev = NULL;
+  };
+
+  scope * s_push(char *s_id){
+    scope * s_aux = (scope *)malloc(sizeof *s_aux);
+    s_aux->level = current_scope_level;
+    s_aux->id = s_id;
+    s_aux->prev = s_stack; // empilha
+    s_stack = s_aux;
+    printf("pushed %s to scope stack\n", s_aux->id);
+    return s_aux;
+  };
+
+  scope * s_pop(){
+    scope * s_aux = s_stack;
+    s_stack = s_aux->prev;
+    printf("poped %s from scope stack\n", s_aux->id);
+    return s_aux;
+  };
+
+  // END ESCOPO
 
   // REFERENTE A TABELA DE SIMBOLOS
   typedef struct s_node {
@@ -245,8 +282,18 @@ var_decl:
 func_decl:
   TIPO ID '(' parm_tipos ')' ';'{ printf("func_decl #1 \n"); $$ = ins_node_symbol($1, SYMBOL_NODE,'F', $2); }
 | TIPO ID '(' ')' ';' { printf("func_decl #2 \n"); $$ = ins_node_symbol($1, SYMBOL_NODE,'F', $2); }
-| TIPO ID '(' parm_tipos ')' '{' cod_blocks '}' ';' { printf("func_decl #3 \n"); $$ = ins_node($1, REGULAR_NODE,'F', $4, $7, $2); add_to_s_table($2, $2, FUNCTION_TYPE, 0); }
-| TIPO ID '(' ')' '{' cod_blocks '}' ';' { printf("func_decl #4 \n"); $$ = ins_node($1, REGULAR_NODE,'F', NULL, $6, $2); add_to_s_table($2, $2, FUNCTION_TYPE, 0); }
+| TIPO ID '(' parm_tipos ')' '{' cod_blocks {
+  printf("func_decl #3 \n");
+  add_to_s_table($2, $2, FUNCTION_TYPE, 0); 
+  s_push($2);
+}
+ '}' ';' { $<nd>$ = ins_node($1, REGULAR_NODE,'F', $4, $7, $2); s_pop(); }
+| TIPO ID '(' ')' '{' cod_blocks {
+  printf("func_decl #4 \n");
+  add_to_s_table($2, $2, FUNCTION_TYPE, 0); 
+  s_push($2);
+}
+ '}' ';' { $<nd>$ = ins_node($1, REGULAR_NODE,'F', NULL, $6, $2); s_pop(); }
 ;
 
 parm_tipos:
@@ -337,6 +384,7 @@ int main(int argc, char **argv){
   else{
       yyin = stdin;
   }
+  initialize_s_stack();
   // system("clear");
   yyparse();
   printErrors();
