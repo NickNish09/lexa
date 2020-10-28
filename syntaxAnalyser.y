@@ -70,6 +70,7 @@
     s_aux->prev = s_stack; // empilha
     s_stack = s_aux;
     printf("pushed %s to scope stack\n", s_aux->id);
+    current_scope_level++;
     return s_aux;
   };
 
@@ -77,6 +78,7 @@
     scope * s_aux = s_stack;
     s_stack = s_aux->prev;
     printf("poped %s from scope stack\n", s_aux->id);
+    current_scope_level--;
     return s_aux;
   };
 
@@ -105,7 +107,7 @@
       s->id = identifier;
       s->var_type = var_type;
       s->s_node_type = s_node_type;
-      s->scope = scope;
+      s->scope = current_scope_level;
       HASH_ADD_STR(s_table, id, s);
     };
   }
@@ -116,7 +118,7 @@
     printf("Tabela de Símbolos:\n");
     // printf("NAME\t\tTYPE\t\tSYMBOL_TYPE\t\tSCOPE SYMBOLS\n");
     for(s=s_table; s != NULL; s=s->hh.next) {
-      printf("id: %15s | var_type: %7s | s_node_type: %10s | scope: %d\n", s->id, s->var_type, stringBasedOnNumber(s->s_node_type), s->scope);
+      printf("id: %15s | var_type: %7s | s_node_type: %10s | scope_level: %d\n", s->id, s->var_type, stringBasedOnNumber(s->s_node_type), s->scope);
     }
   }
 
