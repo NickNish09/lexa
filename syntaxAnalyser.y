@@ -47,7 +47,7 @@
 
   // ESCOPO
   typedef struct scope {
-    int level; // 0 pra global
+    int level; // 0 pra global, 1 pra funcoes, 2 pra funcao dentro de funcao ...
     char *id; // identificador do escopo
     struct scope *prev; // pra pilha
   } scope;
