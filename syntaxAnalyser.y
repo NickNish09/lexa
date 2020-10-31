@@ -69,7 +69,9 @@
   scope * s_stack = NULL;
 
   void initialize_s_stack(){
-    printf("initializing scope stack\n");
+    #if defined DEBUG
+      printf("initializing scope stack\n");
+    #endif
     s_stack = (scope *)malloc(sizeof *s_stack);
     s_stack->level = 0;
     s_stack->id = "global";
@@ -82,7 +84,9 @@
     s_aux->id = s_id;
     s_aux->prev = s_stack; // empilha
     s_stack = s_aux;
-    printf("pushed %s to scope stack\n", s_aux->id);
+    #if defined DEBUG
+      printf("pushed %s to scope stack\n", s_aux->id);
+    #endif
     current_scope_level++;
     return s_aux;
   };
@@ -90,7 +94,9 @@
   scope * s_pop(){
     scope * s_aux = s_stack;
     s_stack = s_aux->prev;
-    printf("poped %s from scope stack\n", s_aux->id);
+    #if defined DEBUG
+      printf("poped %s from scope stack\n", s_aux->id);
+    #endif
     current_scope_level--;
     return s_aux;
   };
@@ -525,39 +531,124 @@ expressao:
 ;
 
 expressao_logica:
-  OP_LOG op_expressao { printf("expressao_logica #1 \n"); $$ = $2; }
-| '!' op_expressao { printf("expressao_logica #2 \n"); $$ = $2; }
-| op_expressao OP_COMP op_expressao { printf("expressao_logica #3 \n"); $$ = ins_node("-", REGULAR_NODE, 'E', $1, $3, "expressao_logica"); }
-| '(' op_expressao ')' { printf("expressao_logica #4 \n"); $$ = $2; }
-| op_expressao { printf("expressao_logica #5\n"); $$ = $1; }
+  OP_LOG op_expressao { 
+    #if defined DEBUG
+      printf("expressao_logica #1 \n"); 
+    #endif
+    $$ = $2; 
+  }
+| '!' op_expressao { 
+    #if defined DEBUG
+      printf("expressao_logica #2 \n"); 
+    #endif
+    $$ = $2; 
+  }
+| op_expressao OP_COMP op_expressao { 
+    #if defined DEBUG
+      printf("expressao_logica #3 \n");
+    #endif
+    $$ = ins_node("-", REGULAR_NODE, 'E', $1, $3, "expressao_logica"); 
+  }
+| '(' op_expressao ')' { 
+    #if defined DEBUG
+      printf("expressao_logica #4 \n"); 
+    #endif
+    $$ = $2; 
+  }
+| op_expressao { 
+    #if defined DEBUG
+      printf("expressao_logica #5\n"); 
+    #endif
+    $$ = $1; 
+  }
 ;
 
 op_expressao:
-  op_expressao OP_ARITM termo { printf("op_expressao #1\n"); $$ = ins_node("-", REGULAR_NODE, 'E', $1, $3, $2); }
-| termo { printf("op_expressao #2\n"); $$ = $1; }
+  op_expressao OP_ARITM termo { 
+    #if defined DEBUG
+      printf("op_expressao #1\n");
+    #endif
+    $$ = ins_node("-", REGULAR_NODE, 'E', $1, $3, $2); 
+  }
+| termo { 
+    #if defined DEBUG
+      printf("op_expressao #2\n"); 
+    #endif
+    $$ = $1; 
+  }
 ;
 
 termo:
-  ID { printf("termo #1 \n"); $$ = ins_node_symbol($1, 'S','V', $1); }
-| INT { printf("termo #2 \n"); $$ = NULL; }
-| FLOAT { printf("termo #3 \n"); $$ = NULL; }
-| ID '[' INT ']' { printf("termo #4 \n"); $$ = NULL; }
+  ID { 
+    #if defined DEBUG
+      printf("termo #1 \n");
+    #endif
+    $$ = ins_node_symbol($1, 'S','V', $1); 
+  }
+| INT { 
+    #if defined DEBUG
+      printf("termo #2 \n");
+    #endif
+    $$ = NULL; 
+  }
+| FLOAT { 
+    #if defined DEBUG
+      printf("termo #3 \n");
+    #endif
+    $$ = NULL; 
+  }
+| ID '[' INT ']' { 
+    #if defined DEBUG
+      printf("termo #4 \n");
+    #endif
+    $$ = NULL; 
+  }
 ;
 
 scan:
-  SCAN '(' ID ')' { printf("scan #1 \n"); }
+  SCAN '(' ID ')' { 
+    #if defined DEBUG
+      printf("scan #1 \n"); 
+    #endif
+  }
 ;
 
 print:
-  PRINT '(' termo ')' ';' { printf("print #1 \n"); $$ = ins_node("-", REGULAR_NODE, 'P', NULL, $3, "print"); }
-| PRINT '(' palavra ')' ';' { printf("print #2 \n"); $$ = ins_node("-", REGULAR_NODE, 'P', NULL, NULL, $3); }
+  PRINT '(' termo ')' ';' { 
+    #if defined DEBUG
+      printf("print #1 \n");
+    #endif
+    $$ = ins_node("-", REGULAR_NODE, 'P', NULL, $3, "print"); 
+  }
+| PRINT '(' palavra ')' ';' { 
+    #if defined DEBUG
+      printf("print #2 \n");
+    #endif
+    $$ = ins_node("-", REGULAR_NODE, 'P', NULL, NULL, $3); 
+  }
 ;
 
 palavra:
-  palavra LETRA { printf("palavra #1 \n"); }
-| palavra DIGITO { printf("palavra #2 \n"); }
-| LETRA { printf("palavra #3 \n"); }
-| DIGITO { printf("palavra #4 \n"); }
+  palavra LETRA { 
+    #if defined DEBUG
+      printf("palavra #1 \n");
+    #endif
+  }
+| palavra DIGITO { 
+    #if defined DEBUG
+      printf("palavra #2 \n"); 
+    #endif
+  }
+| LETRA { 
+    #if defined DEBUG
+      printf("palavra #3 \n"); 
+    #endif
+  }
+| DIGITO { 
+    #if defined DEBUG
+      printf("palavra #4 \n"); 
+    #endif
+  }
 ;
 
 %%
