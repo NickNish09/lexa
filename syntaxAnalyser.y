@@ -15,12 +15,16 @@
   #define NO_DECLARATION_ERROR 5002
   #define TYPE_ERROR 5003
   // #define DEBUG 993
-  
+  #define TRUE 1
+  #define FALSE 0
+
+  int has_error = FALSE;
   int yylex();
   extern int lin;
   extern void printErrors();
   void yyerror(const char* msg) {
     fprintf(stderr, "ERRO na linha %d: %s\n", lin, msg);
+    has_error = TRUE;
   }
   extern FILE *yyin;
 
@@ -664,13 +668,16 @@ int main(int argc, char **argv){
   initialize_s_stack();
   // system("clear");
   yyparse();
-  printErrors();
-  printf("\n\nAbstract Syntax Tree:\n");
-  print_tree(parser_tree, 0);
-  // printLevelOrder(parser_tree);
-  printf("\n");
+  if(has_error != TRUE){
+    printf("\n\nAbstract Syntax Tree:\n");
+    print_tree(parser_tree, 0);
+    // printLevelOrder(parser_tree);
+    printf("\n");
 
-  print_s_table();
+    print_s_table();
+  } else {
+    printErrors();
+  }
   #if defined DEBUG
     printf("Debug Mode...\n");
   #endif
