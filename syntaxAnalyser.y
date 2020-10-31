@@ -11,6 +11,10 @@
   #define REGULAR_NODE 889
   #define VARIABLE_TYPE 1001
   #define FUNCTION_TYPE 1002
+  #define REDECLARATION_ERROR 5001
+  #define NO_DECLARATION_ERROR 5002
+  #define TYPE_ERROR 5003
+  // #define DEBUG 993
   
   int yylex();
   extern int lin;
@@ -43,6 +47,15 @@
       return "Variable";
     }
     return "Not Found";
+  }
+
+  void semantic_error(int error_type, char *msg){
+    char err[100];
+    if(error_type == REDECLARATION_ERROR){
+      sprintf(err, "ERRO SEMANTICO de Redeclaracao de Variavel: %s\n", msg);
+    };
+
+    yyerror(err);
   }
 
   // ESCOPO
@@ -109,6 +122,8 @@
       s->s_node_type = s_node_type;
       s->scope = current_scope_level;
       HASH_ADD_STR(s_table, id, s);
+    } else { // variavel ja esta na tabela, levantar erro de redeclaracao
+      semantic_error(REDECLARATION_ERROR, identifier);
     };
   }
 
@@ -258,40 +273,102 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
 
 %%
 programa: 
-  declaracoes { parser_tree = $1; printf("tree initialized\n"); }
+  declaracoes { 
+    parser_tree = $1;
+    #if defined DEBUG
+      printf("tree initialized\n"); 
+    #endif 
+  }
 ;
 
 declaracoes:
-  declaracoes declaracao { printf("declaracoes \n"); $$ = ins_node("-", REGULAR_NODE,'D', $1, $2, "decl"); }
-| declaracao { printf("declaracao \n"); $$ = $1; }
+  declaracoes declaracao { 
+    #if defined DEBUG
+      printf("declaracoes \n");
+    #endif
+    $$ = ins_node("-", REGULAR_NODE,'D', $1, $2, "decl"); 
+  }
+| declaracao { 
+    #if defined DEBUG
+      printf("declaracao \n"); 
+    #endif
+    $$ = $1; 
+  }
 ;
 
 declaracao:
-  var_decl { printf("var_decl\n"); $$ = $1; }
-| TUPLE declaracao_tupla { printf("tuple_decl\n"); $$ = $2; }
-| func_decl { printf("func_decl\n"); $$ = $1; }
+  var_decl { 
+    #if defined DEBUG
+      printf("var_decl\n"); 
+    #endif
+    $$ = $1; 
+  }
+| TUPLE declaracao_tupla { 
+    #if defined DEBUG
+      printf("tuple_decl\n"); 
+    #endif
+    $$ = $2; 
+  }
+| func_decl { 
+    #if defined DEBUG
+      printf("func_decl\n"); 
+    #endif
+    $$ = $1; 
+  }
 ;
 
 declaracao_tupla:
-  TIPO ',' declaracao_tupla { printf("declaracao_tupla #1\n"); $$ = $3; }
-| var_decl { printf("declaracao_tupla #2\n"); $$ = $1;}
+  TIPO ',' declaracao_tupla { 
+    #if defined DEBUG
+      printf("declaracao_tupla #1\n"); 
+    #endif
+    $$ = $3; 
+  }
+| var_decl { 
+    #if defined DEBUG
+      printf("declaracao_tupla #2\n"); 
+    #endif
+    $$ = $1;
+  }
 ;
 
 var_decl:
-  TIPO ID ';' { printf("var_decl \n"); $$ = ins_node_symbol($1, SYMBOL_NODE,'V', $2); }
+  TIPO ID ';' { 
+    #if defined DEBUG
+      printf("var_decl \n"); 
+    #endif
+    $$ = ins_node_symbol($1, SYMBOL_NODE,'V', $2);
+  }
 ;
 
 func_decl:
-  TIPO ID '(' parm_tipos ')' ';'{ printf("func_decl #1 \n"); $$ = ins_node_symbol($1, SYMBOL_NODE,'F', $2); }
-| TIPO ID '(' ')' ';' { printf("func_decl #2 \n"); $$ = ins_node_symbol($1, SYMBOL_NODE,'F', $2); }
+  TIPO ID '(' parm_tipos ')' ';'{ 
+    #if defined DEBUG
+      printf("func_decl #1 \n"); 
+    #endif
+    $$ = ins_node_symbol($1, SYMBOL_NODE,'F', $2); 
+  }
+| TIPO ID '(' ')' ';' {
+   #if defined DEBUG
+    printf("func_decl #2 \n"); 
+   #endif
+   $$ = ins_node_symbol($1, SYMBOL_NODE,'F', $2); 
+  }
 | TIPO ID '(' parm_tipos ')' '{' {
-  printf("func_decl #3 \n");
+  #if defined DEBUG
+    printf("func_decl #3 \n");
+  #endif
   add_to_s_table($2, $2, FUNCTION_TYPE, 0); 
   s_push($2);
 }
- cod_blocks '}' ';' { $<nd>$ = ins_node($1, REGULAR_NODE,'F', $4, $8, $2); s_pop(); }
+ cod_blocks '}' ';' { 
+    $<nd>$ = ins_node($1, REGULAR_NODE,'F', $4, $8, $2);
+    s_pop(); 
+  }
 | TIPO ID '(' ')' '{' {
-  printf("func_decl #4 \n");
+  #if defined DEBUG
+    printf("func_decl #4 \n");
+  #endif
   add_to_s_table($2, $2, FUNCTION_TYPE, 0); 
   s_push($2);
 }
@@ -299,37 +376,139 @@ func_decl:
 ;
 
 parm_tipos:
-  parm_tipos TIPO ID { printf("parm_tipos #1 \n"); $$ = $1; }
-| parm_tipos TIPO ID '[' ']' { printf("parm_tipos #2 \n"); $$ = $1; }
-| TIPO ID ',' { printf("parm_tipos #3 \n"); $$ = NULL; }
-| TIPO ID { printf("parm_tipos #4 \n"); $$ = NULL; }
-| TIPO ID '[' ']' { printf("parm_tipos #5 \n"); $$ = NULL; }
-| TUPLE ID { printf("parm_tipos #6\n"); $$ = NULL; }
+  parm_tipos TIPO ID { 
+    #if defined DEBUG
+      printf("parm_tipos #1 \n"); 
+    #endif
+    $$ = $1; 
+  }
+| parm_tipos TIPO ID '[' ']' {
+    #if defined DEBUG
+      printf("parm_tipos #2 \n"); 
+    #endif
+    $$ = $1; 
+  }
+| TIPO ID ',' {
+   #if defined DEBUG
+    printf("parm_tipos #3 \n"); 
+   #endif
+   $$ = NULL; 
+  }
+| TIPO ID {
+   #if defined DEBUG
+    printf("parm_tipos #4 \n"); 
+   #endif
+   $$ = NULL; 
+  }
+| TIPO ID '[' ']' { 
+    #if defined DEBUG
+      printf("parm_tipos #5 \n"); 
+    #endif
+    $$ = NULL; 
+  }
+| TUPLE ID { 
+    #if defined DEBUG
+      printf("parm_tipos #6\n"); 
+    #endif
+    $$ = NULL; 
+  }
 ;
 
 cod_blocks:
-  cod_blocks cod_block { printf("cod_blocks #1\n"); $$ = ins_node("-", REGULAR_NODE,'C', $1, $2, "cb"); }
-| cod_block  { printf("cod_blocks #2\n"); $$ = $1; }
+  cod_blocks cod_block { 
+    #if defined DEBUG
+      printf("cod_blocks #1\n"); 
+    #endif
+    $$ = ins_node("-", REGULAR_NODE,'C', $1, $2, "cb"); 
+  }
+| cod_block  {
+    #if defined DEBUG
+      printf("cod_blocks #2\n"); 
+    #endif
+    $$ = $1; 
+   }
 ;
 
 cod_block:
-  IF '(' expressao_logica ')' '{' cod_blocks '}' { printf("cod_block #1 \n"); $$ = ins_node("-", REGULAR_NODE,'I', $3, $6, "if"); }
-| IF '(' expressao_logica ')' '{' cod_blocks '}' ELSE '{' cod_blocks '}' { printf("cod_block #2 \n"); $$ = ins_node("-", REGULAR_NODE,'I', $3, ins_node("-", REGULAR_NODE,'I', $6, $10, "cb"), "if-else"); }
-| LACOS '(' expressao_logica ')' '{' cod_block '}' { printf("cod_block #3 \n"); $$ = ins_node("-", REGULAR_NODE,'L', $3, $6, "while"); }
-| RETORNO ';' { printf("cod_block #4 \n"); $$ = NULL; }
-| RETORNO termo ';' { printf("cod_block #4.5 \n"); $$ = ins_node("-", REGULAR_NODE,'R', NULL, $2, "retorno");}
-| RETORNO '(' expressao ')' ';' { printf("cod_block #5 \n"); $$ = ins_node("-", REGULAR_NODE,'R', NULL, $3, "retorno"); }
-| assign ';' { printf("cod_block #6 \n"); }
-| print { printf("cod_block #7 \n"); $$ = $1;}
-| ID '(' expressao ')' ';' { printf("cod_block #8 \n"); $$ = $3;}
-| ID '(' ')' ';' { printf("cod_block #9 \n"); $$ = ins_node("-", 'C','R', NULL, NULL, "call");}
-| scan '(' ID ')' ';' { printf("cod_block #10 \n"); }
+  IF '(' expressao_logica ')' '{' cod_blocks '}' {
+    #if defined DEBUG
+      printf("cod_block #1 \n");
+    #endif
+    $$ = ins_node("-", REGULAR_NODE,'I', $3, $6, "if"); 
+  }
+| IF '(' expressao_logica ')' '{' cod_blocks '}' ELSE '{' cod_blocks '}' { 
+    #if defined DEBUG
+      printf("cod_block #2 \n");
+    #endif
+    $$ = ins_node("-", REGULAR_NODE,'I', $3, ins_node("-", REGULAR_NODE,'I', $6, $10, "cb"), "if-else"); 
+  }
+| LACOS '(' expressao_logica ')' '{' cod_block '}' { 
+    #if defined DEBUG
+      printf("cod_block #3 \n");
+    #endif
+    $$ = ins_node("-", REGULAR_NODE,'L', $3, $6, "while"); 
+  }
+| RETORNO ';' { 
+    #if defined DEBUG
+      printf("cod_block #4 \n");
+    #endif
+    $$ = NULL; 
+  }
+| RETORNO termo ';' {
+    #if defined DEBUG
+      printf("cod_block #4.5 \n");
+    #endif
+    $$ = ins_node("-", REGULAR_NODE,'R', NULL, $2, "retorno");
+  }
+| RETORNO '(' expressao ')' ';' {
+    #if defined DEBUG
+      printf("cod_block #5 \n");
+    #endif
+    $$ = ins_node("-", REGULAR_NODE,'R', NULL, $3, "retorno"); 
+  }
+| assign ';' { 
+    #if defined DEBUG
+      printf("cod_block #6 \n"); 
+    #endif
+  }
+| print { 
+    #if defined DEBUG
+      printf("cod_block #7 \n"); 
+    #endif
+    $$ = $1;
+  }
+| ID '(' expressao ')' ';' { 
+    #if defined DEBUG
+      printf("cod_block #8 \n"); 
+    #endif
+    $$ = $3;
+  }
+| ID '(' ')' ';' {
+    #if defined DEBUG
+      printf("cod_block #9 \n");
+    #endif
+    $$ = ins_node("-", 'C','R', NULL, NULL, "call");
+  }
+| scan '(' ID ')' ';' {
+    #if defined DEBUG
+      printf("cod_block #10 \n"); 
+    #endif
+  }
 | declaracoes { $$ = $1 ;}
 ;
 
 assign:
-  ID OP_ASSIGN expressao { printf("assign #1 \n"); $$ = $3; }
-| ID '[' INT ']' OP_ASSIGN expressao { printf("assign #2 \n"); $$ = $6; }
+  ID OP_ASSIGN expressao { 
+    #if defined DEBUG
+      printf("assign #1 \n"); 
+    #endif
+    $$ = $3; 
+  }
+| ID '[' INT ']' OP_ASSIGN expressao { 
+    #if defined DEBUG
+      printf("assign #2 \n"); $$ = $6; 
+    #endif
+  }
 ;
 
 expressao:
@@ -337,7 +516,12 @@ expressao:
 // | expressao OP_ARITM expressao { printf("expressao #4 \n"); $$ = ins_node("-", REGULAR_NODE, 'E', $1, $3, "-"); }
 // | op_expressao OP_COMP op_expressao { printf("expressao #5 \n"); $$ = ins_node("-", REGULAR_NODE, 'E', $1, $3, "-"); }
   op_expressao
-| '(' expressao ')' { printf("expressao #6 \n"); $$ = $2; }
+| '(' expressao ')' {
+    #if defined DEBUG
+      printf("expressao #6 \n"); 
+    #endif
+    $$ = $2; 
+  }
 ;
 
 expressao_logica:
@@ -396,5 +580,8 @@ int main(int argc, char **argv){
   printf("\n");
 
   print_s_table();
+  #if defined DEBUG
+    printf("Debug Mode...\n");
+  #endif
   return 0;
 }
