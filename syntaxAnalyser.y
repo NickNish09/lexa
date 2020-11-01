@@ -13,7 +13,7 @@
   #define FUNCTION_TYPE 1002
   #define REDECLARATION_ERROR 5001
   #define NO_DECLARATION_ERROR 5002
-  #define TYPE_ERROR 5003
+  #define TYPES_MISSMATCH_ERROR 5003
   // #define DEBUG 993
   #define TRUE 1
   #define FALSE 0
@@ -58,9 +58,22 @@
       sprintf(err, "semantic error, variable redeclaration: %s\n", msg);
     } else if (error_type == NO_DECLARATION_ERROR){
       sprintf(err, "semantic error, no declarion found for: %s\n", msg);
+    } else if (error_type == TYPES_MISSMATCH_ERROR){
+      sprintf(err, "semantic error, types missmatch: %s\n", msg);
     };
 
     yyerror(err);
+  }
+
+  int types_match(char* t1, char* t2){
+    #if defined DEBUG
+      printf("t1: %s | t2: %s\n", t1, t2);
+    #endif
+    if(strcmp(t1, t2) == 0){
+      return TRUE;
+    }
+
+    return FALSE;
   }
 
   // ESCOPO
@@ -590,10 +603,21 @@ op_expressao:
       printf("op_expressao #1\n");
     #endif
     // printf("%s ll %s\n", $1->val, $3->val);
-    s_node* s = find_in_s_table($1->val);
-    printf("%s ll ", s->var_type);
-    s = find_in_s_table($3->val);
-    printf("%s\n", s->var_type);
+    s_node* s1 = find_in_s_table($1->val);
+    s_node* s2 = find_in_s_table($3->val);
+    int tm = types_match(s1->var_type, s2->var_type);
+    if(tm){
+      #if defined DEBUG
+        printf("types OK\n");
+      #endif
+    } else {
+      #if defined DEBUG
+        printf("types MISSMATCH: %s | %s\n", s1->var_type, s2->var_type);
+      #endif
+      char msg[50];
+      sprintf(msg, "%s %s\n", s1->var_type, s2->var_type);
+      semantic_error(TYPES_MISSMATCH_ERROR, msg);
+    }
     $$ = ins_node("-", REGULAR_NODE, 'E', $1, $3, $2); 
   }
 | termo { 
