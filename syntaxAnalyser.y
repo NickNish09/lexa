@@ -32,11 +32,10 @@
 
   char* concat(const char *s1, const char *s2)
   {
-      char *result = malloc(strlen(s1) + strlen(s2) + 1); // +1 for the null-terminator
-      // in real code you would check for errors in malloc here
-      strcpy(result, s1);
-      strcat(result, s2);
-      return result;
+    char *result = malloc(strlen(s1) + strlen(s2) + 1);
+    strcpy(result, s1);
+    strcat(result, s2);
+    return result;
   }
 
   const char * stringBasedOnNumber(int number)
@@ -56,7 +55,9 @@
   void semantic_error(int error_type, char *msg){
     char err[100];
     if(error_type == REDECLARATION_ERROR){
-      sprintf(err, "ERRO SEMANTICO de Redeclaracao de Variavel: %s\n", msg);
+      sprintf(err, "semantic error, variable redeclaration: %s\n", msg);
+    } else if (error_type == NO_DECLARATION_ERROR){
+      sprintf(err, "semantic error, no declarion found for: %s\n", msg);
     };
 
     yyerror(err);
@@ -71,6 +72,8 @@
 
   int current_scope_level = 0; // global
   scope * s_stack = NULL;
+  char scopes_names[50][50];
+  int scopes_count = 0;
 
   void initialize_s_stack(){
     #if defined DEBUG
@@ -92,6 +95,9 @@
       printf("pushed %s to scope stack\n", s_aux->id);
     #endif
     current_scope_level++;
+
+    strcpy(scopes_names[scopes_count],s_id);
+    scopes_count++;
     return s_aux;
   };
 
@@ -145,6 +151,24 @@
     for(s=s_table; s != NULL; s=s->hh.next) {
       printf("id: %15s | var_type: %7s | s_node_type: %10s | scope_level: %d\n", s->id, s->var_type, stringBasedOnNumber(s->s_node_type), s->scope);
     }
+  }
+
+  s_node* find_in_s_table(char* id){
+    s_node *s;
+    int i;
+    for(i=0; i<=scopes_count;i++){
+      char *auxid = concat("::", scopes_names[i]);
+      char *identifier = concat(id, auxid);
+      // print_s_table();
+      // printf("identificador: %s\n", identifier);
+      
+      HASH_FIND_STR(s_table, identifier, s);
+      if(s != NULL){
+        return s;
+      }
+    }
+
+    return s;
   }
 
   // END REFERENTE A TABELA DE SIMBOLOS
@@ -263,7 +287,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
 
 %type <nd> programa declaracoes declaracao var_decl func_decl parm_tipos cod_block assign expressao scan print
 %type <nd> cod_blocks expressao_logica termo op_expressao declaracao_tupla
-%type <str> palavra
+%type <str> palavra variable
 
 %token BOOL
 %token <tipo> TIPO
@@ -352,34 +376,21 @@ var_decl:
 ;
 
 func_decl:
-  TIPO ID '(' parm_tipos ')' ';'{ 
-    #if defined DEBUG
-      printf("func_decl #1 \n"); 
-    #endif
-    $$ = ins_node_symbol($1, SYMBOL_NODE,'F', $2); 
+  TIPO ID '(' {
+    // $<nd>$ = ins_node_symbol($1, SYMBOL_NODE,'F', $2); 
+    add_to_s_table($2, $1, FUNCTION_TYPE, 0);
+    s_push($2);
   }
-| TIPO ID '(' ')' ';' {
-   #if defined DEBUG
-    printf("func_decl #2 \n"); 
-   #endif
-   $$ = ins_node_symbol($1, SYMBOL_NODE,'F', $2); 
-  }
-| TIPO ID '(' parm_tipos ')' '{' {
-  #if defined DEBUG
-    printf("func_decl #3 \n");
-  #endif
-  add_to_s_table($2, $2, FUNCTION_TYPE, 0); 
-  s_push($2);
-}
- cod_blocks '}' ';' { 
-    $<nd>$ = ins_node($1, REGULAR_NODE,'F', $4, $8, $2);
-    s_pop(); 
+  parm_tipos ')' { ; }
+  '{' cod_blocks '}' ';' { 
+      $<nd>$ = ins_node($1, REGULAR_NODE,'F', $5, $9, $2);
+      s_pop(); 
   }
 | TIPO ID '(' ')' '{' {
   #if defined DEBUG
     printf("func_decl #4 \n");
   #endif
-  add_to_s_table($2, $2, FUNCTION_TYPE, 0); 
+  add_to_s_table($2, $1, FUNCTION_TYPE, 0); 
   s_push($2);
 }
  cod_blocks '}' ';' { $<nd>$ = ins_node($1, REGULAR_NODE,'F', NULL, $7, $2); s_pop(); }
@@ -390,30 +401,35 @@ parm_tipos:
     #if defined DEBUG
       printf("parm_tipos #1 \n"); 
     #endif
-    $$ = $1; 
+    add_to_s_table($3, $2, VARIABLE_TYPE, 0);
+    $$ = $1;
   }
 | parm_tipos TIPO ID '[' ']' {
     #if defined DEBUG
       printf("parm_tipos #2 \n"); 
     #endif
+    add_to_s_table($3, $2, VARIABLE_TYPE, 0);
     $$ = $1; 
   }
 | TIPO ID ',' {
    #if defined DEBUG
     printf("parm_tipos #3 \n"); 
    #endif
+   add_to_s_table($2, $1, VARIABLE_TYPE, 0);
    $$ = NULL; 
   }
 | TIPO ID {
    #if defined DEBUG
     printf("parm_tipos #4 \n"); 
    #endif
-   $$ = NULL; 
+   add_to_s_table($2, $1, VARIABLE_TYPE, 0);
+   $$ = NULL;
   }
 | TIPO ID '[' ']' { 
     #if defined DEBUG
       printf("parm_tipos #5 \n"); 
     #endif
+    add_to_s_table($2, $1, VARIABLE_TYPE, 0);
     $$ = NULL; 
   }
 | TUPLE ID { 
@@ -480,6 +496,7 @@ cod_block:
     #if defined DEBUG
       printf("cod_block #6 \n"); 
     #endif
+    $$ = $1;
   }
 | print { 
     #if defined DEBUG
@@ -487,19 +504,19 @@ cod_block:
     #endif
     $$ = $1;
   }
-| ID '(' expressao ')' ';' { 
+| variable '(' expressao ')' ';' { 
     #if defined DEBUG
       printf("cod_block #8 \n"); 
     #endif
     $$ = $3;
   }
-| ID '(' ')' ';' {
+| variable '(' ')' ';' {
     #if defined DEBUG
       printf("cod_block #9 \n");
     #endif
     $$ = ins_node("-", 'C','R', NULL, NULL, "call");
   }
-| scan '(' ID ')' ';' {
+| scan '(' variable ')' ';' {
     #if defined DEBUG
       printf("cod_block #10 \n"); 
     #endif
@@ -508,13 +525,13 @@ cod_block:
 ;
 
 assign:
-  ID OP_ASSIGN expressao { 
+  variable OP_ASSIGN expressao { 
     #if defined DEBUG
       printf("assign #1 \n"); 
     #endif
     $$ = $3; 
   }
-| ID '[' INT ']' OP_ASSIGN expressao { 
+| variable '[' INT ']' OP_ASSIGN expressao { 
     #if defined DEBUG
       printf("assign #2 \n"); $$ = $6; 
     #endif
@@ -583,11 +600,12 @@ op_expressao:
 ;
 
 termo:
-  ID { 
+  variable { 
     #if defined DEBUG
       printf("termo #1 \n");
     #endif
-    $$ = ins_node_symbol($1, 'S','V', $1); 
+    // $$ = ins_node_symbol($1, 'S','V', $1); 
+    $$ = ins_node("-", REGULAR_NODE, 'E', NULL, NULL, $1); ;
   }
 | INT { 
     #if defined DEBUG
@@ -601,7 +619,7 @@ termo:
     #endif
     $$ = NULL; 
   }
-| ID '[' INT ']' { 
+| variable '[' INT ']' { 
     #if defined DEBUG
       printf("termo #4 \n");
     #endif
@@ -610,7 +628,7 @@ termo:
 ;
 
 scan:
-  SCAN '(' ID ')' { 
+  SCAN '(' variable ')' { 
     #if defined DEBUG
       printf("scan #1 \n"); 
     #endif
@@ -655,6 +673,18 @@ palavra:
   }
 ;
 
+variable:
+  ID {
+    #if defined DEBUG
+      printf("variable #1 \n"); 
+    #endif
+    s_node* s = find_in_s_table($1);
+    if(s == NULL){ // nao declarou a variavel ainda
+      semantic_error(NO_DECLARATION_ERROR, $1);
+    }
+    $$ = $1;
+  }
+
 %%
 
 int main(int argc, char **argv){
@@ -679,7 +709,11 @@ int main(int argc, char **argv){
     printErrors();
   }
   #if defined DEBUG
-    printf("Debug Mode...\n");
+    printf("Debug Mode...\nEscopos:\n");
+    int i;
+    for(i=0; i<scopes_count;i++){
+      printf("%s\n", scopes_names[i]);
+    }
   #endif
   return 0;
 }
