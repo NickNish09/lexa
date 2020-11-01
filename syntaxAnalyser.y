@@ -71,6 +71,18 @@
     #endif
     if(strcmp(t1, t2) == 0){
       return TRUE;
+    } else if(strcmp(t1, "int") == 0){ // se t1 é int, entao se t2 for float esta ok
+      if(strcmp(t2, "float") == 0){
+        return TRUE;
+      } else {
+        return FALSE;
+      }
+    } else if(strcmp(t1, "float") == 0){ // se t1 é float, entao se t2 for int esta ok
+      if(strcmp(t2, "int") == 0){
+        return TRUE;
+      } else {
+        return FALSE;
+      }
     }
 
     return FALSE;
