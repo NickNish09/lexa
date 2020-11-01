@@ -589,13 +589,18 @@ op_expressao:
     #if defined DEBUG
       printf("op_expressao #1\n");
     #endif
+    // printf("%s ll %s\n", $1->val, $3->val);
+    s_node* s = find_in_s_table($1->val);
+    printf("%s ll ", s->var_type);
+    s = find_in_s_table($3->val);
+    printf("%s\n", s->var_type);
     $$ = ins_node("-", REGULAR_NODE, 'E', $1, $3, $2); 
   }
 | termo { 
     #if defined DEBUG
       printf("op_expressao #2\n"); 
     #endif
-    $$ = $1; 
+    $$ = $1;
   }
 ;
 
@@ -604,8 +609,9 @@ termo:
     #if defined DEBUG
       printf("termo #1 \n");
     #endif
-    // $$ = ins_node_symbol($1, 'S','V', $1); 
-    $$ = ins_node("-", REGULAR_NODE, 'E', NULL, NULL, $1); ;
+    // $$ = ins_node_symbol($1, 'S','V', $1);
+    s_node* s = find_in_s_table($1);
+    $$ = ins_node(s->var_type, REGULAR_NODE, 'E', NULL, NULL, $1); ;
   }
 | INT { 
     #if defined DEBUG
