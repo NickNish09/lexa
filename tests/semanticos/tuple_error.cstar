@@ -1,0 +1,4 @@
+int main(){
+    tuple int, float person;
+    person = (20, 500.3);
+};

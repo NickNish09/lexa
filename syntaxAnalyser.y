@@ -311,7 +311,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
 }
 
 %type <nd> programa declaracoes declaracao var_decl func_decl parm_tipos cod_block assign expressao scan print
-%type <nd> cod_blocks expressao_logica termo op_expressao declaracao_tupla
+%type <nd> cod_blocks expressao_logica termo op_expressao declaracao_tupla tuple_expressao tuple_args
 %type <str> palavra variable
 
 %token BOOL
@@ -554,12 +554,20 @@ assign:
     #if defined DEBUG
       printf("assign #1 \n"); 
     #endif
-    $$ = $3; 
+    $$ = $3;
   }
 | variable '[' INT ']' OP_ASSIGN expressao { 
     #if defined DEBUG
-      printf("assign #2 \n"); $$ = $6; 
+      printf("assign #2 \n");
     #endif
+    $$ = $6;
+  }
+| variable OP_ASSIGN tuple_expressao { 
+    #if defined DEBUG
+      printf("assign #3 \n");
+    #endif
+    // $$ = ins_node("-", REGULAR_NODE, 'T', ins_node("-", REGULAR_NODE, 'E', NULL, NULL, $1), $3, $1);
+    $$ = $3;
   }
 ;
 
@@ -573,6 +581,22 @@ expressao:
       printf("expressao #6 \n"); 
     #endif
     $$ = $2; 
+  }
+;
+
+tuple_expressao:
+  '(' tuple_args ')' { 
+    $$ = $2;
+  }
+;
+
+tuple_args:
+  tuple_args ',' termo {
+    // $$ = ins_node("-", REGULAR_NODE, 'T', $1, ins_node("-", REGULAR_NODE, 'E', NULL, NULL, $3->val), $3->val);
+    $$ = $1;
+  }
+| termo {
+    $$ = $1; 
   }
 ;
 
@@ -667,6 +691,12 @@ termo:
     #endif
     $$ = NULL; 
   }
+| palavra{
+  #if defined DEBUG
+    printf("termo #5 \n");
+  #endif
+  $$ = NULL; 
+}
 ;
 
 scan:
