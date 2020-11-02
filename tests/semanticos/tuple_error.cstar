@@ -1,4 +1,4 @@
 int main(){
-    tuple int, float person;
+    tuple int age, float sal person;
     person = (20, 500.3);
 };

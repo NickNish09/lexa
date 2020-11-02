@@ -181,7 +181,7 @@
   s_node* find_in_s_table(char* id){
     s_node *s;
     int i;
-    for(i=0; i<=scopes_count;i++){
+    for(i=0; i<scopes_count;i++){
       char *auxid = concat("::", scopes_names[i]);
       char *identifier = concat(id, auxid);
       // print_s_table();
@@ -366,7 +366,7 @@ declaracao:
     #if defined DEBUG
       printf("tuple_decl\n"); 
     #endif
-    $$ = $2; 
+    $$ = $2;
   }
 | func_decl { 
     #if defined DEBUG
@@ -377,17 +377,23 @@ declaracao:
 ;
 
 declaracao_tupla:
-  TIPO ',' declaracao_tupla { 
+  TIPO ID ',' declaracao_tupla { 
     #if defined DEBUG
       printf("declaracao_tupla #1\n"); 
+      printf("var: %s | type: %s\n", $4->val, $4->var_type);
+      printf("should_type: %s\n", $1);
     #endif
-    $$ = $3; 
+    $$ = $4;
+    s_node* s = find_in_s_table($4->val);
+    s->var_type = concat($1,$4->var_type);
+    printf("CONCASS: %s\n",concat($1, $4->var_type));
   }
-| var_decl { 
+| TIPO ID ID ';'{
     #if defined DEBUG
       printf("declaracao_tupla #2\n"); 
     #endif
-    $$ = $1;
+    // $$ = $1;
+    $$ = ins_node_symbol($1, SYMBOL_NODE,'T', $3);
   }
 ;
 
@@ -461,7 +467,8 @@ parm_tipos:
     #if defined DEBUG
       printf("parm_tipos #6\n"); 
     #endif
-    $$ = NULL; 
+    // $$ = NULL; 
+    $$ = ins_node_symbol($1, 'S','V', $2);
   }
 ;
 
