@@ -558,10 +558,17 @@ cod_block:
 
 assign:
   variable OP_ASSIGN expressao { 
+    $$ = $3;
+    s_node* s = find_in_s_table($1);
     #if defined DEBUG
       printf("assign #1 \n"); 
+      printf("TIIIPO: %s | %s\n", $3->var_type, s->var_type);
     #endif
-    $$ = $3;
+    if(!types_match($3->var_type, s->var_type)){
+      char msg[50];
+      sprintf(msg, "%s %s\n", $3->var_type, s->var_type);
+      semantic_error(TYPES_MISSMATCH_ERROR, msg);
+    }
   }
 | variable '[' INT ']' OP_ASSIGN expressao { 
     #if defined DEBUG
@@ -661,7 +668,7 @@ op_expressao:
       sprintf(msg, "%s %s\n", s1->var_type, s2->var_type);
       semantic_error(TYPES_MISSMATCH_ERROR, msg);
     }
-    $$ = ins_node("-", REGULAR_NODE, 'E', $1, $3, $2); 
+    $$ = ins_node(s1->var_type, REGULAR_NODE, 'E', $1, $3, $2); 
   }
 | termo { 
     #if defined DEBUG
