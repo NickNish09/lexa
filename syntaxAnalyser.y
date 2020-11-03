@@ -477,11 +477,11 @@ cod_blocks:
     #if defined DEBUG
       printf("cod_blocks #1\n"); 
     #endif
-    $$ = ins_node("-", REGULAR_NODE,'C', $1, $2, "cb"); 
+    $$ = ins_node("-", REGULAR_NODE,'C', $1, $2, "code_block"); 
   }
 | cod_block  {
     #if defined DEBUG
-      printf("cod_blocks #2\n"); 
+      printf("cod_blocks #2\n");
     #endif
     $$ = $1; 
    }
@@ -644,6 +644,12 @@ expressao_logica:
       printf("expressao_logica #5\n"); 
     #endif
     $$ = $1; 
+  }
+| BOOL {
+    #if defined DEBUG
+      printf("expressao_logica #6\n"); 
+    #endif
+    $$ = NULL;
   }
 ;
 
