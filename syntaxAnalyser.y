@@ -108,6 +108,7 @@
     s_stack->level = 0;
     s_stack->id = "global";
     s_stack->prev = NULL;
+    strcpy(scopes_names[0], "global");
   };
 
   scope * s_push(char *s_id){
@@ -121,8 +122,8 @@
     #endif
     current_scope_level++;
 
-    strcpy(scopes_names[scopes_count],s_id);
     scopes_count++;
+    strcpy(scopes_names[scopes_count],s_id);
     return s_aux;
   };
 
@@ -181,7 +182,8 @@
   s_node* find_in_s_table(char* id){
     s_node *s;
     int i;
-    for(i=0; i<scopes_count;i++){
+    for(i=0; i<=scopes_count;i++){
+      // printf("sn: %s\n", scopes_names[i]);
       char *auxid = concat("::", scopes_names[i]);
       char *identifier = concat(id, auxid);
       // print_s_table();
@@ -386,7 +388,7 @@ declaracao_tupla:
     $$ = $4;
     s_node* s = find_in_s_table($4->val);
     s->var_type = concat($1,$4->var_type);
-    printf("CONCASS: %s\n",concat($1, $4->var_type));
+    // printf("CONCASS: %s\n",concat($1, $4->var_type));
   }
 | TIPO ID ID ';'{
     #if defined DEBUG
@@ -394,6 +396,9 @@ declaracao_tupla:
     #endif
     // $$ = $1;
     $$ = ins_node_symbol($1, SYMBOL_NODE,'T', $3);
+  }
+| ID {
+    $$ = ins_node_symbol($1, SYMBOL_NODE,'T', $1);;
   }
 ;
 
@@ -516,6 +521,14 @@ cod_block:
     #if defined DEBUG
       printf("cod_block #4.5 \n");
     #endif
+    // printf("CURRENTSCOPE::%s %s\n", s_stack->id, scopes_names[0]);
+    s_node* s = find_in_s_table(s_stack->id);
+    if(s != NULL){
+      // printf("FUNCTYPE : %s\n", s->var_type);
+      if(!types_match(s->var_type, $2->var_type)){
+        semantic_error(TYPES_MISSMATCH_ERROR, "return type mismatch");
+      }
+    }
     $$ = ins_node("-", REGULAR_NODE,'R', NULL, $2, "retorno");
   }
 | RETORNO '(' expressao ')' ';' {
@@ -691,13 +704,14 @@ termo:
     #endif
     // $$ = ins_node_symbol($1, 'S','V', $1);
     s_node* s = find_in_s_table($1);
-    $$ = ins_node(s->var_type, REGULAR_NODE, 'E', NULL, NULL, $1); ;
+    $$ = ins_node(s->var_type, REGULAR_NODE, 'E', NULL, NULL, $1);
   }
 | INT { 
     #if defined DEBUG
       printf("termo #2 \n");
     #endif
-    $$ = NULL; 
+    // $$ = NULL; 
+    $$ = ins_node("int", REGULAR_NODE, 'E', NULL, NULL, "int");
   }
 | FLOAT { 
     #if defined DEBUG
@@ -709,7 +723,8 @@ termo:
     #if defined DEBUG
       printf("termo #4 \n");
     #endif
-    $$ = NULL; 
+    s_node* s = find_in_s_table($1);
+    $$ = ins_node(s->var_type, REGULAR_NODE, 'E', NULL, NULL, $1);
   }
 | palavra{
   #if defined DEBUG
