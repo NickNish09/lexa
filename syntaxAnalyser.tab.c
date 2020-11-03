@@ -2558,12 +2558,13 @@ yyreduce:
       semantic_error(NO_DECLARATION_ERROR, (yyvsp[0].id));
     }
     (yyval.str) = (yyvsp[0].id);
+    // $$ = ins_node("-", REGULAR_NODE, 'V', NULL, NULL, $1); 
   }
-#line 2563 "syntaxAnalyser.tab.c"
+#line 2564 "syntaxAnalyser.tab.c"
     break;
 
 
-#line 2567 "syntaxAnalyser.tab.c"
+#line 2568 "syntaxAnalyser.tab.c"
 
       default: break;
     }
@@ -2793,7 +2794,7 @@ yyreturn:
   return yyresult;
 }
 
-#line 780 "syntaxAnalyser.y"
+#line 781 "syntaxAnalyser.y"
 
 
 int main(int argc, char **argv){

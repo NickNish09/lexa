@@ -775,6 +775,7 @@ variable:
       semantic_error(NO_DECLARATION_ERROR, $1);
     }
     $$ = $1;
+    // $$ = ins_node("-", REGULAR_NODE, 'V', NULL, NULL, $1); 
   }
 
 %%
