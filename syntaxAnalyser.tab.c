@@ -339,7 +339,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
     else if (level > 1) 
     { 
         printLevel(tree->left, level-1); 
-        printLevel(tree->right, level-1); 
+        printLevel(tree->right, level-1);
     } 
   } 
   void printLevelOrder(node* tree) 
@@ -348,7 +348,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
       int i, j; 
       for (i=0; i<=h; i++){
         for(j=0;j<i;j++){
-          printf("  ");
+          printf(" ");
         }
         printLevel(tree, i); 
       }
@@ -359,9 +359,9 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
       printf(" ");
     }
     if (tree) {
-      printf("| var_type: %s | kind: %c | type: %s | val: %s |\n",tree->var_type, tree->node_kind, stringBasedOnNumber(tree->node_type), tree->val);
-      print_tree(tree->left, h+1);
-      print_tree(tree->right, h+1);
+      printf("| val: %s | kind: %c | type: %s | var_type: %s |\n",tree->val, tree->node_kind, stringBasedOnNumber(tree->node_type), tree->var_type);
+      print_tree(tree->left, h);
+      print_tree(tree->right, h);
     }
   }
 
@@ -1906,7 +1906,7 @@ yyreduce:
     #if defined DEBUG
       printf("var_decl\n"); 
     #endif
-    (yyval.nd) = (yyvsp[0].nd); 
+    (yyval.nd) = (yyvsp[0].nd);
   }
 #line 1912 "syntaxAnalyser.tab.c"
     break;
