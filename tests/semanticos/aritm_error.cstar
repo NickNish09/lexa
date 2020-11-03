@@ -8,5 +8,8 @@ int main(){
     c = a - b;
     c = a * b;
     c = a / b;
+    c = a + d;
+    c = a * e;
+    b = e - a;
     return 0;
 };

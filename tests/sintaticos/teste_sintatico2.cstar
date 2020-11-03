@@ -1,4 +1,4 @@
-tuple int, char person;
+tuple int age, char name person;
 
 int age(tuple p){
     return p[0];
@@ -6,8 +6,4 @@ int age(tuple p){
 
 int gender(tuple p){
     return p[1];
-};
-
-void printall(){
-    print(person);
 };

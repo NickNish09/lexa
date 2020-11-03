@@ -1,0 +1,4 @@
+int main(){
+    tuple int age, float sal person;
+    person = (20, 500.3);
+};

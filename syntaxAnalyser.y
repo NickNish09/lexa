@@ -13,7 +13,7 @@
   #define FUNCTION_TYPE 1002
   #define REDECLARATION_ERROR 5001
   #define NO_DECLARATION_ERROR 5002
-  #define TYPE_ERROR 5003
+  #define TYPES_MISSMATCH_ERROR 5003
   // #define DEBUG 993
   #define TRUE 1
   #define FALSE 0
@@ -58,9 +58,34 @@
       sprintf(err, "semantic error, variable redeclaration: %s\n", msg);
     } else if (error_type == NO_DECLARATION_ERROR){
       sprintf(err, "semantic error, no declarion found for: %s\n", msg);
+    } else if (error_type == TYPES_MISSMATCH_ERROR){
+      sprintf(err, "semantic error, types missmatch: %s\n", msg);
     };
 
     yyerror(err);
+  }
+
+  int types_match(char* t1, char* t2){
+    #if defined DEBUG
+      printf("t1: %s | t2: %s\n", t1, t2);
+    #endif
+    if(strcmp(t1, t2) == 0){
+      return TRUE;
+    } else if(strcmp(t1, "int") == 0){ // se t1 é int, entao se t2 for float esta ok
+      if(strcmp(t2, "float") == 0){
+        return TRUE;
+      } else {
+        return FALSE;
+      }
+    } else if(strcmp(t1, "float") == 0){ // se t1 é float, entao se t2 for int esta ok
+      if(strcmp(t2, "int") == 0){
+        return TRUE;
+      } else {
+        return FALSE;
+      }
+    }
+
+    return FALSE;
   }
 
   // ESCOPO
@@ -156,7 +181,7 @@
   s_node* find_in_s_table(char* id){
     s_node *s;
     int i;
-    for(i=0; i<=scopes_count;i++){
+    for(i=0; i<scopes_count;i++){
       char *auxid = concat("::", scopes_names[i]);
       char *identifier = concat(id, auxid);
       // print_s_table();
@@ -248,7 +273,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
     else if (level > 1) 
     { 
         printLevel(tree->left, level-1); 
-        printLevel(tree->right, level-1); 
+        printLevel(tree->right, level-1);
     } 
   } 
   void printLevelOrder(node* tree) 
@@ -257,18 +282,18 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
       int i, j; 
       for (i=0; i<=h; i++){
         for(j=0;j<i;j++){
-          printf("  ");
+          printf(" ");
         }
         printLevel(tree, i); 
       }
   } 
   void print_tree(node * tree, int h) {
-    int j;
-    for(j=0;j<h;j++){
-      printf(" ");
-    }
     if (tree) {
-      printf("| var_type: %s | kind: %c | type: %s | val: %s |\n",tree->var_type, tree->node_kind, stringBasedOnNumber(tree->node_type), tree->val);
+      int j;
+      for(j=0;j<h;j++){
+        printf(" ");
+      }
+      printf("| val: %s | kind: %c | type: %s | var_type: %s |\n",tree->val, tree->node_kind, stringBasedOnNumber(tree->node_type), tree->var_type);
       print_tree(tree->left, h+1);
       print_tree(tree->right, h+1);
     }
@@ -286,7 +311,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
 }
 
 %type <nd> programa declaracoes declaracao var_decl func_decl parm_tipos cod_block assign expressao scan print
-%type <nd> cod_blocks expressao_logica termo op_expressao declaracao_tupla
+%type <nd> cod_blocks expressao_logica termo op_expressao declaracao_tupla tuple_expressao tuple_args
 %type <str> palavra variable
 
 %token BOOL
@@ -335,13 +360,13 @@ declaracao:
     #if defined DEBUG
       printf("var_decl\n"); 
     #endif
-    $$ = $1; 
+    $$ = $1;
   }
 | TUPLE declaracao_tupla { 
     #if defined DEBUG
       printf("tuple_decl\n"); 
     #endif
-    $$ = $2; 
+    $$ = $2;
   }
 | func_decl { 
     #if defined DEBUG
@@ -352,17 +377,23 @@ declaracao:
 ;
 
 declaracao_tupla:
-  TIPO ',' declaracao_tupla { 
+  TIPO ID ',' declaracao_tupla { 
     #if defined DEBUG
       printf("declaracao_tupla #1\n"); 
+      printf("var: %s | type: %s\n", $4->val, $4->var_type);
+      printf("should_type: %s\n", $1);
     #endif
-    $$ = $3; 
+    $$ = $4;
+    s_node* s = find_in_s_table($4->val);
+    s->var_type = concat($1,$4->var_type);
+    printf("CONCASS: %s\n",concat($1, $4->var_type));
   }
-| var_decl { 
+| TIPO ID ID ';'{
     #if defined DEBUG
       printf("declaracao_tupla #2\n"); 
     #endif
-    $$ = $1;
+    // $$ = $1;
+    $$ = ins_node_symbol($1, SYMBOL_NODE,'T', $3);
   }
 ;
 
@@ -436,7 +467,8 @@ parm_tipos:
     #if defined DEBUG
       printf("parm_tipos #6\n"); 
     #endif
-    $$ = NULL; 
+    // $$ = NULL; 
+    $$ = ins_node_symbol($1, 'S','V', $2);
   }
 ;
 
@@ -445,11 +477,11 @@ cod_blocks:
     #if defined DEBUG
       printf("cod_blocks #1\n"); 
     #endif
-    $$ = ins_node("-", REGULAR_NODE,'C', $1, $2, "cb"); 
+    $$ = ins_node("-", REGULAR_NODE,'C', $1, $2, "code_block"); 
   }
 | cod_block  {
     #if defined DEBUG
-      printf("cod_blocks #2\n"); 
+      printf("cod_blocks #2\n");
     #endif
     $$ = $1; 
    }
@@ -526,15 +558,30 @@ cod_block:
 
 assign:
   variable OP_ASSIGN expressao { 
+    $$ = $3;
+    s_node* s = find_in_s_table($1);
     #if defined DEBUG
       printf("assign #1 \n"); 
+      printf("TIIIPO: %s | %s\n", $3->var_type, s->var_type);
     #endif
-    $$ = $3; 
+    if(!types_match($3->var_type, s->var_type)){
+      char msg[50];
+      sprintf(msg, "%s %s\n", $3->var_type, s->var_type);
+      semantic_error(TYPES_MISSMATCH_ERROR, msg);
+    }
   }
 | variable '[' INT ']' OP_ASSIGN expressao { 
     #if defined DEBUG
-      printf("assign #2 \n"); $$ = $6; 
+      printf("assign #2 \n");
     #endif
+    $$ = $6;
+  }
+| variable OP_ASSIGN tuple_expressao { 
+    #if defined DEBUG
+      printf("assign #3 \n");
+    #endif
+    // $$ = ins_node("-", REGULAR_NODE, 'T', ins_node("-", REGULAR_NODE, 'E', NULL, NULL, $1), $3, $1);
+    $$ = $3;
   }
 ;
 
@@ -548,6 +595,22 @@ expressao:
       printf("expressao #6 \n"); 
     #endif
     $$ = $2; 
+  }
+;
+
+tuple_expressao:
+  '(' tuple_args ')' { 
+    $$ = $2;
+  }
+;
+
+tuple_args:
+  tuple_args ',' termo {
+    // $$ = ins_node("-", REGULAR_NODE, 'T', $1, ins_node("-", REGULAR_NODE, 'E', NULL, NULL, $3->val), $3->val);
+    $$ = $1;
+  }
+| termo {
+    $$ = $1; 
   }
 ;
 
@@ -582,6 +645,12 @@ expressao_logica:
     #endif
     $$ = $1; 
   }
+| BOOL {
+    #if defined DEBUG
+      printf("expressao_logica #6\n"); 
+    #endif
+    $$ = NULL;
+  }
 ;
 
 op_expressao:
@@ -589,13 +658,29 @@ op_expressao:
     #if defined DEBUG
       printf("op_expressao #1\n");
     #endif
-    $$ = ins_node("-", REGULAR_NODE, 'E', $1, $3, $2); 
+    // printf("%s ll %s\n", $1->val, $3->val);
+    s_node* s1 = find_in_s_table($1->val);
+    s_node* s2 = find_in_s_table($3->val);
+    int tm = types_match(s1->var_type, s2->var_type);
+    if(tm){
+      #if defined DEBUG
+        printf("types OK\n");
+      #endif
+    } else {
+      #if defined DEBUG
+        printf("types MISSMATCH: %s | %s\n", s1->var_type, s2->var_type);
+      #endif
+      char msg[50];
+      sprintf(msg, "%s %s\n", s1->var_type, s2->var_type);
+      semantic_error(TYPES_MISSMATCH_ERROR, msg);
+    }
+    $$ = ins_node(s1->var_type, REGULAR_NODE, 'E', $1, $3, $2); 
   }
 | termo { 
     #if defined DEBUG
       printf("op_expressao #2\n"); 
     #endif
-    $$ = $1; 
+    $$ = $1;
   }
 ;
 
@@ -604,8 +689,9 @@ termo:
     #if defined DEBUG
       printf("termo #1 \n");
     #endif
-    // $$ = ins_node_symbol($1, 'S','V', $1); 
-    $$ = ins_node("-", REGULAR_NODE, 'E', NULL, NULL, $1); ;
+    // $$ = ins_node_symbol($1, 'S','V', $1);
+    s_node* s = find_in_s_table($1);
+    $$ = ins_node(s->var_type, REGULAR_NODE, 'E', NULL, NULL, $1); ;
   }
 | INT { 
     #if defined DEBUG
@@ -625,6 +711,12 @@ termo:
     #endif
     $$ = NULL; 
   }
+| palavra{
+  #if defined DEBUG
+    printf("termo #5 \n");
+  #endif
+  $$ = NULL; 
+}
 ;
 
 scan:
@@ -683,6 +775,7 @@ variable:
       semantic_error(NO_DECLARATION_ERROR, $1);
     }
     $$ = $1;
+    // $$ = ins_node("-", REGULAR_NODE, 'V', NULL, NULL, $1); 
   }
 
 %%
