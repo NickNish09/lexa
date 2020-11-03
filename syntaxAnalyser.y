@@ -288,14 +288,14 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
       }
   } 
   void print_tree(node * tree, int h) {
-    int j;
-    for(j=0;j<h;j++){
-      printf(" ");
-    }
     if (tree) {
+      int j;
+      for(j=0;j<h;j++){
+        printf(" ");
+      }
       printf("| val: %s | kind: %c | type: %s | var_type: %s |\n",tree->val, tree->node_kind, stringBasedOnNumber(tree->node_type), tree->var_type);
-      print_tree(tree->left, h);
-      print_tree(tree->right, h);
+      print_tree(tree->left, h+1);
+      print_tree(tree->right, h+1);
     }
   }
 %}
