@@ -341,7 +341,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
   struct node* nd;
 }
 
-%type <nd> programa declaracoes declaracao var_decl func_decl parm_tipos cod_block assign expressao scan print
+%type <nd> programa declaracoes declaracao var_decl func_decl parm_tipos cod_block assign expressao scan print func_call func_args func_arg
 %type <nd> cod_blocks expressao_logica termo op_expressao declaracao_tupla tuple_expressao tuple_args
 %type <str> palavra variable
 
@@ -594,6 +594,12 @@ cod_block:
     #endif
     $$ = $1;
   }
+| func_call { 
+  #if defined DEBUG
+    printf("cod_block #7.5 \n"); 
+  #endif
+  $$ = $1;
+  }
 | variable '(' expressao ')' ';' { 
     #if defined DEBUG
       printf("cod_block #8 \n"); 
@@ -800,6 +806,28 @@ print:
     #endif
     $$ = ins_node("-", REGULAR_NODE, 'P', NULL, NULL, $3); 
   }
+;
+
+func_call:
+  ID '(' func_args ')' ';'{
+    $$ = ins_node("-", REGULAR_NODE,'F', NULL, $3, "func_call"); 
+  }
+;
+
+func_args:
+  func_args ',' func_arg {
+    $$ = ins_node("-", REGULAR_NODE,'F', $1, $3, "func_args"); 
+  }
+  | func_arg {
+    $$ = $1;
+  }
+;
+
+func_arg:
+  ID { $$ = ins_node("-", REGULAR_NODE,'A', NULL, NULL, $1); }
+  | INT { $$ = ins_node("-", REGULAR_NODE,'A', NULL, NULL, $1); }
+  | FLOAT { $$ = ins_node("-", REGULAR_NODE,'A', NULL, NULL, $1); }
+  | palavra { $$ = ins_node("-", REGULAR_NODE,'A', NULL, NULL, $1); }
 ;
 
 palavra:
