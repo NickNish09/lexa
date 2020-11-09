@@ -14,6 +14,7 @@
   #define REDECLARATION_ERROR 5001
   #define NO_DECLARATION_ERROR 5002
   #define TYPES_MISSMATCH_ERROR 5003
+  #define WRONG_NUMBER_OF_ARGUMENTS_ERROR 5004
   // #define DEBUG 993
   #define TRUE 1
   #define FALSE 0
@@ -74,6 +75,8 @@
       sprintf(err, "semantic error, no declarion found for: %s\n", msg);
     } else if (error_type == TYPES_MISSMATCH_ERROR){
       sprintf(err, "semantic error, types missmatch: %s\n", msg);
+    } else if (error_type == WRONG_NUMBER_OF_ARGUMENTS_ERROR){
+      sprintf(err, "semantic error, wrong number of arguments: %s\n", msg);
     };
 
     yyerror(err);
@@ -199,7 +202,7 @@
         printf(" | params: ");
         int k;
         for(k=0;k<s->params_count;k++){
-          printf("%s | ", plainName(s->params_list[k+1]->id));
+          printf("%s | ", s->params_list[k+1]->var_type);
         }
         printf("\n");
       } else {
@@ -329,6 +332,42 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
       print_tree(tree->right, h+1);
     }
   }
+
+  int paramsc = 0;
+
+  void check_specific_param(node *nd, char *func_name){
+    if(nd != NULL){
+      if(strcmp(nd->val, "func_args") != 0){
+        // printf("arg: %s \n", nd->var_type);
+        s_node *aux = find_in_s_table(func_name);
+        // printf("should arg: %s\n", aux->params_list[paramsc]->var_type);
+        if(paramsc > 0){
+         if(strcmp(nd->var_type, aux->params_list[paramsc]->var_type) != 0){
+            char msg[50];
+            sprintf(msg, "args call differ from declaration in function %s", func_name);
+            semantic_error(TYPES_MISSMATCH_ERROR, msg);
+          }
+          paramsc--; 
+        } else {
+          char msg[50];
+          sprintf(msg, "function %s", func_name);
+          semantic_error(WRONG_NUMBER_OF_ARGUMENTS_ERROR, msg);
+        }
+      }
+      check_specific_param(nd->right, func_name);
+      check_specific_param(nd->left, func_name);
+    }
+  }
+
+  void check_params(node *nd, char* func_name){
+    s_node* aux = find_in_s_table(func_name);
+    paramsc = aux->params_count;
+    check_specific_param(nd->right, func_name);
+    paramsc = 0;
+    // printf("func: %d\n", aux->params_count);
+    // printf("v: %s\n", nd->right->left->right->val);
+    // printf("v: %s\n", nd->right->left->left->val);
+  }
 %}
 
 %union {
@@ -341,7 +380,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
   struct node* nd;
 }
 
-%type <nd> programa declaracoes declaracao var_decl func_decl parm_tipos cod_block assign expressao scan print
+%type <nd> programa declaracoes declaracao var_decl func_decl parm_tipos cod_block assign expressao scan print func_call func_args func_arg
 %type <nd> cod_blocks expressao_logica termo op_expressao declaracao_tupla tuple_expressao tuple_args
 %type <str> palavra variable
 
@@ -594,6 +633,12 @@ cod_block:
     #endif
     $$ = $1;
   }
+| func_call { 
+  #if defined DEBUG
+    printf("cod_block #7.5 \n"); 
+  #endif
+  $$ = $1;
+  }
 | variable '(' expressao ')' ';' { 
     #if defined DEBUG
       printf("cod_block #8 \n"); 
@@ -644,15 +689,15 @@ assign:
 ;
 
 expressao:
-  // OP_ARITM op_expressao { printf("expressao #1 \n"); $$ = $2; }
-// | expressao OP_ARITM expressao { printf("expressao #4 \n"); $$ = ins_node("-", REGULAR_NODE, 'E', $1, $3, "-"); }
-// | op_expressao OP_COMP op_expressao { printf("expressao #5 \n"); $$ = ins_node("-", REGULAR_NODE, 'E', $1, $3, "-"); }
   op_expressao
 | '(' expressao ')' {
     #if defined DEBUG
       printf("expressao #6 \n"); 
     #endif
     $$ = $2; 
+  }
+  | func_call {
+    $$ = $1;
   }
 ;
 
@@ -800,6 +845,30 @@ print:
     #endif
     $$ = ins_node("-", REGULAR_NODE, 'P', NULL, NULL, $3); 
   }
+;
+
+func_call:
+  ID '(' func_args ')' ';'{
+    s_node* aux = find_in_s_table($1);
+    $$ = ins_node(aux->var_type, REGULAR_NODE,'F', NULL, $3, "func_call"); 
+    check_params($$, $1);
+  }
+;
+
+func_args:
+  func_args ',' func_arg {
+    $$ = ins_node("-", REGULAR_NODE,'F', $1, $3, "func_args"); 
+  }
+  | func_arg {
+    $$ = $1;
+  }
+;
+
+func_arg:
+  ID { $$ = ins_node("-", REGULAR_NODE,'A', NULL, NULL, $1); }
+  | INT { $$ = ins_node("int", REGULAR_NODE,'A', NULL, NULL, $1); }
+  | FLOAT { $$ = ins_node("float", REGULAR_NODE,'A', NULL, NULL, $1); }
+  | palavra { $$ = ins_node("char", REGULAR_NODE,'A', NULL, NULL, $1); }
 ;
 
 palavra:
