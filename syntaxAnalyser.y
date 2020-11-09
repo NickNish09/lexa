@@ -14,6 +14,7 @@
   #define REDECLARATION_ERROR 5001
   #define NO_DECLARATION_ERROR 5002
   #define TYPES_MISSMATCH_ERROR 5003
+  #define WRONG_NUMBER_OF_ARGUMENTS_ERROR 5004
   // #define DEBUG 993
   #define TRUE 1
   #define FALSE 0
@@ -74,6 +75,8 @@
       sprintf(err, "semantic error, no declarion found for: %s\n", msg);
     } else if (error_type == TYPES_MISSMATCH_ERROR){
       sprintf(err, "semantic error, types missmatch: %s\n", msg);
+    } else if (error_type == WRONG_NUMBER_OF_ARGUMENTS_ERROR){
+      sprintf(err, "semantic error, wrong number of arguments: %s\n", msg);
     };
 
     yyerror(err);
@@ -330,7 +333,6 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
     }
   }
 
-  int okparams = TRUE;
   int paramsc = 0;
 
   void check_specific_param(node *nd, char *func_name){
@@ -339,25 +341,28 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
         // printf("arg: %s \n", nd->var_type);
         s_node *aux = find_in_s_table(func_name);
         // printf("should arg: %s\n", aux->params_list[paramsc]->var_type);
-        if(strcmp(nd->var_type, aux->params_list[paramsc]->var_type) != 0){
-          semantic_error(TYPES_MISSMATCH_ERROR, "args call differ from declaration");
+        if(paramsc > 0){
+         if(strcmp(nd->var_type, aux->params_list[paramsc]->var_type) != 0){
+            semantic_error(TYPES_MISSMATCH_ERROR, "args call differ from declaration");
+          }
+          paramsc--; 
+        } else {
+          semantic_error(WRONG_NUMBER_OF_ARGUMENTS_ERROR, "");
         }
-        paramsc--;
       }
       check_specific_param(nd->right, func_name);
       check_specific_param(nd->left, func_name);
     }
   }
 
-  int check_params(node *nd, char* func_name){
+  void check_params(node *nd, char* func_name){
     s_node* aux = find_in_s_table(func_name);
     paramsc = aux->params_count;
     check_specific_param(nd->right, func_name);
-    
+    paramsc = 0;
     // printf("func: %d\n", aux->params_count);
     // printf("v: %s\n", nd->right->left->right->val);
     // printf("v: %s\n", nd->right->left->left->val);
-    return TRUE;
   }
 %}
 
