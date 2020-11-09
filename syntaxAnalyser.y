@@ -343,11 +343,15 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
         // printf("should arg: %s\n", aux->params_list[paramsc]->var_type);
         if(paramsc > 0){
          if(strcmp(nd->var_type, aux->params_list[paramsc]->var_type) != 0){
-            semantic_error(TYPES_MISSMATCH_ERROR, "args call differ from declaration");
+            char msg[50];
+            sprintf(msg, "args call differ from declaration in function %s", func_name);
+            semantic_error(TYPES_MISSMATCH_ERROR, msg);
           }
           paramsc--; 
         } else {
-          semantic_error(WRONG_NUMBER_OF_ARGUMENTS_ERROR, "");
+          char msg[50];
+          sprintf(msg, "function %s", func_name);
+          semantic_error(WRONG_NUMBER_OF_ARGUMENTS_ERROR, msg);
         }
       }
       check_specific_param(nd->right, func_name);
