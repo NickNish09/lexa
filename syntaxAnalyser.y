@@ -38,6 +38,20 @@
     return result;
   }
 
+  const char * plainName(char* composedName){
+    char* return_string;
+    char aux;
+    int i = 0;
+    while(aux != ':'){
+      aux = composedName[i];
+      return_string[i] = aux;
+      i++;
+    }
+    i--;
+    return_string[i] = '\0';
+    return return_string;
+  }
+
   const char * stringBasedOnNumber(int number)
   {
     if(number == SYMBOL_NODE){
@@ -108,6 +122,7 @@
     s_stack->level = 0;
     s_stack->id = "global";
     s_stack->prev = NULL;
+    strcpy(scopes_names[0], "global");
   };
 
   scope * s_push(char *s_id){
@@ -121,8 +136,8 @@
     #endif
     current_scope_level++;
 
-    strcpy(scopes_names[scopes_count],s_id);
     scopes_count++;
+    strcpy(scopes_names[scopes_count],s_id);
     return s_aux;
   };
 
@@ -145,11 +160,13 @@
     int s_node_type;
     int scope; // 0 = global
     UT_hash_handle hh;
+    int params_count;
+    struct s_node* params_list[10];
   } s_node;
 
-  struct s_node *s_table = NULL;
+  s_node *s_table = NULL;
 
-  void add_to_s_table(char* id, char* var_type, int s_node_type, int scope){
+  s_node* add_to_s_table(char* id, char* var_type, int s_node_type, int scope){
     s_node *s;
     char scope_string[5];
     sprintf(scope_string, "%d", scope);
@@ -162,10 +179,13 @@
       s->var_type = var_type;
       s->s_node_type = s_node_type;
       s->scope = current_scope_level;
+      s->params_count = 0;
       HASH_ADD_STR(s_table, id, s);
+      return s;
     } else { // variavel ja esta na tabela, levantar erro de redeclaracao
       semantic_error(REDECLARATION_ERROR, identifier);
     };
+    return s;
   }
 
   void print_s_table() {
@@ -174,14 +194,25 @@
     printf("Tabela de Símbolos:\n");
     // printf("NAME\t\tTYPE\t\tSYMBOL_TYPE\t\tSCOPE SYMBOLS\n");
     for(s=s_table; s != NULL; s=s->hh.next) {
-      printf("id: %15s | var_type: %7s | s_node_type: %10s | scope_level: %d\n", s->id, s->var_type, stringBasedOnNumber(s->s_node_type), s->scope);
+      printf("id: %15s | var_type: %7s | s_node_type: %10s | scope_level: %d | params_count: %d", s->id, s->var_type, stringBasedOnNumber(s->s_node_type), s->scope, s->params_count);
+      if(s->s_node_type == FUNCTION_TYPE){
+        printf(" | params: ");
+        int k;
+        for(k=0;k<s->params_count;k++){
+          printf("%s | ", plainName(s->params_list[k+1]->id));
+        }
+        printf("\n");
+      } else {
+        printf("\n");
+      }
     }
   }
 
   s_node* find_in_s_table(char* id){
     s_node *s;
     int i;
-    for(i=0; i<scopes_count;i++){
+    for(i=0; i<=scopes_count;i++){
+      // printf("sn: %s\n", scopes_names[i]);
       char *auxid = concat("::", scopes_names[i]);
       char *identifier = concat(id, auxid);
       // print_s_table();
@@ -386,7 +417,7 @@ declaracao_tupla:
     $$ = $4;
     s_node* s = find_in_s_table($4->val);
     s->var_type = concat($1,$4->var_type);
-    printf("CONCASS: %s\n",concat($1, $4->var_type));
+    // printf("CONCASS: %s\n",concat($1, $4->var_type));
   }
 | TIPO ID ID ';'{
     #if defined DEBUG
@@ -394,6 +425,9 @@ declaracao_tupla:
     #endif
     // $$ = $1;
     $$ = ins_node_symbol($1, SYMBOL_NODE,'T', $3);
+  }
+| ID {
+    $$ = ins_node_symbol($1, SYMBOL_NODE,'T', $1);;
   }
 ;
 
@@ -432,35 +466,51 @@ parm_tipos:
     #if defined DEBUG
       printf("parm_tipos #1 \n"); 
     #endif
-    add_to_s_table($3, $2, VARIABLE_TYPE, 0);
+    s_node* aux = add_to_s_table($3, $2, VARIABLE_TYPE, 0);
+    s_node* func = find_in_s_table(s_stack->id);
+    func->params_count++;
+    func->params_list[func->params_count] = aux;
+    // printf("aux: %s\n", aux);
     $$ = $1;
   }
 | parm_tipos TIPO ID '[' ']' {
     #if defined DEBUG
       printf("parm_tipos #2 \n"); 
     #endif
-    add_to_s_table($3, $2, VARIABLE_TYPE, 0);
+    s_node* aux = add_to_s_table($3, $2, VARIABLE_TYPE, 0);
+    s_node* func = find_in_s_table(s_stack->id);
+    func->params_count++;
+    func->params_list[func->params_count] = aux;
     $$ = $1; 
   }
 | TIPO ID ',' {
    #if defined DEBUG
     printf("parm_tipos #3 \n"); 
    #endif
-   add_to_s_table($2, $1, VARIABLE_TYPE, 0);
+   s_node* aux = add_to_s_table($2, $1, VARIABLE_TYPE, 0);
+   s_node* func = find_in_s_table(s_stack->id);
+   func->params_count++;
+   func->params_list[func->params_count] = aux;
    $$ = NULL; 
   }
 | TIPO ID {
    #if defined DEBUG
     printf("parm_tipos #4 \n"); 
    #endif
-   add_to_s_table($2, $1, VARIABLE_TYPE, 0);
+   s_node* aux = add_to_s_table($2, $1, VARIABLE_TYPE, 0);
+   s_node* func = find_in_s_table(s_stack->id);
+   func->params_count++; 
+   func->params_list[func->params_count] = aux;
    $$ = NULL;
   }
 | TIPO ID '[' ']' { 
     #if defined DEBUG
       printf("parm_tipos #5 \n"); 
     #endif
-    add_to_s_table($2, $1, VARIABLE_TYPE, 0);
+    s_node* aux = add_to_s_table($2, $1, VARIABLE_TYPE, 0);
+    s_node* func = find_in_s_table(s_stack->id);
+    func->params_count++;
+    func->params_list[func->params_count] = aux;
     $$ = NULL; 
   }
 | TUPLE ID { 
@@ -516,6 +566,14 @@ cod_block:
     #if defined DEBUG
       printf("cod_block #4.5 \n");
     #endif
+    // printf("CURRENTSCOPE::%s %s\n", s_stack->id, scopes_names[0]);
+    s_node* s = find_in_s_table(s_stack->id);
+    if(s != NULL){
+      // printf("FUNCTYPE : %s\n", s->var_type);
+      if(!types_match(s->var_type, $2->var_type)){
+        semantic_error(TYPES_MISSMATCH_ERROR, "return type mismatch");
+      }
+    }
     $$ = ins_node("-", REGULAR_NODE,'R', NULL, $2, "retorno");
   }
 | RETORNO '(' expressao ')' ';' {
@@ -691,13 +749,14 @@ termo:
     #endif
     // $$ = ins_node_symbol($1, 'S','V', $1);
     s_node* s = find_in_s_table($1);
-    $$ = ins_node(s->var_type, REGULAR_NODE, 'E', NULL, NULL, $1); ;
+    $$ = ins_node(s->var_type, REGULAR_NODE, 'E', NULL, NULL, $1);
   }
 | INT { 
     #if defined DEBUG
       printf("termo #2 \n");
     #endif
-    $$ = NULL; 
+    // $$ = NULL; 
+    $$ = ins_node("int", REGULAR_NODE, 'E', NULL, NULL, "int");
   }
 | FLOAT { 
     #if defined DEBUG
@@ -709,7 +768,8 @@ termo:
     #if defined DEBUG
       printf("termo #4 \n");
     #endif
-    $$ = NULL; 
+    s_node* s = find_in_s_table($1);
+    $$ = ins_node(s->var_type, REGULAR_NODE, 'E', NULL, NULL, $1);
   }
 | palavra{
   #if defined DEBUG
