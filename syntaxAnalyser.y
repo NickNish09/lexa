@@ -199,7 +199,7 @@
         printf(" | params: ");
         int k;
         for(k=0;k<s->params_count;k++){
-          printf("%s | ", plainName(s->params_list[k+1]->id));
+          printf("%s | ", s->params_list[k+1]->var_type);
         }
         printf("\n");
       } else {
@@ -328,6 +328,36 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
       print_tree(tree->left, h+1);
       print_tree(tree->right, h+1);
     }
+  }
+
+  int okparams = TRUE;
+  int paramsc = 0;
+
+  void check_specific_param(node *nd, char *func_name){
+    if(nd != NULL){
+      if(strcmp(nd->val, "func_args") != 0){
+        // printf("arg: %s \n", nd->var_type);
+        s_node *aux = find_in_s_table(func_name);
+        // printf("should arg: %s\n", aux->params_list[paramsc]->var_type);
+        if(strcmp(nd->var_type, aux->params_list[paramsc]->var_type) != 0){
+          semantic_error(TYPES_MISSMATCH_ERROR, "args call differ from declaration");
+        }
+        paramsc--;
+      }
+      check_specific_param(nd->right, func_name);
+      check_specific_param(nd->left, func_name);
+    }
+  }
+
+  int check_params(node *nd, char* func_name){
+    s_node* aux = find_in_s_table(func_name);
+    paramsc = aux->params_count;
+    check_specific_param(nd->right, func_name);
+    
+    // printf("func: %d\n", aux->params_count);
+    // printf("v: %s\n", nd->right->left->right->val);
+    // printf("v: %s\n", nd->right->left->left->val);
+    return TRUE;
   }
 %}
 
@@ -812,6 +842,7 @@ func_call:
   ID '(' func_args ')' ';'{
     s_node* aux = find_in_s_table($1);
     $$ = ins_node(aux->var_type, REGULAR_NODE,'F', NULL, $3, "func_call"); 
+    check_params($$, $1);
   }
 ;
 
