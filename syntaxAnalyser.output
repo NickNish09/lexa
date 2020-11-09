@@ -5,8 +5,8 @@ Terminais sem uso na gramática
 
 Estado 35 conflitos: 1 de deslocamento/redução
 Estado 38 conflitos: 2 de deslocamento/redução
-Estado 97 conflitos: 1 de deslocamento/redução
-Estado 126 conflitos: 1 de redução/redução
+Estado 98 conflitos: 1 de deslocamento/redução
+Estado 127 conflitos: 1 de redução/redução
 
 
 Gramática
@@ -68,83 +68,84 @@ Gramática
 
    40 expressao: op_expressao
    41          | '(' expressao ')'
+   42          | func_call
 
-   42 tuple_expressao: '(' tuple_args ')'
+   43 tuple_expressao: '(' tuple_args ')'
 
-   43 tuple_args: tuple_args ',' termo
-   44           | termo
+   44 tuple_args: tuple_args ',' termo
+   45           | termo
 
-   45 expressao_logica: OP_LOG op_expressao
-   46                 | '!' op_expressao
-   47                 | op_expressao OP_COMP op_expressao
-   48                 | '(' op_expressao ')'
-   49                 | op_expressao
-   50                 | BOOL
+   46 expressao_logica: OP_LOG op_expressao
+   47                 | '!' op_expressao
+   48                 | op_expressao OP_COMP op_expressao
+   49                 | '(' op_expressao ')'
+   50                 | op_expressao
+   51                 | BOOL
 
-   51 op_expressao: op_expressao OP_ARITM termo
-   52             | termo
+   52 op_expressao: op_expressao OP_ARITM termo
+   53             | termo
 
-   53 termo: variable
-   54      | INT
-   55      | FLOAT
-   56      | variable '[' INT ']'
-   57      | palavra
+   54 termo: variable
+   55      | INT
+   56      | FLOAT
+   57      | variable '[' INT ']'
+   58      | palavra
 
-   58 scan: SCAN '(' variable ')'
+   59 scan: SCAN '(' variable ')'
 
-   59 print: PRINT '(' termo ')' ';'
-   60      | PRINT '(' palavra ')' ';'
+   60 print: PRINT '(' termo ')' ';'
+   61      | PRINT '(' palavra ')' ';'
 
-   61 func_call: ID '(' func_args ')' ';'
+   62 func_call: ID '(' func_args ')' ';'
 
-   62 func_args: func_args ',' func_arg
-   63          | func_arg
+   63 func_args: func_args ',' func_arg
+   64          | func_arg
 
-   64 func_arg: ID
-   65         | INT
-   66         | FLOAT
-   67         | palavra
+   65 func_arg: ID
+   66         | INT
+   67         | FLOAT
+   68         | palavra
 
-   68 palavra: palavra LETRA
-   69        | palavra DIGITO
-   70        | LETRA
-   71        | DIGITO
+   69 palavra: palavra LETRA
+   70        | palavra DIGITO
+   71        | LETRA
+   72        | DIGITO
 
-   72 variable: ID
+   73 variable: ID
 
 
 Terminais, com as regras onde eles aparecem
 
     $end (0) 0
-    '!' (33) 46
-    '(' (40) 13 15 24 25 26 29 33 34 35 41 42 48 58 59 60 61
-    ')' (41) 13 15 24 25 26 29 33 34 35 41 42 48 58 59 60 61
-    ',' (44) 7 18 43 62
-    ';' (59) 8 10 13 15 27 28 29 30 33 34 35 59 60 61
-    '[' (91) 17 20 38 56
-    ']' (93) 17 20 38 56
+    '!' (33) 47
+    '(' (40) 13 15 24 25 26 29 33 34 35 41 43 49 59 60 61 62
+    ')' (41) 13 15 24 25 26 29 33 34 35 41 43 49 59 60 61 62
+    ',' (44) 7 18 44 63
+    ';' (59) 8 10 13 15 27 28 29 30 33 34 35 60 61 62
+    '[' (91) 17 20 38 57
+    ']' (93) 17 20 38 57
     '{' (123) 13 15 24 25 26
     '}' (125) 13 15 24 25 26
     error (256)
-    BOOL (258) 50
+    BOOL (258) 51
     TIPO <tipo> (259) 7 8 10 13 15 16 17 18 19 20
     IF <str> (260) 24 25
     ELSE <str> (261) 25
     LACOS (262) 26
     RETORNO <str> (263) 27 28 29
-    INT <str> (264) 38 54 56 65
-    FLOAT <str> (265) 55 66
+    INT <str> (264) 38 55 57 66
+    FLOAT <str> (265) 56 67
     TUPLE <str> (266) 5 21
-    ID <id> (267) 7 8 9 10 13 15 16 17 18 19 20 21 61 64 72
-    DIGITO <str> (268) 69 71
-    LETRA <str> (269) 68 70
+    ID <id> (267) 7 8 9 10 13 15 16 17 18 19 20 21 62 65 73
+    DIGITO <str> (268) 70 72
+    LETRA <str> (269) 69 71
     SEPARADOR (270)
-    PRINT (271) 59 60
-    SCAN (272) 58
+    PRINT (271) 60 61
+    SCAN (272) 59
     OP_ASSIGN <operador> (273) 37 38 39
-    OP_ARITM <operador> (274) 51
-    OP_LOG <operador> (275) 45
-    OP_COMP <operador> (276) 47
+    OP_ARITM <operador> (274) 52
+    OP_LOG <operador> (275) 46
+    OP_COMP <operador> (276) 48
 
 
 Não terminais com as regras onde eles aparecem
@@ -191,44 +192,44 @@ Não terminais com as regras onde eles aparecem
         à esquerda: 37 38 39
         à direita: 30
     expressao <nd> (45)
-        à esquerda: 40 41
+        à esquerda: 40 41 42
         à direita: 29 33 37 38 41
     tuple_expressao <nd> (46)
-        à esquerda: 42
+        à esquerda: 43
         à direita: 39
     tuple_args <nd> (47)
-        à esquerda: 43 44
-        à direita: 42 43
+        à esquerda: 44 45
+        à direita: 43 44
     expressao_logica <nd> (48)
-        à esquerda: 45 46 47 48 49 50
+        à esquerda: 46 47 48 49 50 51
         à direita: 24 25 26
     op_expressao <nd> (49)
-        à esquerda: 51 52
-        à direita: 40 45 46 47 48 49 51
+        à esquerda: 52 53
+        à direita: 40 46 47 48 49 50 52
     termo <nd> (50)
-        à esquerda: 53 54 55 56 57
-        à direita: 28 43 44 51 52 59
+        à esquerda: 54 55 56 57 58
+        à direita: 28 44 45 52 53 60
     scan <nd> (51)
-        à esquerda: 58
+        à esquerda: 59
         à direita: 35
     print <nd> (52)
-        à esquerda: 59 60
+        à esquerda: 60 61
         à direita: 31
     func_call <nd> (53)
-        à esquerda: 61
-        à direita: 32
+        à esquerda: 62
+        à direita: 32 42
     func_args <nd> (54)
-        à esquerda: 62 63
-        à direita: 61 62
-    func_arg <nd> (55)
-        à esquerda: 64 65 66 67
+        à esquerda: 63 64
         à direita: 62 63
+    func_arg <nd> (55)
+        à esquerda: 65 66 67 68
+        à direita: 63 64
     palavra <str> (56)
-        à esquerda: 68 69 70 71
-        à direita: 57 60 67 68 69
+        à esquerda: 69 70 71 72
+        à direita: 58 61 68 69 70
     variable <str> (57)
-        à esquerda: 72
-        à direita: 33 34 35 37 38 39 53 56 58
+        à esquerda: 73
+        à direita: 33 34 35 37 38 39 54 57 59
 
 
 Estado 0
@@ -562,26 +563,26 @@ Estado 34
 
 Estado 35
 
-   61 func_call: ID • '(' func_args ')' ';'
-   72 variable: ID •
+   62 func_call: ID • '(' func_args ')' ';'
+   73 variable: ID •
 
     '('  deslocar, e ir ao estado 62
 
-    '('      [reduzir usando a regra 72 (variable)]
-    $padrão  reduzir usando a regra 72 (variable)
+    '('      [reduzir usando a regra 73 (variable)]
+    $padrão  reduzir usando a regra 73 (variable)
 
 
 Estado 36
 
-   59 print: PRINT • '(' termo ')' ';'
-   60      | PRINT • '(' palavra ')' ';'
+   60 print: PRINT • '(' termo ')' ';'
+   61      | PRINT • '(' palavra ')' ';'
 
     '('  deslocar, e ir ao estado 63
 
 
 Estado 37
 
-   58 scan: SCAN • '(' variable ')'
+   59 scan: SCAN • '(' variable ')'
 
     '('  deslocar, e ir ao estado 64
 
@@ -754,37 +755,37 @@ Estado 51
 
 Estado 52
 
-   54 termo: INT •
-
-    $padrão  reduzir usando a regra 54 (termo)
-
-
-Estado 53
-
-   55 termo: FLOAT •
+   55 termo: INT •
 
     $padrão  reduzir usando a regra 55 (termo)
 
 
+Estado 53
+
+   56 termo: FLOAT •
+
+    $padrão  reduzir usando a regra 56 (termo)
+
+
 Estado 54
 
-   72 variable: ID •
+   73 variable: ID •
 
-    $padrão  reduzir usando a regra 72 (variable)
+    $padrão  reduzir usando a regra 73 (variable)
 
 
 Estado 55
 
-   71 palavra: DIGITO •
+   72 palavra: DIGITO •
 
-    $padrão  reduzir usando a regra 71 (palavra)
+    $padrão  reduzir usando a regra 72 (palavra)
 
 
 Estado 56
 
-   70 palavra: LETRA •
+   71 palavra: LETRA •
 
-    $padrão  reduzir usando a regra 70 (palavra)
+    $padrão  reduzir usando a regra 71 (palavra)
 
 
 Estado 57
@@ -800,7 +801,7 @@ Estado 58
 
     INT     deslocar, e ir ao estado 52
     FLOAT   deslocar, e ir ao estado 53
-    ID      deslocar, e ir ao estado 54
+    ID      deslocar, e ir ao estado 35
     DIGITO  deslocar, e ir ao estado 55
     LETRA   deslocar, e ir ao estado 56
     '('     deslocar, e ir ao estado 83
@@ -808,6 +809,7 @@ Estado 58
     expressao     ir ao estado 84
     op_expressao  ir ao estado 85
     termo         ir ao estado 81
+    func_call     ir ao estado 86
     palavra       ir ao estado 60
     variable      ir ao estado 61
 
@@ -816,50 +818,50 @@ Estado 59
 
    28 cod_block: RETORNO termo • ';'
 
-    ';'  deslocar, e ir ao estado 86
+    ';'  deslocar, e ir ao estado 87
 
 
 Estado 60
 
-   57 termo: palavra •
-   68 palavra: palavra • LETRA
-   69        | palavra • DIGITO
+   58 termo: palavra •
+   69 palavra: palavra • LETRA
+   70        | palavra • DIGITO
 
-    DIGITO  deslocar, e ir ao estado 87
-    LETRA   deslocar, e ir ao estado 88
+    DIGITO  deslocar, e ir ao estado 88
+    LETRA   deslocar, e ir ao estado 89
 
-    $padrão  reduzir usando a regra 57 (termo)
+    $padrão  reduzir usando a regra 58 (termo)
 
 
 Estado 61
 
-   53 termo: variable •
-   56      | variable • '[' INT ']'
+   54 termo: variable •
+   57      | variable • '[' INT ']'
 
-    '['  deslocar, e ir ao estado 89
+    '['  deslocar, e ir ao estado 90
 
-    $padrão  reduzir usando a regra 53 (termo)
+    $padrão  reduzir usando a regra 54 (termo)
 
 
 Estado 62
 
-   61 func_call: ID '(' • func_args ')' ';'
+   62 func_call: ID '(' • func_args ')' ';'
 
-    INT     deslocar, e ir ao estado 90
-    FLOAT   deslocar, e ir ao estado 91
-    ID      deslocar, e ir ao estado 92
+    INT     deslocar, e ir ao estado 91
+    FLOAT   deslocar, e ir ao estado 92
+    ID      deslocar, e ir ao estado 93
     DIGITO  deslocar, e ir ao estado 55
     LETRA   deslocar, e ir ao estado 56
 
-    func_args  ir ao estado 93
-    func_arg   ir ao estado 94
-    palavra    ir ao estado 95
+    func_args  ir ao estado 94
+    func_arg   ir ao estado 95
+    palavra    ir ao estado 96
 
 
 Estado 63
 
-   59 print: PRINT '(' • termo ')' ';'
-   60      | PRINT '(' • palavra ')' ';'
+   60 print: PRINT '(' • termo ')' ';'
+   61      | PRINT '(' • palavra ')' ';'
 
     INT     deslocar, e ir ao estado 52
     FLOAT   deslocar, e ir ao estado 53
@@ -867,25 +869,25 @@ Estado 63
     DIGITO  deslocar, e ir ao estado 55
     LETRA   deslocar, e ir ao estado 56
 
-    termo     ir ao estado 96
-    palavra   ir ao estado 97
+    termo     ir ao estado 97
+    palavra   ir ao estado 98
     variable  ir ao estado 61
 
 
 Estado 64
 
-   58 scan: SCAN '(' • variable ')'
+   59 scan: SCAN '(' • variable ')'
 
     ID  deslocar, e ir ao estado 54
 
-    variable  ir ao estado 98
+    variable  ir ao estado 99
 
 
 Estado 65
 
    15 func_decl: TIPO ID '(' ')' '{' $@3 cod_blocks '}' • ';'
 
-    ';'  deslocar, e ir ao estado 99
+    ';'  deslocar, e ir ao estado 100
 
 
 Estado 66
@@ -908,7 +910,7 @@ Estado 68
 
     ID  deslocar, e ir ao estado 54
 
-    variable  ir ao estado 100
+    variable  ir ao estado 101
 
 
 Estado 69
@@ -918,15 +920,16 @@ Estado 69
 
     INT     deslocar, e ir ao estado 52
     FLOAT   deslocar, e ir ao estado 53
-    ID      deslocar, e ir ao estado 54
+    ID      deslocar, e ir ao estado 35
     DIGITO  deslocar, e ir ao estado 55
     LETRA   deslocar, e ir ao estado 56
-    '('     deslocar, e ir ao estado 101
+    '('     deslocar, e ir ao estado 102
 
-    expressao        ir ao estado 102
-    tuple_expressao  ir ao estado 103
+    expressao        ir ao estado 103
+    tuple_expressao  ir ao estado 104
     op_expressao     ir ao estado 85
     termo            ir ao estado 81
+    func_call        ir ao estado 86
     palavra          ir ao estado 60
     variable         ir ao estado 61
 
@@ -938,15 +941,16 @@ Estado 70
 
     INT     deslocar, e ir ao estado 52
     FLOAT   deslocar, e ir ao estado 53
-    ID      deslocar, e ir ao estado 54
+    ID      deslocar, e ir ao estado 35
     DIGITO  deslocar, e ir ao estado 55
     LETRA   deslocar, e ir ao estado 56
     '('     deslocar, e ir ao estado 83
-    ')'     deslocar, e ir ao estado 104
+    ')'     deslocar, e ir ao estado 105
 
-    expressao     ir ao estado 105
+    expressao     ir ao estado 106
     op_expressao  ir ao estado 85
     termo         ir ao estado 81
+    func_call     ir ao estado 86
     palavra       ir ao estado 60
     variable      ir ao estado 61
 
@@ -955,7 +959,7 @@ Estado 71
 
    38 assign: variable '[' • INT ']' OP_ASSIGN expressao
 
-    INT  deslocar, e ir ao estado 106
+    INT  deslocar, e ir ao estado 107
 
 
 Estado 72
@@ -969,7 +973,7 @@ Estado 73
 
    17 parm_tipos: parm_tipos TIPO ID '[' • ']'
 
-    ']'  deslocar, e ir ao estado 107
+    ']'  deslocar, e ir ao estado 108
 
 
 Estado 74
@@ -989,7 +993,7 @@ Estado 74
     declaracao   ir ao estado 5
     var_decl     ir ao estado 6
     func_decl    ir ao estado 7
-    cod_blocks   ir ao estado 108
+    cod_blocks   ir ao estado 109
     cod_block    ir ao estado 40
     assign       ir ao estado 41
     scan         ir ao estado 42
@@ -1000,30 +1004,14 @@ Estado 74
 
 Estado 75
 
-   50 expressao_logica: BOOL •
+   51 expressao_logica: BOOL •
 
-    $padrão  reduzir usando a regra 50 (expressao_logica)
+    $padrão  reduzir usando a regra 51 (expressao_logica)
 
 
 Estado 76
 
-   45 expressao_logica: OP_LOG • op_expressao
-
-    INT     deslocar, e ir ao estado 52
-    FLOAT   deslocar, e ir ao estado 53
-    ID      deslocar, e ir ao estado 54
-    DIGITO  deslocar, e ir ao estado 55
-    LETRA   deslocar, e ir ao estado 56
-
-    op_expressao  ir ao estado 109
-    termo         ir ao estado 81
-    palavra       ir ao estado 60
-    variable      ir ao estado 61
-
-
-Estado 77
-
-   48 expressao_logica: '(' • op_expressao ')'
+   46 expressao_logica: OP_LOG • op_expressao
 
     INT     deslocar, e ir ao estado 52
     FLOAT   deslocar, e ir ao estado 53
@@ -1037,9 +1025,9 @@ Estado 77
     variable      ir ao estado 61
 
 
-Estado 78
+Estado 77
 
-   46 expressao_logica: '!' • op_expressao
+   49 expressao_logica: '(' • op_expressao ')'
 
     INT     deslocar, e ir ao estado 52
     FLOAT   deslocar, e ir ao estado 53
@@ -1053,38 +1041,54 @@ Estado 78
     variable      ir ao estado 61
 
 
+Estado 78
+
+   47 expressao_logica: '!' • op_expressao
+
+    INT     deslocar, e ir ao estado 52
+    FLOAT   deslocar, e ir ao estado 53
+    ID      deslocar, e ir ao estado 54
+    DIGITO  deslocar, e ir ao estado 55
+    LETRA   deslocar, e ir ao estado 56
+
+    op_expressao  ir ao estado 112
+    termo         ir ao estado 81
+    palavra       ir ao estado 60
+    variable      ir ao estado 61
+
+
 Estado 79
 
    24 cod_block: IF '(' expressao_logica • ')' '{' cod_blocks '}'
    25          | IF '(' expressao_logica • ')' '{' cod_blocks '}' ELSE '{' cod_blocks '}'
 
-    ')'  deslocar, e ir ao estado 112
+    ')'  deslocar, e ir ao estado 113
 
 
 Estado 80
 
-   47 expressao_logica: op_expressao • OP_COMP op_expressao
-   49                 | op_expressao •
-   51 op_expressao: op_expressao • OP_ARITM termo
+   48 expressao_logica: op_expressao • OP_COMP op_expressao
+   50                 | op_expressao •
+   52 op_expressao: op_expressao • OP_ARITM termo
 
-    OP_ARITM  deslocar, e ir ao estado 113
-    OP_COMP   deslocar, e ir ao estado 114
+    OP_ARITM  deslocar, e ir ao estado 114
+    OP_COMP   deslocar, e ir ao estado 115
 
-    $padrão  reduzir usando a regra 49 (expressao_logica)
+    $padrão  reduzir usando a regra 50 (expressao_logica)
 
 
 Estado 81
 
-   52 op_expressao: termo •
+   53 op_expressao: termo •
 
-    $padrão  reduzir usando a regra 52 (op_expressao)
+    $padrão  reduzir usando a regra 53 (op_expressao)
 
 
 Estado 82
 
    26 cod_block: LACOS '(' expressao_logica • ')' '{' cod_block '}'
 
-    ')'  deslocar, e ir ao estado 115
+    ')'  deslocar, e ir ao estado 116
 
 
 Estado 83
@@ -1093,14 +1097,15 @@ Estado 83
 
     INT     deslocar, e ir ao estado 52
     FLOAT   deslocar, e ir ao estado 53
-    ID      deslocar, e ir ao estado 54
+    ID      deslocar, e ir ao estado 35
     DIGITO  deslocar, e ir ao estado 55
     LETRA   deslocar, e ir ao estado 56
     '('     deslocar, e ir ao estado 83
 
-    expressao     ir ao estado 116
+    expressao     ir ao estado 117
     op_expressao  ir ao estado 85
     termo         ir ao estado 81
+    func_call     ir ao estado 86
     palavra       ir ao estado 60
     variable      ir ao estado 61
 
@@ -1109,201 +1114,209 @@ Estado 84
 
    29 cod_block: RETORNO '(' expressao • ')' ';'
 
-    ')'  deslocar, e ir ao estado 117
+    ')'  deslocar, e ir ao estado 118
 
 
 Estado 85
 
    40 expressao: op_expressao •
-   51 op_expressao: op_expressao • OP_ARITM termo
+   52 op_expressao: op_expressao • OP_ARITM termo
 
-    OP_ARITM  deslocar, e ir ao estado 113
+    OP_ARITM  deslocar, e ir ao estado 114
 
     $padrão  reduzir usando a regra 40 (expressao)
 
 
 Estado 86
 
+   42 expressao: func_call •
+
+    $padrão  reduzir usando a regra 42 (expressao)
+
+
+Estado 87
+
    28 cod_block: RETORNO termo ';' •
 
     $padrão  reduzir usando a regra 28 (cod_block)
 
 
-Estado 87
-
-   69 palavra: palavra DIGITO •
-
-    $padrão  reduzir usando a regra 69 (palavra)
-
-
 Estado 88
 
-   68 palavra: palavra LETRA •
+   70 palavra: palavra DIGITO •
 
-    $padrão  reduzir usando a regra 68 (palavra)
+    $padrão  reduzir usando a regra 70 (palavra)
 
 
 Estado 89
 
-   56 termo: variable '[' • INT ']'
+   69 palavra: palavra LETRA •
 
-    INT  deslocar, e ir ao estado 118
+    $padrão  reduzir usando a regra 69 (palavra)
 
 
 Estado 90
 
-   65 func_arg: INT •
+   57 termo: variable '[' • INT ']'
 
-    $padrão  reduzir usando a regra 65 (func_arg)
+    INT  deslocar, e ir ao estado 119
 
 
 Estado 91
 
-   66 func_arg: FLOAT •
+   66 func_arg: INT •
 
     $padrão  reduzir usando a regra 66 (func_arg)
 
 
 Estado 92
 
-   64 func_arg: ID •
-
-    $padrão  reduzir usando a regra 64 (func_arg)
-
-
-Estado 93
-
-   61 func_call: ID '(' func_args • ')' ';'
-   62 func_args: func_args • ',' func_arg
-
-    ','  deslocar, e ir ao estado 119
-    ')'  deslocar, e ir ao estado 120
-
-
-Estado 94
-
-   63 func_args: func_arg •
-
-    $padrão  reduzir usando a regra 63 (func_args)
-
-
-Estado 95
-
-   67 func_arg: palavra •
-   68 palavra: palavra • LETRA
-   69        | palavra • DIGITO
-
-    DIGITO  deslocar, e ir ao estado 87
-    LETRA   deslocar, e ir ao estado 88
+   67 func_arg: FLOAT •
 
     $padrão  reduzir usando a regra 67 (func_arg)
 
 
+Estado 93
+
+   65 func_arg: ID •
+
+    $padrão  reduzir usando a regra 65 (func_arg)
+
+
+Estado 94
+
+   62 func_call: ID '(' func_args • ')' ';'
+   63 func_args: func_args • ',' func_arg
+
+    ','  deslocar, e ir ao estado 120
+    ')'  deslocar, e ir ao estado 121
+
+
+Estado 95
+
+   64 func_args: func_arg •
+
+    $padrão  reduzir usando a regra 64 (func_args)
+
+
 Estado 96
 
-   59 print: PRINT '(' termo • ')' ';'
+   68 func_arg: palavra •
+   69 palavra: palavra • LETRA
+   70        | palavra • DIGITO
 
-    ')'  deslocar, e ir ao estado 121
+    DIGITO  deslocar, e ir ao estado 88
+    LETRA   deslocar, e ir ao estado 89
+
+    $padrão  reduzir usando a regra 68 (func_arg)
 
 
 Estado 97
 
-   57 termo: palavra •
-   60 print: PRINT '(' palavra • ')' ';'
-   68 palavra: palavra • LETRA
-   69        | palavra • DIGITO
+   60 print: PRINT '(' termo • ')' ';'
 
-    DIGITO  deslocar, e ir ao estado 87
-    LETRA   deslocar, e ir ao estado 88
-    ')'     deslocar, e ir ao estado 122
-
-    ')'  [reduzir usando a regra 57 (termo)]
+    ')'  deslocar, e ir ao estado 122
 
 
 Estado 98
 
-   58 scan: SCAN '(' variable • ')'
+   58 termo: palavra •
+   61 print: PRINT '(' palavra • ')' ';'
+   69 palavra: palavra • LETRA
+   70        | palavra • DIGITO
 
-    ')'  deslocar, e ir ao estado 123
+    DIGITO  deslocar, e ir ao estado 88
+    LETRA   deslocar, e ir ao estado 89
+    ')'     deslocar, e ir ao estado 123
+
+    ')'  [reduzir usando a regra 58 (termo)]
 
 
 Estado 99
+
+   59 scan: SCAN '(' variable • ')'
+
+    ')'  deslocar, e ir ao estado 124
+
+
+Estado 100
 
    15 func_decl: TIPO ID '(' ')' '{' $@3 cod_blocks '}' ';' •
 
     $padrão  reduzir usando a regra 15 (func_decl)
 
 
-Estado 100
+Estado 101
 
    35 cod_block: scan '(' variable • ')' ';'
 
-    ')'  deslocar, e ir ao estado 124
+    ')'  deslocar, e ir ao estado 125
 
 
-Estado 101
+Estado 102
 
    41 expressao: '(' • expressao ')'
-   42 tuple_expressao: '(' • tuple_args ')'
+   43 tuple_expressao: '(' • tuple_args ')'
 
     INT     deslocar, e ir ao estado 52
     FLOAT   deslocar, e ir ao estado 53
-    ID      deslocar, e ir ao estado 54
+    ID      deslocar, e ir ao estado 35
     DIGITO  deslocar, e ir ao estado 55
     LETRA   deslocar, e ir ao estado 56
     '('     deslocar, e ir ao estado 83
 
-    expressao     ir ao estado 116
-    tuple_args    ir ao estado 125
+    expressao     ir ao estado 117
+    tuple_args    ir ao estado 126
     op_expressao  ir ao estado 85
-    termo         ir ao estado 126
+    termo         ir ao estado 127
+    func_call     ir ao estado 86
     palavra       ir ao estado 60
     variable      ir ao estado 61
 
 
-Estado 102
+Estado 103
 
    37 assign: variable OP_ASSIGN expressao •
 
     $padrão  reduzir usando a regra 37 (assign)
 
 
-Estado 103
+Estado 104
 
    39 assign: variable OP_ASSIGN tuple_expressao •
 
     $padrão  reduzir usando a regra 39 (assign)
 
 
-Estado 104
+Estado 105
 
    34 cod_block: variable '(' ')' • ';'
 
-    ';'  deslocar, e ir ao estado 127
-
-
-Estado 105
-
-   33 cod_block: variable '(' expressao • ')' ';'
-
-    ')'  deslocar, e ir ao estado 128
+    ';'  deslocar, e ir ao estado 128
 
 
 Estado 106
 
-   38 assign: variable '[' INT • ']' OP_ASSIGN expressao
+   33 cod_block: variable '(' expressao • ')' ';'
 
-    ']'  deslocar, e ir ao estado 129
+    ')'  deslocar, e ir ao estado 129
 
 
 Estado 107
+
+   38 assign: variable '[' INT • ']' OP_ASSIGN expressao
+
+    ']'  deslocar, e ir ao estado 130
+
+
+Estado 108
 
    17 parm_tipos: parm_tipos TIPO ID '[' ']' •
 
     $padrão  reduzir usando a regra 17 (parm_tipos)
 
 
-Estado 108
+Estado 109
 
    13 func_decl: TIPO ID '(' $@1 parm_tipos ')' $@2 '{' cod_blocks • '}' ';'
    22 cod_blocks: cod_blocks • cod_block
@@ -1316,7 +1329,7 @@ Estado 108
     ID       deslocar, e ir ao estado 35
     PRINT    deslocar, e ir ao estado 36
     SCAN     deslocar, e ir ao estado 37
-    '}'      deslocar, e ir ao estado 130
+    '}'      deslocar, e ir ao estado 131
 
     declaracoes  ir ao estado 38
     declaracao   ir ao estado 5
@@ -1330,61 +1343,46 @@ Estado 108
     variable     ir ao estado 45
 
 
-Estado 109
-
-   45 expressao_logica: OP_LOG op_expressao •
-   51 op_expressao: op_expressao • OP_ARITM termo
-
-    OP_ARITM  deslocar, e ir ao estado 113
-
-    $padrão  reduzir usando a regra 45 (expressao_logica)
-
-
 Estado 110
 
-   48 expressao_logica: '(' op_expressao • ')'
-   51 op_expressao: op_expressao • OP_ARITM termo
+   46 expressao_logica: OP_LOG op_expressao •
+   52 op_expressao: op_expressao • OP_ARITM termo
 
-    OP_ARITM  deslocar, e ir ao estado 113
-    ')'       deslocar, e ir ao estado 131
-
-
-Estado 111
-
-   46 expressao_logica: '!' op_expressao •
-   51 op_expressao: op_expressao • OP_ARITM termo
-
-    OP_ARITM  deslocar, e ir ao estado 113
+    OP_ARITM  deslocar, e ir ao estado 114
 
     $padrão  reduzir usando a regra 46 (expressao_logica)
 
 
+Estado 111
+
+   49 expressao_logica: '(' op_expressao • ')'
+   52 op_expressao: op_expressao • OP_ARITM termo
+
+    OP_ARITM  deslocar, e ir ao estado 114
+    ')'       deslocar, e ir ao estado 132
+
+
 Estado 112
 
-   24 cod_block: IF '(' expressao_logica ')' • '{' cod_blocks '}'
-   25          | IF '(' expressao_logica ')' • '{' cod_blocks '}' ELSE '{' cod_blocks '}'
+   47 expressao_logica: '!' op_expressao •
+   52 op_expressao: op_expressao • OP_ARITM termo
 
-    '{'  deslocar, e ir ao estado 132
+    OP_ARITM  deslocar, e ir ao estado 114
+
+    $padrão  reduzir usando a regra 47 (expressao_logica)
 
 
 Estado 113
 
-   51 op_expressao: op_expressao OP_ARITM • termo
+   24 cod_block: IF '(' expressao_logica ')' • '{' cod_blocks '}'
+   25          | IF '(' expressao_logica ')' • '{' cod_blocks '}' ELSE '{' cod_blocks '}'
 
-    INT     deslocar, e ir ao estado 52
-    FLOAT   deslocar, e ir ao estado 53
-    ID      deslocar, e ir ao estado 54
-    DIGITO  deslocar, e ir ao estado 55
-    LETRA   deslocar, e ir ao estado 56
-
-    termo     ir ao estado 133
-    palavra   ir ao estado 60
-    variable  ir ao estado 61
+    '{'  deslocar, e ir ao estado 133
 
 
 Estado 114
 
-   47 expressao_logica: op_expressao OP_COMP • op_expressao
+   52 op_expressao: op_expressao OP_ARITM • termo
 
     INT     deslocar, e ir ao estado 52
     FLOAT   deslocar, e ir ao estado 53
@@ -1392,145 +1390,160 @@ Estado 114
     DIGITO  deslocar, e ir ao estado 55
     LETRA   deslocar, e ir ao estado 56
 
-    op_expressao  ir ao estado 134
+    termo     ir ao estado 134
+    palavra   ir ao estado 60
+    variable  ir ao estado 61
+
+
+Estado 115
+
+   48 expressao_logica: op_expressao OP_COMP • op_expressao
+
+    INT     deslocar, e ir ao estado 52
+    FLOAT   deslocar, e ir ao estado 53
+    ID      deslocar, e ir ao estado 54
+    DIGITO  deslocar, e ir ao estado 55
+    LETRA   deslocar, e ir ao estado 56
+
+    op_expressao  ir ao estado 135
     termo         ir ao estado 81
     palavra       ir ao estado 60
     variable      ir ao estado 61
 
 
-Estado 115
+Estado 116
 
    26 cod_block: LACOS '(' expressao_logica ')' • '{' cod_block '}'
 
-    '{'  deslocar, e ir ao estado 135
-
-
-Estado 116
-
-   41 expressao: '(' expressao • ')'
-
-    ')'  deslocar, e ir ao estado 136
+    '{'  deslocar, e ir ao estado 136
 
 
 Estado 117
 
-   29 cod_block: RETORNO '(' expressao ')' • ';'
+   41 expressao: '(' expressao • ')'
 
-    ';'  deslocar, e ir ao estado 137
+    ')'  deslocar, e ir ao estado 137
 
 
 Estado 118
 
-   56 termo: variable '[' INT • ']'
+   29 cod_block: RETORNO '(' expressao ')' • ';'
 
-    ']'  deslocar, e ir ao estado 138
+    ';'  deslocar, e ir ao estado 138
 
 
 Estado 119
 
-   62 func_args: func_args ',' • func_arg
+   57 termo: variable '[' INT • ']'
 
-    INT     deslocar, e ir ao estado 90
-    FLOAT   deslocar, e ir ao estado 91
-    ID      deslocar, e ir ao estado 92
-    DIGITO  deslocar, e ir ao estado 55
-    LETRA   deslocar, e ir ao estado 56
-
-    func_arg  ir ao estado 139
-    palavra   ir ao estado 95
+    ']'  deslocar, e ir ao estado 139
 
 
 Estado 120
 
-   61 func_call: ID '(' func_args ')' • ';'
+   63 func_args: func_args ',' • func_arg
 
-    ';'  deslocar, e ir ao estado 140
+    INT     deslocar, e ir ao estado 91
+    FLOAT   deslocar, e ir ao estado 92
+    ID      deslocar, e ir ao estado 93
+    DIGITO  deslocar, e ir ao estado 55
+    LETRA   deslocar, e ir ao estado 56
+
+    func_arg  ir ao estado 140
+    palavra   ir ao estado 96
 
 
 Estado 121
 
-   59 print: PRINT '(' termo ')' • ';'
+   62 func_call: ID '(' func_args ')' • ';'
 
     ';'  deslocar, e ir ao estado 141
 
 
 Estado 122
 
-   60 print: PRINT '(' palavra ')' • ';'
+   60 print: PRINT '(' termo ')' • ';'
 
     ';'  deslocar, e ir ao estado 142
 
 
 Estado 123
 
-   58 scan: SCAN '(' variable ')' •
-
-    $padrão  reduzir usando a regra 58 (scan)
-
-
-Estado 124
-
-   35 cod_block: scan '(' variable ')' • ';'
+   61 print: PRINT '(' palavra ')' • ';'
 
     ';'  deslocar, e ir ao estado 143
 
 
+Estado 124
+
+   59 scan: SCAN '(' variable ')' •
+
+    $padrão  reduzir usando a regra 59 (scan)
+
+
 Estado 125
 
-   42 tuple_expressao: '(' tuple_args • ')'
-   43 tuple_args: tuple_args • ',' termo
+   35 cod_block: scan '(' variable ')' • ';'
 
-    ','  deslocar, e ir ao estado 144
-    ')'  deslocar, e ir ao estado 145
+    ';'  deslocar, e ir ao estado 144
 
 
 Estado 126
 
-   44 tuple_args: termo •
-   52 op_expressao: termo •
+   43 tuple_expressao: '(' tuple_args • ')'
+   44 tuple_args: tuple_args • ',' termo
 
-    OP_ARITM  reduzir usando a regra 52 (op_expressao)
-    ')'       reduzir usando a regra 44 (tuple_args)
-    ')'       [reduzir usando a regra 52 (op_expressao)]
-    $padrão   reduzir usando a regra 44 (tuple_args)
+    ','  deslocar, e ir ao estado 145
+    ')'  deslocar, e ir ao estado 146
 
 
 Estado 127
+
+   45 tuple_args: termo •
+   53 op_expressao: termo •
+
+    OP_ARITM  reduzir usando a regra 53 (op_expressao)
+    ')'       reduzir usando a regra 45 (tuple_args)
+    ')'       [reduzir usando a regra 53 (op_expressao)]
+    $padrão   reduzir usando a regra 45 (tuple_args)
+
+
+Estado 128
 
    34 cod_block: variable '(' ')' ';' •
 
     $padrão  reduzir usando a regra 34 (cod_block)
 
 
-Estado 128
+Estado 129
 
    33 cod_block: variable '(' expressao ')' • ';'
 
-    ';'  deslocar, e ir ao estado 146
-
-
-Estado 129
-
-   38 assign: variable '[' INT ']' • OP_ASSIGN expressao
-
-    OP_ASSIGN  deslocar, e ir ao estado 147
+    ';'  deslocar, e ir ao estado 147
 
 
 Estado 130
 
-   13 func_decl: TIPO ID '(' $@1 parm_tipos ')' $@2 '{' cod_blocks '}' • ';'
+   38 assign: variable '[' INT ']' • OP_ASSIGN expressao
 
-    ';'  deslocar, e ir ao estado 148
+    OP_ASSIGN  deslocar, e ir ao estado 148
 
 
 Estado 131
 
-   48 expressao_logica: '(' op_expressao ')' •
+   13 func_decl: TIPO ID '(' $@1 parm_tipos ')' $@2 '{' cod_blocks '}' • ';'
 
-    $padrão  reduzir usando a regra 48 (expressao_logica)
+    ';'  deslocar, e ir ao estado 149
 
 
 Estado 132
+
+   49 expressao_logica: '(' op_expressao ')' •
+
+    $padrão  reduzir usando a regra 49 (expressao_logica)
+
+
+Estado 133
 
    24 cod_block: IF '(' expressao_logica ')' '{' • cod_blocks '}'
    25          | IF '(' expressao_logica ')' '{' • cod_blocks '}' ELSE '{' cod_blocks '}'
@@ -1548,7 +1561,7 @@ Estado 132
     declaracao   ir ao estado 5
     var_decl     ir ao estado 6
     func_decl    ir ao estado 7
-    cod_blocks   ir ao estado 149
+    cod_blocks   ir ao estado 150
     cod_block    ir ao estado 40
     assign       ir ao estado 41
     scan         ir ao estado 42
@@ -1557,24 +1570,24 @@ Estado 132
     variable     ir ao estado 45
 
 
-Estado 133
-
-   51 op_expressao: op_expressao OP_ARITM termo •
-
-    $padrão  reduzir usando a regra 51 (op_expressao)
-
-
 Estado 134
 
-   47 expressao_logica: op_expressao OP_COMP op_expressao •
-   51 op_expressao: op_expressao • OP_ARITM termo
+   52 op_expressao: op_expressao OP_ARITM termo •
 
-    OP_ARITM  deslocar, e ir ao estado 113
-
-    $padrão  reduzir usando a regra 47 (expressao_logica)
+    $padrão  reduzir usando a regra 52 (op_expressao)
 
 
 Estado 135
+
+   48 expressao_logica: op_expressao OP_COMP op_expressao •
+   52 op_expressao: op_expressao • OP_ARITM termo
+
+    OP_ARITM  deslocar, e ir ao estado 114
+
+    $padrão  reduzir usando a regra 48 (expressao_logica)
+
+
+Estado 136
 
    26 cod_block: LACOS '(' expressao_logica ')' '{' • cod_block '}'
 
@@ -1591,7 +1604,7 @@ Estado 135
     declaracao   ir ao estado 5
     var_decl     ir ao estado 6
     func_decl    ir ao estado 7
-    cod_block    ir ao estado 150
+    cod_block    ir ao estado 151
     assign       ir ao estado 41
     scan         ir ao estado 42
     print        ir ao estado 43
@@ -1599,65 +1612,65 @@ Estado 135
     variable     ir ao estado 45
 
 
-Estado 136
+Estado 137
 
    41 expressao: '(' expressao ')' •
 
     $padrão  reduzir usando a regra 41 (expressao)
 
 
-Estado 137
+Estado 138
 
    29 cod_block: RETORNO '(' expressao ')' ';' •
 
     $padrão  reduzir usando a regra 29 (cod_block)
 
 
-Estado 138
-
-   56 termo: variable '[' INT ']' •
-
-    $padrão  reduzir usando a regra 56 (termo)
-
-
 Estado 139
 
-   62 func_args: func_args ',' func_arg •
+   57 termo: variable '[' INT ']' •
 
-    $padrão  reduzir usando a regra 62 (func_args)
+    $padrão  reduzir usando a regra 57 (termo)
 
 
 Estado 140
 
-   61 func_call: ID '(' func_args ')' ';' •
+   63 func_args: func_args ',' func_arg •
 
-    $padrão  reduzir usando a regra 61 (func_call)
+    $padrão  reduzir usando a regra 63 (func_args)
 
 
 Estado 141
 
-   59 print: PRINT '(' termo ')' ';' •
+   62 func_call: ID '(' func_args ')' ';' •
 
-    $padrão  reduzir usando a regra 59 (print)
+    $padrão  reduzir usando a regra 62 (func_call)
 
 
 Estado 142
 
-   60 print: PRINT '(' palavra ')' ';' •
+   60 print: PRINT '(' termo ')' ';' •
 
     $padrão  reduzir usando a regra 60 (print)
 
 
 Estado 143
 
+   61 print: PRINT '(' palavra ')' ';' •
+
+    $padrão  reduzir usando a regra 61 (print)
+
+
+Estado 144
+
    35 cod_block: scan '(' variable ')' ';' •
 
     $padrão  reduzir usando a regra 35 (cod_block)
 
 
-Estado 144
+Estado 145
 
-   43 tuple_args: tuple_args ',' • termo
+   44 tuple_args: tuple_args ',' • termo
 
     INT     deslocar, e ir ao estado 52
     FLOAT   deslocar, e ir ao estado 53
@@ -1665,51 +1678,52 @@ Estado 144
     DIGITO  deslocar, e ir ao estado 55
     LETRA   deslocar, e ir ao estado 56
 
-    termo     ir ao estado 151
+    termo     ir ao estado 152
     palavra   ir ao estado 60
     variable  ir ao estado 61
 
 
-Estado 145
-
-   42 tuple_expressao: '(' tuple_args ')' •
-
-    $padrão  reduzir usando a regra 42 (tuple_expressao)
-
-
 Estado 146
+
+   43 tuple_expressao: '(' tuple_args ')' •
+
+    $padrão  reduzir usando a regra 43 (tuple_expressao)
+
+
+Estado 147
 
    33 cod_block: variable '(' expressao ')' ';' •
 
     $padrão  reduzir usando a regra 33 (cod_block)
 
 
-Estado 147
+Estado 148
 
    38 assign: variable '[' INT ']' OP_ASSIGN • expressao
 
     INT     deslocar, e ir ao estado 52
     FLOAT   deslocar, e ir ao estado 53
-    ID      deslocar, e ir ao estado 54
+    ID      deslocar, e ir ao estado 35
     DIGITO  deslocar, e ir ao estado 55
     LETRA   deslocar, e ir ao estado 56
     '('     deslocar, e ir ao estado 83
 
-    expressao     ir ao estado 152
+    expressao     ir ao estado 153
     op_expressao  ir ao estado 85
     termo         ir ao estado 81
+    func_call     ir ao estado 86
     palavra       ir ao estado 60
     variable      ir ao estado 61
 
 
-Estado 148
+Estado 149
 
    13 func_decl: TIPO ID '(' $@1 parm_tipos ')' $@2 '{' cod_blocks '}' ';' •
 
     $padrão  reduzir usando a regra 13 (func_decl)
 
 
-Estado 149
+Estado 150
 
    22 cod_blocks: cod_blocks • cod_block
    24 cod_block: IF '(' expressao_logica ')' '{' cod_blocks • '}'
@@ -1723,7 +1737,7 @@ Estado 149
     ID       deslocar, e ir ao estado 35
     PRINT    deslocar, e ir ao estado 36
     SCAN     deslocar, e ir ao estado 37
-    '}'      deslocar, e ir ao estado 153
+    '}'      deslocar, e ir ao estado 154
 
     declaracoes  ir ao estado 38
     declaracao   ir ao estado 5
@@ -1737,52 +1751,52 @@ Estado 149
     variable     ir ao estado 45
 
 
-Estado 150
+Estado 151
 
    26 cod_block: LACOS '(' expressao_logica ')' '{' cod_block • '}'
 
-    '}'  deslocar, e ir ao estado 154
-
-
-Estado 151
-
-   43 tuple_args: tuple_args ',' termo •
-
-    $padrão  reduzir usando a regra 43 (tuple_args)
+    '}'  deslocar, e ir ao estado 155
 
 
 Estado 152
+
+   44 tuple_args: tuple_args ',' termo •
+
+    $padrão  reduzir usando a regra 44 (tuple_args)
+
+
+Estado 153
 
    38 assign: variable '[' INT ']' OP_ASSIGN expressao •
 
     $padrão  reduzir usando a regra 38 (assign)
 
 
-Estado 153
+Estado 154
 
    24 cod_block: IF '(' expressao_logica ')' '{' cod_blocks '}' •
    25          | IF '(' expressao_logica ')' '{' cod_blocks '}' • ELSE '{' cod_blocks '}'
 
-    ELSE  deslocar, e ir ao estado 155
+    ELSE  deslocar, e ir ao estado 156
 
     $padrão  reduzir usando a regra 24 (cod_block)
 
 
-Estado 154
+Estado 155
 
    26 cod_block: LACOS '(' expressao_logica ')' '{' cod_block '}' •
 
     $padrão  reduzir usando a regra 26 (cod_block)
 
 
-Estado 155
+Estado 156
 
    25 cod_block: IF '(' expressao_logica ')' '{' cod_blocks '}' ELSE • '{' cod_blocks '}'
 
-    '{'  deslocar, e ir ao estado 156
+    '{'  deslocar, e ir ao estado 157
 
 
-Estado 156
+Estado 157
 
    25 cod_block: IF '(' expressao_logica ')' '{' cod_blocks '}' ELSE '{' • cod_blocks '}'
 
@@ -1799,7 +1813,7 @@ Estado 156
     declaracao   ir ao estado 5
     var_decl     ir ao estado 6
     func_decl    ir ao estado 7
-    cod_blocks   ir ao estado 157
+    cod_blocks   ir ao estado 158
     cod_block    ir ao estado 40
     assign       ir ao estado 41
     scan         ir ao estado 42
@@ -1808,7 +1822,7 @@ Estado 156
     variable     ir ao estado 45
 
 
-Estado 157
+Estado 158
 
    22 cod_blocks: cod_blocks • cod_block
    25 cod_block: IF '(' expressao_logica ')' '{' cod_blocks '}' ELSE '{' cod_blocks • '}'
@@ -1821,7 +1835,7 @@ Estado 157
     ID       deslocar, e ir ao estado 35
     PRINT    deslocar, e ir ao estado 36
     SCAN     deslocar, e ir ao estado 37
-    '}'      deslocar, e ir ao estado 158
+    '}'      deslocar, e ir ao estado 159
 
     declaracoes  ir ao estado 38
     declaracao   ir ao estado 5
@@ -1835,7 +1849,7 @@ Estado 157
     variable     ir ao estado 45
 
 
-Estado 158
+Estado 159
 
    25 cod_block: IF '(' expressao_logica ')' '{' cod_blocks '}' ELSE '{' cod_blocks '}' •
 

@@ -650,15 +650,15 @@ assign:
 ;
 
 expressao:
-  // OP_ARITM op_expressao { printf("expressao #1 \n"); $$ = $2; }
-// | expressao OP_ARITM expressao { printf("expressao #4 \n"); $$ = ins_node("-", REGULAR_NODE, 'E', $1, $3, "-"); }
-// | op_expressao OP_COMP op_expressao { printf("expressao #5 \n"); $$ = ins_node("-", REGULAR_NODE, 'E', $1, $3, "-"); }
   op_expressao
 | '(' expressao ')' {
     #if defined DEBUG
       printf("expressao #6 \n"); 
     #endif
     $$ = $2; 
+  }
+  | func_call {
+    $$ = $1;
   }
 ;
 
@@ -810,7 +810,8 @@ print:
 
 func_call:
   ID '(' func_args ')' ';'{
-    $$ = ins_node("-", REGULAR_NODE,'F', NULL, $3, "func_call"); 
+    s_node* aux = find_in_s_table($1);
+    $$ = ins_node(aux->var_type, REGULAR_NODE,'F', NULL, $3, "func_call"); 
   }
 ;
 
@@ -825,7 +826,7 @@ func_args:
 
 func_arg:
   ID { $$ = ins_node("-", REGULAR_NODE,'A', NULL, NULL, $1); }
-  | INT { $$ = ins_node("-", REGULAR_NODE,'A', NULL, NULL, $1); }
+  | INT { $$ = NULL; }
   | FLOAT { $$ = ins_node("-", REGULAR_NODE,'A', NULL, NULL, $1); }
   | palavra { $$ = ins_node("-", REGULAR_NODE,'A', NULL, NULL, $1); }
 ;

@@ -3,7 +3,8 @@ int sum(int a, int b){
 };
 
 int main(){
-    sum(2,3);
-    print(a);
+    int aux;
+    aux = sum(2,3);;
+    print(aux);
     return 0;
 };
