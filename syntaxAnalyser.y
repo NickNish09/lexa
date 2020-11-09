@@ -38,6 +38,20 @@
     return result;
   }
 
+  const char * plainName(char* composedName){
+    char* return_string;
+    char aux;
+    int i = 0;
+    while(aux != ':'){
+      aux = composedName[i];
+      return_string[i] = aux;
+      i++;
+    }
+    i--;
+    return_string[i] = '\0';
+    return return_string;
+  }
+
   const char * stringBasedOnNumber(int number)
   {
     if(number == SYMBOL_NODE){
@@ -146,11 +160,13 @@
     int s_node_type;
     int scope; // 0 = global
     UT_hash_handle hh;
+    int params_count;
+    struct s_node* params_list[10];
   } s_node;
 
-  struct s_node *s_table = NULL;
+  s_node *s_table = NULL;
 
-  void add_to_s_table(char* id, char* var_type, int s_node_type, int scope){
+  s_node* add_to_s_table(char* id, char* var_type, int s_node_type, int scope){
     s_node *s;
     char scope_string[5];
     sprintf(scope_string, "%d", scope);
@@ -163,10 +179,13 @@
       s->var_type = var_type;
       s->s_node_type = s_node_type;
       s->scope = current_scope_level;
+      s->params_count = 0;
       HASH_ADD_STR(s_table, id, s);
+      return s;
     } else { // variavel ja esta na tabela, levantar erro de redeclaracao
       semantic_error(REDECLARATION_ERROR, identifier);
     };
+    return s;
   }
 
   void print_s_table() {
@@ -175,7 +194,17 @@
     printf("Tabela de Símbolos:\n");
     // printf("NAME\t\tTYPE\t\tSYMBOL_TYPE\t\tSCOPE SYMBOLS\n");
     for(s=s_table; s != NULL; s=s->hh.next) {
-      printf("id: %15s | var_type: %7s | s_node_type: %10s | scope_level: %d\n", s->id, s->var_type, stringBasedOnNumber(s->s_node_type), s->scope);
+      printf("id: %15s | var_type: %7s | s_node_type: %10s | scope_level: %d | params_count: %d", s->id, s->var_type, stringBasedOnNumber(s->s_node_type), s->scope, s->params_count);
+      if(s->s_node_type == FUNCTION_TYPE){
+        printf(" | params: ");
+        int k;
+        for(k=0;k<s->params_count;k++){
+          printf("%s | ", plainName(s->params_list[k+1]->id));
+        }
+        printf("\n");
+      } else {
+        printf("\n");
+      }
     }
   }
 
@@ -437,35 +466,51 @@ parm_tipos:
     #if defined DEBUG
       printf("parm_tipos #1 \n"); 
     #endif
-    add_to_s_table($3, $2, VARIABLE_TYPE, 0);
+    s_node* aux = add_to_s_table($3, $2, VARIABLE_TYPE, 0);
+    s_node* func = find_in_s_table(s_stack->id);
+    func->params_count++;
+    func->params_list[func->params_count] = aux;
+    // printf("aux: %s\n", aux);
     $$ = $1;
   }
 | parm_tipos TIPO ID '[' ']' {
     #if defined DEBUG
       printf("parm_tipos #2 \n"); 
     #endif
-    add_to_s_table($3, $2, VARIABLE_TYPE, 0);
+    s_node* aux = add_to_s_table($3, $2, VARIABLE_TYPE, 0);
+    s_node* func = find_in_s_table(s_stack->id);
+    func->params_count++;
+    func->params_list[func->params_count] = aux;
     $$ = $1; 
   }
 | TIPO ID ',' {
    #if defined DEBUG
     printf("parm_tipos #3 \n"); 
    #endif
-   add_to_s_table($2, $1, VARIABLE_TYPE, 0);
+   s_node* aux = add_to_s_table($2, $1, VARIABLE_TYPE, 0);
+   s_node* func = find_in_s_table(s_stack->id);
+   func->params_count++;
+   func->params_list[func->params_count] = aux;
    $$ = NULL; 
   }
 | TIPO ID {
    #if defined DEBUG
     printf("parm_tipos #4 \n"); 
    #endif
-   add_to_s_table($2, $1, VARIABLE_TYPE, 0);
+   s_node* aux = add_to_s_table($2, $1, VARIABLE_TYPE, 0);
+   s_node* func = find_in_s_table(s_stack->id);
+   func->params_count++; 
+   func->params_list[func->params_count] = aux;
    $$ = NULL;
   }
 | TIPO ID '[' ']' { 
     #if defined DEBUG
       printf("parm_tipos #5 \n"); 
     #endif
-    add_to_s_table($2, $1, VARIABLE_TYPE, 0);
+    s_node* aux = add_to_s_table($2, $1, VARIABLE_TYPE, 0);
+    s_node* func = find_in_s_table(s_stack->id);
+    func->params_count++;
+    func->params_list[func->params_count] = aux;
     $$ = NULL; 
   }
 | TUPLE ID { 
