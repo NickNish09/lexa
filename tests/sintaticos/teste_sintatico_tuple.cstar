@@ -1,7 +1,7 @@
-tuple int, float person;
-tuple int, float, char person2;
+tuple int age, float salary person;
+tuple int age, float salary, char gender person2;
 
 int main(){
-    tuple int, float, char person3;
+    tuple int age, float salary, char gender .person3;
     return 0;
 };
