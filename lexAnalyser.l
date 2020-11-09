@@ -185,7 +185,7 @@ PRINT "print"
     // printf("<INT, %s> (tamanho %d)\n", yytext, (int)yyleng);
     // strcpy(bad_pattern, yytext);
     // bad_pattern_index = (int)yyleng;
-    yylval.itype = atoi(yytext);
+    yylval.str = (char *) strdup(yytext);
     return INT;
 }
 <INTEIRO>{DIGITO} { }

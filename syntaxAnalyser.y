@@ -826,9 +826,9 @@ func_args:
 
 func_arg:
   ID { $$ = ins_node("-", REGULAR_NODE,'A', NULL, NULL, $1); }
-  | INT { $$ = NULL; }
-  | FLOAT { $$ = ins_node("-", REGULAR_NODE,'A', NULL, NULL, $1); }
-  | palavra { $$ = ins_node("-", REGULAR_NODE,'A', NULL, NULL, $1); }
+  | INT { $$ = ins_node("int", REGULAR_NODE,'A', NULL, NULL, $1); }
+  | FLOAT { $$ = ins_node("float", REGULAR_NODE,'A', NULL, NULL, $1); }
+  | palavra { $$ = ins_node("char", REGULAR_NODE,'A', NULL, NULL, $1); }
 ;
 
 palavra:

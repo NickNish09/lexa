@@ -2635,19 +2635,19 @@ yyreduce:
 
   case 67: /* func_arg: INT  */
 #line 829 "syntaxAnalyser.y"
-        { (yyval.nd) = NULL; }
+        { (yyval.nd) = ins_node("int", REGULAR_NODE,'A', NULL, NULL, (yyvsp[0].str)); }
 #line 2640 "syntaxAnalyser.tab.c"
     break;
 
   case 68: /* func_arg: FLOAT  */
 #line 830 "syntaxAnalyser.y"
-          { (yyval.nd) = ins_node("-", REGULAR_NODE,'A', NULL, NULL, (yyvsp[0].str)); }
+          { (yyval.nd) = ins_node("float", REGULAR_NODE,'A', NULL, NULL, (yyvsp[0].str)); }
 #line 2646 "syntaxAnalyser.tab.c"
     break;
 
   case 69: /* func_arg: palavra  */
 #line 831 "syntaxAnalyser.y"
-            { (yyval.nd) = ins_node("-", REGULAR_NODE,'A', NULL, NULL, (yyvsp[0].str)); }
+            { (yyval.nd) = ins_node("char", REGULAR_NODE,'A', NULL, NULL, (yyvsp[0].str)); }
 #line 2652 "syntaxAnalyser.tab.c"
     break;
 
