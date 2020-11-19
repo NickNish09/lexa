@@ -1,3 +1,5 @@
 int num;
-num = 59320;
-int 5algo;
+int main(){
+    num = 59320;
+    int 5algo;
+};

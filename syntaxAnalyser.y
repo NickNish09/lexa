@@ -661,7 +661,8 @@ cod_block:
 
 assign:
   variable OP_ASSIGN expressao { 
-    $$ = $3;
+    // $$ = $3;
+    $$ = ins_node("-", 'C','R', ins_node("-", 'C','R', NULL, NULL, $1), $3, "assign");
     s_node* s = find_in_s_table($1);
     #if defined DEBUG
       printf("assign #1 \n");

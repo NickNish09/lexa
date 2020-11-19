@@ -1,15 +1,20 @@
-tuple int, float person;
-person = (20, 500.40);
+tuple int i, float s person;
 /* this is a
    comment */
-float salary[10];
+float salary;
 int age;
-print(person);
 
 int sum(){
-   return age + 20;
+   /* age = age + 20; */
+   return age;
 };
 
 int subtract(){
-   return salary - 10.2;
+   return salary;
+};
+
+int main(){
+   person = (20, 500.40);
+   print(person);
+   return 0;
 };
