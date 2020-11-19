@@ -664,7 +664,7 @@ assign:
     $$ = $3;
     s_node* s = find_in_s_table($1);
     #if defined DEBUG
-      printf("assign #1 \n"); 
+      printf("assign #1 \n");
       printf("TIIIPO: %s | %s\n", $3->var_type, s->var_type);
     #endif
     if(s != NULL){
@@ -934,13 +934,13 @@ int main(int argc, char **argv){
 
     print_s_table();
   } else {
+    printErrors();
     printf("\n\nAbstract Syntax Tree:\n");
     print_tree(parser_tree, 0);
     // printLevelOrder(parser_tree);
     printf("\n");
 
     print_s_table();
-    printErrors();
   }
   #if defined DEBUG
     printf("Debug Mode...\nEscopos:\n");
