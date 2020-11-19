@@ -667,10 +667,12 @@ assign:
       printf("assign #1 \n"); 
       printf("TIIIPO: %s | %s\n", $3->var_type, s->var_type);
     #endif
-    if(!types_match($3->var_type, s->var_type)){
-      char msg[50];
-      sprintf(msg, "%s %s\n", $3->var_type, s->var_type);
-      semantic_error(TYPES_MISSMATCH_ERROR, msg);
+    if(s != NULL){
+      if(!types_match($3->var_type, s->var_type)){
+        char msg[50];
+        sprintf(msg, "%s %s\n", $3->var_type, s->var_type);
+        semantic_error(TYPES_MISSMATCH_ERROR, msg);
+      }
     }
   }
 | variable '[' INT ']' OP_ASSIGN expressao { 
@@ -794,7 +796,11 @@ termo:
     #endif
     // $$ = ins_node_symbol($1, 'S','V', $1);
     s_node* s = find_in_s_table($1);
-    $$ = ins_node(s->var_type, REGULAR_NODE, 'E', NULL, NULL, $1);
+    if(s != NULL){
+      $$ = ins_node(s->var_type, REGULAR_NODE, 'E', NULL, NULL, $1);
+    } else {
+      $$ = ins_node("-", REGULAR_NODE, 'E', NULL, NULL, $1);
+    }
   }
 | INT { 
     #if defined DEBUG
@@ -928,6 +934,12 @@ int main(int argc, char **argv){
 
     print_s_table();
   } else {
+    printf("\n\nAbstract Syntax Tree:\n");
+    print_tree(parser_tree, 0);
+    // printLevelOrder(parser_tree);
+    printf("\n");
+
+    print_s_table();
     printErrors();
   }
   #if defined DEBUG

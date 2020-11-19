@@ -896,11 +896,11 @@ static const yytype_int16 yyrline[] =
        0,   405,   405,   414,   420,   429,   435,   441,   450,   461,
      468,   474,   483,   488,   483,   493,   493,   504,   515,   525,
      535,   545,   555,   565,   571,   580,   586,   592,   598,   604,
-     618,   624,   630,   636,   642,   648,   654,   659,   663,   676,
-     682,   692,   693,   699,   705,   711,   715,   721,   727,   733,
-     739,   745,   751,   760,   782,   791,   799,   806,   812,   819,
-     828,   836,   842,   851,   859,   862,   868,   869,   870,   871,
-     875,   880,   885,   890,   898
+     618,   624,   630,   636,   642,   648,   654,   659,   663,   678,
+     684,   694,   695,   701,   707,   713,   717,   723,   729,   735,
+     741,   747,   753,   762,   784,   793,   805,   812,   818,   825,
+     834,   842,   848,   857,   865,   868,   874,   875,   876,   877,
+     881,   886,   891,   896,   904
 };
 #endif
 
@@ -2370,28 +2370,30 @@ yyreduce:
       printf("assign #1 \n"); 
       printf("TIIIPO: %s | %s\n", (yyvsp[0].nd)->var_type, s->var_type);
     #endif
-    if(!types_match((yyvsp[0].nd)->var_type, s->var_type)){
-      char msg[50];
-      sprintf(msg, "%s %s\n", (yyvsp[0].nd)->var_type, s->var_type);
-      semantic_error(TYPES_MISSMATCH_ERROR, msg);
+    if(s != NULL){
+      if(!types_match((yyvsp[0].nd)->var_type, s->var_type)){
+        char msg[50];
+        sprintf(msg, "%s %s\n", (yyvsp[0].nd)->var_type, s->var_type);
+        semantic_error(TYPES_MISSMATCH_ERROR, msg);
+      }
     }
   }
-#line 2380 "syntaxAnalyser.tab.c"
+#line 2382 "syntaxAnalyser.tab.c"
     break;
 
   case 39: /* assign: variable '[' INT ']' OP_ASSIGN expressao  */
-#line 676 "syntaxAnalyser.y"
+#line 678 "syntaxAnalyser.y"
                                            { 
     #if defined DEBUG
       printf("assign #2 \n");
     #endif
     (yyval.nd) = (yyvsp[0].nd);
   }
-#line 2391 "syntaxAnalyser.tab.c"
+#line 2393 "syntaxAnalyser.tab.c"
     break;
 
   case 40: /* assign: variable OP_ASSIGN tuple_expressao  */
-#line 682 "syntaxAnalyser.y"
+#line 684 "syntaxAnalyser.y"
                                      { 
     #if defined DEBUG
       printf("assign #3 \n");
@@ -2399,121 +2401,121 @@ yyreduce:
     // $$ = ins_node("-", REGULAR_NODE, 'T', ins_node("-", REGULAR_NODE, 'E', NULL, NULL, $1), $3, $1);
     (yyval.nd) = (yyvsp[0].nd);
   }
-#line 2403 "syntaxAnalyser.tab.c"
+#line 2405 "syntaxAnalyser.tab.c"
     break;
 
   case 42: /* expressao: '(' expressao ')'  */
-#line 693 "syntaxAnalyser.y"
+#line 695 "syntaxAnalyser.y"
                     {
     #if defined DEBUG
       printf("expressao #6 \n"); 
     #endif
     (yyval.nd) = (yyvsp[-1].nd); 
   }
-#line 2414 "syntaxAnalyser.tab.c"
+#line 2416 "syntaxAnalyser.tab.c"
     break;
 
   case 43: /* expressao: func_call  */
-#line 699 "syntaxAnalyser.y"
+#line 701 "syntaxAnalyser.y"
               {
     (yyval.nd) = (yyvsp[0].nd);
   }
-#line 2422 "syntaxAnalyser.tab.c"
+#line 2424 "syntaxAnalyser.tab.c"
     break;
 
   case 44: /* tuple_expressao: '(' tuple_args ')'  */
-#line 705 "syntaxAnalyser.y"
+#line 707 "syntaxAnalyser.y"
                      { 
     (yyval.nd) = (yyvsp[-1].nd);
   }
-#line 2430 "syntaxAnalyser.tab.c"
+#line 2432 "syntaxAnalyser.tab.c"
     break;
 
   case 45: /* tuple_args: tuple_args ',' termo  */
-#line 711 "syntaxAnalyser.y"
+#line 713 "syntaxAnalyser.y"
                        {
     // $$ = ins_node("-", REGULAR_NODE, 'T', $1, ins_node("-", REGULAR_NODE, 'E', NULL, NULL, $3->val), $3->val);
     (yyval.nd) = (yyvsp[-2].nd);
   }
-#line 2439 "syntaxAnalyser.tab.c"
+#line 2441 "syntaxAnalyser.tab.c"
     break;
 
   case 46: /* tuple_args: termo  */
-#line 715 "syntaxAnalyser.y"
+#line 717 "syntaxAnalyser.y"
         {
     (yyval.nd) = (yyvsp[0].nd); 
   }
-#line 2447 "syntaxAnalyser.tab.c"
+#line 2449 "syntaxAnalyser.tab.c"
     break;
 
   case 47: /* expressao_logica: OP_LOG op_expressao  */
-#line 721 "syntaxAnalyser.y"
+#line 723 "syntaxAnalyser.y"
                       { 
     #if defined DEBUG
       printf("expressao_logica #1 \n"); 
     #endif
     (yyval.nd) = (yyvsp[0].nd); 
   }
-#line 2458 "syntaxAnalyser.tab.c"
+#line 2460 "syntaxAnalyser.tab.c"
     break;
 
   case 48: /* expressao_logica: '!' op_expressao  */
-#line 727 "syntaxAnalyser.y"
+#line 729 "syntaxAnalyser.y"
                    { 
     #if defined DEBUG
       printf("expressao_logica #2 \n"); 
     #endif
     (yyval.nd) = (yyvsp[0].nd); 
   }
-#line 2469 "syntaxAnalyser.tab.c"
+#line 2471 "syntaxAnalyser.tab.c"
     break;
 
   case 49: /* expressao_logica: op_expressao OP_COMP op_expressao  */
-#line 733 "syntaxAnalyser.y"
+#line 735 "syntaxAnalyser.y"
                                     { 
     #if defined DEBUG
       printf("expressao_logica #3 \n");
     #endif
     (yyval.nd) = ins_node("-", REGULAR_NODE, 'E', (yyvsp[-2].nd), (yyvsp[0].nd), "expressao_logica"); 
   }
-#line 2480 "syntaxAnalyser.tab.c"
+#line 2482 "syntaxAnalyser.tab.c"
     break;
 
   case 50: /* expressao_logica: '(' op_expressao ')'  */
-#line 739 "syntaxAnalyser.y"
+#line 741 "syntaxAnalyser.y"
                        { 
     #if defined DEBUG
       printf("expressao_logica #4 \n"); 
     #endif
     (yyval.nd) = (yyvsp[-1].nd); 
   }
-#line 2491 "syntaxAnalyser.tab.c"
+#line 2493 "syntaxAnalyser.tab.c"
     break;
 
   case 51: /* expressao_logica: op_expressao  */
-#line 745 "syntaxAnalyser.y"
+#line 747 "syntaxAnalyser.y"
                { 
     #if defined DEBUG
       printf("expressao_logica #5\n"); 
     #endif
     (yyval.nd) = (yyvsp[0].nd); 
   }
-#line 2502 "syntaxAnalyser.tab.c"
+#line 2504 "syntaxAnalyser.tab.c"
     break;
 
   case 52: /* expressao_logica: BOOL  */
-#line 751 "syntaxAnalyser.y"
+#line 753 "syntaxAnalyser.y"
        {
     #if defined DEBUG
       printf("expressao_logica #6\n"); 
     #endif
     (yyval.nd) = NULL;
   }
-#line 2513 "syntaxAnalyser.tab.c"
+#line 2515 "syntaxAnalyser.tab.c"
     break;
 
   case 53: /* op_expressao: op_expressao OP_ARITM termo  */
-#line 760 "syntaxAnalyser.y"
+#line 762 "syntaxAnalyser.y"
                               { 
     #if defined DEBUG
       printf("op_expressao #1\n");
@@ -2536,35 +2538,39 @@ yyreduce:
     }
     (yyval.nd) = ins_node(s1->var_type, REGULAR_NODE, 'E', (yyvsp[-2].nd), (yyvsp[0].nd), (yyvsp[-1].operador)); 
   }
-#line 2540 "syntaxAnalyser.tab.c"
+#line 2542 "syntaxAnalyser.tab.c"
     break;
 
   case 54: /* op_expressao: termo  */
-#line 782 "syntaxAnalyser.y"
+#line 784 "syntaxAnalyser.y"
         { 
     #if defined DEBUG
       printf("op_expressao #2\n"); 
     #endif
     (yyval.nd) = (yyvsp[0].nd);
   }
-#line 2551 "syntaxAnalyser.tab.c"
+#line 2553 "syntaxAnalyser.tab.c"
     break;
 
   case 55: /* termo: variable  */
-#line 791 "syntaxAnalyser.y"
+#line 793 "syntaxAnalyser.y"
            { 
     #if defined DEBUG
       printf("termo #1 \n");
     #endif
     // $$ = ins_node_symbol($1, 'S','V', $1);
     s_node* s = find_in_s_table((yyvsp[0].str));
-    (yyval.nd) = ins_node(s->var_type, REGULAR_NODE, 'E', NULL, NULL, (yyvsp[0].str));
+    if(s != NULL){
+      (yyval.nd) = ins_node(s->var_type, REGULAR_NODE, 'E', NULL, NULL, (yyvsp[0].str));
+    } else {
+      (yyval.nd) = ins_node("-", REGULAR_NODE, 'E', NULL, NULL, (yyvsp[0].str));
+    }
   }
-#line 2564 "syntaxAnalyser.tab.c"
+#line 2570 "syntaxAnalyser.tab.c"
     break;
 
   case 56: /* termo: INT  */
-#line 799 "syntaxAnalyser.y"
+#line 805 "syntaxAnalyser.y"
       { 
     #if defined DEBUG
       printf("termo #2 \n");
@@ -2572,22 +2578,22 @@ yyreduce:
     // $$ = NULL; 
     (yyval.nd) = ins_node("int", REGULAR_NODE, 'E', NULL, NULL, "int");
   }
-#line 2576 "syntaxAnalyser.tab.c"
+#line 2582 "syntaxAnalyser.tab.c"
     break;
 
   case 57: /* termo: FLOAT  */
-#line 806 "syntaxAnalyser.y"
+#line 812 "syntaxAnalyser.y"
         { 
     #if defined DEBUG
       printf("termo #3 \n");
     #endif
     (yyval.nd) = NULL; 
   }
-#line 2587 "syntaxAnalyser.tab.c"
+#line 2593 "syntaxAnalyser.tab.c"
     break;
 
   case 58: /* termo: variable '[' INT ']'  */
-#line 812 "syntaxAnalyser.y"
+#line 818 "syntaxAnalyser.y"
                        { 
     #if defined DEBUG
       printf("termo #4 \n");
@@ -2595,144 +2601,144 @@ yyreduce:
     s_node* s = find_in_s_table((yyvsp[-3].str));
     (yyval.nd) = ins_node(s->var_type, REGULAR_NODE, 'E', NULL, NULL, (yyvsp[-3].str));
   }
-#line 2599 "syntaxAnalyser.tab.c"
+#line 2605 "syntaxAnalyser.tab.c"
     break;
 
   case 59: /* termo: palavra  */
-#line 819 "syntaxAnalyser.y"
+#line 825 "syntaxAnalyser.y"
          {
   #if defined DEBUG
     printf("termo #5 \n");
   #endif
   (yyval.nd) = NULL; 
 }
-#line 2610 "syntaxAnalyser.tab.c"
+#line 2616 "syntaxAnalyser.tab.c"
     break;
 
   case 60: /* scan: SCAN '(' variable ')'  */
-#line 828 "syntaxAnalyser.y"
+#line 834 "syntaxAnalyser.y"
                         { 
     #if defined DEBUG
       printf("scan #1 \n"); 
     #endif
   }
-#line 2620 "syntaxAnalyser.tab.c"
+#line 2626 "syntaxAnalyser.tab.c"
     break;
 
   case 61: /* print: PRINT '(' termo ')' ';'  */
-#line 836 "syntaxAnalyser.y"
+#line 842 "syntaxAnalyser.y"
                           { 
     #if defined DEBUG
       printf("print #1 \n");
     #endif
     (yyval.nd) = ins_node("-", REGULAR_NODE, 'P', NULL, (yyvsp[-2].nd), "print"); 
   }
-#line 2631 "syntaxAnalyser.tab.c"
+#line 2637 "syntaxAnalyser.tab.c"
     break;
 
   case 62: /* print: PRINT '(' palavra ')' ';'  */
-#line 842 "syntaxAnalyser.y"
+#line 848 "syntaxAnalyser.y"
                             { 
     #if defined DEBUG
       printf("print #2 \n");
     #endif
     (yyval.nd) = ins_node("-", REGULAR_NODE, 'P', NULL, NULL, (yyvsp[-2].str)); 
   }
-#line 2642 "syntaxAnalyser.tab.c"
+#line 2648 "syntaxAnalyser.tab.c"
     break;
 
   case 63: /* func_call: ID '(' func_args ')' ';'  */
-#line 851 "syntaxAnalyser.y"
+#line 857 "syntaxAnalyser.y"
                           {
     s_node* aux = find_in_s_table((yyvsp[-4].id));
     (yyval.nd) = ins_node(aux->var_type, REGULAR_NODE,'F', NULL, (yyvsp[-2].nd), "func_call"); 
     check_params((yyval.nd), (yyvsp[-4].id));
   }
-#line 2652 "syntaxAnalyser.tab.c"
+#line 2658 "syntaxAnalyser.tab.c"
     break;
 
   case 64: /* func_args: func_args ',' func_arg  */
-#line 859 "syntaxAnalyser.y"
+#line 865 "syntaxAnalyser.y"
                          {
     (yyval.nd) = ins_node("-", REGULAR_NODE,'F', (yyvsp[-2].nd), (yyvsp[0].nd), "func_args"); 
   }
-#line 2660 "syntaxAnalyser.tab.c"
+#line 2666 "syntaxAnalyser.tab.c"
     break;
 
   case 65: /* func_args: func_arg  */
-#line 862 "syntaxAnalyser.y"
+#line 868 "syntaxAnalyser.y"
              {
     (yyval.nd) = (yyvsp[0].nd);
   }
-#line 2668 "syntaxAnalyser.tab.c"
-    break;
-
-  case 66: /* func_arg: ID  */
-#line 868 "syntaxAnalyser.y"
-     { (yyval.nd) = ins_node("-", REGULAR_NODE,'A', NULL, NULL, (yyvsp[0].id)); }
 #line 2674 "syntaxAnalyser.tab.c"
     break;
 
-  case 67: /* func_arg: INT  */
-#line 869 "syntaxAnalyser.y"
-        { (yyval.nd) = ins_node("int", REGULAR_NODE,'A', NULL, NULL, (yyvsp[0].str)); }
+  case 66: /* func_arg: ID  */
+#line 874 "syntaxAnalyser.y"
+     { (yyval.nd) = ins_node("-", REGULAR_NODE,'A', NULL, NULL, (yyvsp[0].id)); }
 #line 2680 "syntaxAnalyser.tab.c"
     break;
 
-  case 68: /* func_arg: FLOAT  */
-#line 870 "syntaxAnalyser.y"
-          { (yyval.nd) = ins_node("float", REGULAR_NODE,'A', NULL, NULL, (yyvsp[0].str)); }
+  case 67: /* func_arg: INT  */
+#line 875 "syntaxAnalyser.y"
+        { (yyval.nd) = ins_node("int", REGULAR_NODE,'A', NULL, NULL, (yyvsp[0].str)); }
 #line 2686 "syntaxAnalyser.tab.c"
     break;
 
-  case 69: /* func_arg: palavra  */
-#line 871 "syntaxAnalyser.y"
-            { (yyval.nd) = ins_node("char", REGULAR_NODE,'A', NULL, NULL, (yyvsp[0].str)); }
+  case 68: /* func_arg: FLOAT  */
+#line 876 "syntaxAnalyser.y"
+          { (yyval.nd) = ins_node("float", REGULAR_NODE,'A', NULL, NULL, (yyvsp[0].str)); }
 #line 2692 "syntaxAnalyser.tab.c"
     break;
 
+  case 69: /* func_arg: palavra  */
+#line 877 "syntaxAnalyser.y"
+            { (yyval.nd) = ins_node("char", REGULAR_NODE,'A', NULL, NULL, (yyvsp[0].str)); }
+#line 2698 "syntaxAnalyser.tab.c"
+    break;
+
   case 70: /* palavra: palavra LETRA  */
-#line 875 "syntaxAnalyser.y"
+#line 881 "syntaxAnalyser.y"
                 { 
     #if defined DEBUG
       printf("palavra #1 \n");
     #endif
   }
-#line 2702 "syntaxAnalyser.tab.c"
+#line 2708 "syntaxAnalyser.tab.c"
     break;
 
   case 71: /* palavra: palavra DIGITO  */
-#line 880 "syntaxAnalyser.y"
+#line 886 "syntaxAnalyser.y"
                  { 
     #if defined DEBUG
       printf("palavra #2 \n"); 
     #endif
   }
-#line 2712 "syntaxAnalyser.tab.c"
+#line 2718 "syntaxAnalyser.tab.c"
     break;
 
   case 72: /* palavra: LETRA  */
-#line 885 "syntaxAnalyser.y"
+#line 891 "syntaxAnalyser.y"
         { 
     #if defined DEBUG
       printf("palavra #3 \n"); 
     #endif
   }
-#line 2722 "syntaxAnalyser.tab.c"
+#line 2728 "syntaxAnalyser.tab.c"
     break;
 
   case 73: /* palavra: DIGITO  */
-#line 890 "syntaxAnalyser.y"
+#line 896 "syntaxAnalyser.y"
          { 
     #if defined DEBUG
       printf("palavra #4 \n"); 
     #endif
   }
-#line 2732 "syntaxAnalyser.tab.c"
+#line 2738 "syntaxAnalyser.tab.c"
     break;
 
   case 74: /* variable: ID  */
-#line 898 "syntaxAnalyser.y"
+#line 904 "syntaxAnalyser.y"
      {
     #if defined DEBUG
       printf("variable #1 \n"); 
@@ -2744,11 +2750,11 @@ yyreduce:
     (yyval.str) = (yyvsp[0].id);
     // $$ = ins_node("-", REGULAR_NODE, 'V', NULL, NULL, $1); 
   }
-#line 2748 "syntaxAnalyser.tab.c"
+#line 2754 "syntaxAnalyser.tab.c"
     break;
 
 
-#line 2752 "syntaxAnalyser.tab.c"
+#line 2758 "syntaxAnalyser.tab.c"
 
       default: break;
     }
@@ -2978,7 +2984,7 @@ yyreturn:
   return yyresult;
 }
 
-#line 910 "syntaxAnalyser.y"
+#line 916 "syntaxAnalyser.y"
 
 
 int main(int argc, char **argv){
@@ -3000,6 +3006,12 @@ int main(int argc, char **argv){
 
     print_s_table();
   } else {
+    printf("\n\nAbstract Syntax Tree:\n");
+    print_tree(parser_tree, 0);
+    // printLevelOrder(parser_tree);
+    printf("\n");
+
+    print_s_table();
     printErrors();
   }
   #if defined DEBUG
