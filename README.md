@@ -9,21 +9,17 @@ Para compilar o programa siga os seguintes passos:
 ```./program.out tests/sintaticos/teste_sintatico.cstar```
 
 Testes Certos:
-teste_sintatico.cstar
-teste_sintatico_aritm.cstar
-teste_sintatico2.cstar
-teste_sintatico_condicoes.cstar
-teste_sintatico_laco.cstar
-teste_sintatico_tuple.cstar
-dummy_test.cstar
+/tests/certo1.cstar
+/tests/certo2.cstar
 
 Testes Errados:
-teste_sintatico_error.cstar
-teste_sintatico_error2.cstar
-teste_sintatico_error3.cstar
-todos os testes da pasta semanticos/
+/tests/errado1.cstar
+/tests/errado2.cstar
+/tests/errado3.cstar
+/tests/errado4.cstar
+/tests/errado5.cstar
 
-Os arquivos de teste que tem um _error são os que possuem erros, conforme descritos no relatório.
+Os arquivos de teste que tem um _error são os que possuem erros, conforme descritos no relatório. Há mais testes para mais casos dentro das pastas /tests/lexicos, /tests/semanticos e /tests/sintaticos, porém rode os testes da pasta /tests primeiro pois alguns desses outros testes podem estar desatualizados.
 
 ## Especificações
 Para executar estes passos é preciso ter instalado em sua máquina o flex versão 2.5.35, o bison versão 3.7 e um sistema baseado em unix
