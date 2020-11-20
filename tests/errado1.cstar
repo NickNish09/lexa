@@ -1,0 +1,9 @@
+int a;
+
+int main(){
+    int b;
+    float b; /* redeclaracao de variavel */
+    int a;
+
+    return 0;
+};

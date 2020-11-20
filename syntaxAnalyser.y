@@ -687,7 +687,8 @@ assign:
       printf("assign #3 \n");
     #endif
     // $$ = ins_node("-", REGULAR_NODE, 'T', ins_node("-", REGULAR_NODE, 'E', NULL, NULL, $1), $3, $1);
-    $$ = $3;
+    // $$ = $3;
+    $$ = ins_node("-", 'C','R', ins_node("-", 'C','R', NULL, NULL, $1), $3, "assign");
   }
 ;
 
@@ -712,11 +713,12 @@ tuple_expressao:
 
 tuple_args:
   tuple_args ',' termo {
-    // $$ = ins_node("-", REGULAR_NODE, 'T', $1, ins_node("-", REGULAR_NODE, 'E', NULL, NULL, $3->val), $3->val);
-    $$ = $1;
+    $$ = ins_node("-", REGULAR_NODE, 'T', $3, $1, "tuple_args");
+    // $$ = $1;
   }
 | termo {
-    $$ = $1; 
+    $$ = $1;
+    // $$ = ins_node($1->var_type, REGULAR_NODE, 'T', NULL, NULL, $1->val);
   }
 ;
 
@@ -808,13 +810,13 @@ termo:
       printf("termo #2 \n");
     #endif
     // $$ = NULL; 
-    $$ = ins_node("int", REGULAR_NODE, 'E', NULL, NULL, "int");
+    $$ = ins_node("int", REGULAR_NODE, 'E', NULL, NULL, $1);
   }
 | FLOAT { 
     #if defined DEBUG
       printf("termo #3 \n");
     #endif
-    $$ = NULL; 
+    $$ = ins_node("float", REGULAR_NODE, 'E', NULL, NULL, $1);
   }
 | variable '[' INT ']' { 
     #if defined DEBUG
@@ -827,7 +829,7 @@ termo:
   #if defined DEBUG
     printf("termo #5 \n");
   #endif
-  $$ = NULL; 
+  $$ = ins_node("char", REGULAR_NODE, 'E', NULL, NULL, $1);
 }
 ;
 

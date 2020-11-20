@@ -9,5 +9,4 @@ int main(){
     if(person1[1] > person2[1]){
         sumSallaries(person1, person2);
     };
-
 };

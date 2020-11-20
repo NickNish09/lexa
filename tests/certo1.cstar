@@ -1,0 +1,11 @@
+int i;
+
+int sum(int a, int b){
+    int in;
+    return (a + b);
+    int inner(){
+        print(b);
+    };
+
+    float out;
+};
