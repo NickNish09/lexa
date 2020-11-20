@@ -63,6 +63,7 @@ INT "-"?{DIGITO}+
 FLOAT "-"?{DIGITO}+("."{DIGITO}+)*
 ID {LETRA}({LETRA}|{DIGITO})*
 VAR_DECL {ID}['['({DIGITO})+']']
+PONTO [.]
 
 /* keywords */
 BOOL "true"|"false"
@@ -91,6 +92,9 @@ PRINT "print"
 }
 {ESPACO} {
     // printf("<ESPACO, %s> (tamanho %d)\n", yytext, (int)yyleng);
+}
+{PONTO} {
+    return PONTO;
 }
 {SEPARADOR} {
     // printf("<SEPARADOR, %s> (tamanho %d)\n", yytext, (int)yyleng);

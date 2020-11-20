@@ -392,7 +392,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
 %token <str> INT FLOAT TUPLE
 %token <id> ID
 %token <str> DIGITO LETRA
-%token SEPARADOR
+%token SEPARADOR PONTO
 %token PRINT SCAN
 
 %right <operador> OP_ASSIGN
@@ -884,6 +884,16 @@ func_arg:
       $$ = ins_node(s->var_type, REGULAR_NODE,'A', NULL, NULL, $1); 
     }
   }
+  | ID '[' ID ']' { 
+    s_node* s = find_in_s_table($1);
+    if(s == NULL){ // nao declarou a variavel ainda
+      semantic_error(NO_DECLARATION_ERROR, $1);
+      // $$ = ins_node("-", REGULAR_NODE,'A', NULL, NULL, "-");  
+    } else {
+      // $$ = ins_node(s->var_type, REGULAR_NODE,'A', NULL, NULL, $1); 
+    }
+    $$ = ins_node("-", REGULAR_NODE,'A', NULL, NULL, $1);
+  }
   | INT { $$ = ins_node("int", REGULAR_NODE,'A', NULL, NULL, $1); }
   | FLOAT { $$ = ins_node("float", REGULAR_NODE,'A', NULL, NULL, $1); }
   | palavra { $$ = ins_node("char", REGULAR_NODE,'A', NULL, NULL, $1); }
@@ -924,6 +934,17 @@ variable:
     $$ = $1;
     // $$ = ins_node("-", REGULAR_NODE, 'V', NULL, NULL, $1); 
   }
+  | ID PONTO ID {
+    #if defined DEBUG
+      printf("variable #1 \n"); 
+    #endif
+    s_node* s = find_in_s_table($1);
+    if(s == NULL){ // nao declarou a variavel ainda
+      semantic_error(NO_DECLARATION_ERROR, $1);
+    }
+    $$ = $1;
+    // $$ = ins_node("-", REGULAR_NODE, 'V', NULL, NULL, $1); 
+  }
 
 %%
 
@@ -947,8 +968,8 @@ int main(int argc, char **argv){
     print_s_table();
   } else {
     printErrors();
-    printf("\n\nAbstract Syntax Tree:\n");
-    print_tree(parser_tree, 0);
+    // printf("\n\nAbstract Syntax Tree:\n");
+    // print_tree(parser_tree, 0);
     // printLevelOrder(parser_tree);
     printf("\n");
 
