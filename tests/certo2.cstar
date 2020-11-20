@@ -1,4 +1,14 @@
+float salaryClt(float sal){
+    float s;
+    s = sal * 0.8;
+    return s;
+}
+
 int main(){
     tuple int age, float sal person;
     person = (20, 500.3);
+    float saldisc;
+    saldisc = salaryClt(person.sal);
+    print(saldisc);
+    return 0;
 }

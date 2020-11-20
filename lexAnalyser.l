@@ -56,7 +56,7 @@ DELIM [ \t]
 ENTER [\n]
 ESPACO {DELIM}+
 SEPARADOR [;{}(),\[\]]
-ASPAS ['"]
+ASPAS ["]
 LETRA [A-Za-z]
 DIGITO [0-9]
 INT "-"?{DIGITO}+

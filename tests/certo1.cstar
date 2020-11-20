@@ -9,3 +9,10 @@ int sum(int a, int b){
 
     float out;
 }
+
+int main(){
+    int a;
+    a = sum(2, 3);
+    a = sum(a, 4);
+    return a;
+}
