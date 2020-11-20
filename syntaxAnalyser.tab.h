@@ -67,12 +67,13 @@ extern int yydebug;
     DIGITO = 268,                  /* DIGITO  */
     LETRA = 269,                   /* LETRA  */
     SEPARADOR = 270,               /* SEPARADOR  */
-    PRINT = 271,                   /* PRINT  */
-    SCAN = 272,                    /* SCAN  */
-    OP_ASSIGN = 273,               /* OP_ASSIGN  */
-    OP_ARITM = 274,                /* OP_ARITM  */
-    OP_LOG = 275,                  /* OP_LOG  */
-    OP_COMP = 276                  /* OP_COMP  */
+    PONTO = 271,                   /* PONTO  */
+    PRINT = 272,                   /* PRINT  */
+    SCAN = 273,                    /* SCAN  */
+    OP_ASSIGN = 274,               /* OP_ASSIGN  */
+    OP_ARITM = 275,                /* OP_ARITM  */
+    OP_LOG = 276,                  /* OP_LOG  */
+    OP_COMP = 277                  /* OP_COMP  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -91,7 +92,7 @@ union YYSTYPE
   int itype;
   struct node* nd;
 
-#line 95 "syntaxAnalyser.tab.h"
+#line 96 "syntaxAnalyser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
