@@ -1,0 +1,15 @@
+int main(){
+    int a;
+    int b;
+    int c;
+    char d;
+    float e;
+    c = a + b;
+    c = a - b;
+    c = a * b;
+    c = a / b;
+    c = a + d; /* int e char missmatch */
+    c = a * e; /* conversao implicita funcionando */
+    b = e - a; /* conversao implicita funcionando */
+    return 0;
+};

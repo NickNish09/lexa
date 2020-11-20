@@ -661,16 +661,19 @@ cod_block:
 
 assign:
   variable OP_ASSIGN expressao { 
-    $$ = $3;
+    // $$ = $3;
+    $$ = ins_node("-", 'C','R', ins_node("-", 'C','R', NULL, NULL, $1), $3, "assign");
     s_node* s = find_in_s_table($1);
     #if defined DEBUG
-      printf("assign #1 \n"); 
+      printf("assign #1 \n");
       printf("TIIIPO: %s | %s\n", $3->var_type, s->var_type);
     #endif
-    if(!types_match($3->var_type, s->var_type)){
-      char msg[50];
-      sprintf(msg, "%s %s\n", $3->var_type, s->var_type);
-      semantic_error(TYPES_MISSMATCH_ERROR, msg);
+    if(s != NULL){
+      if(!types_match($3->var_type, s->var_type)){
+        char msg[50];
+        sprintf(msg, "%s %s\n", $3->var_type, s->var_type);
+        semantic_error(TYPES_MISSMATCH_ERROR, msg);
+      }
     }
   }
 | variable '[' INT ']' OP_ASSIGN expressao { 
@@ -684,7 +687,8 @@ assign:
       printf("assign #3 \n");
     #endif
     // $$ = ins_node("-", REGULAR_NODE, 'T', ins_node("-", REGULAR_NODE, 'E', NULL, NULL, $1), $3, $1);
-    $$ = $3;
+    // $$ = $3;
+    $$ = ins_node("-", 'C','R', ins_node("-", 'C','R', NULL, NULL, $1), $3, "assign");
   }
 ;
 
@@ -709,11 +713,12 @@ tuple_expressao:
 
 tuple_args:
   tuple_args ',' termo {
-    // $$ = ins_node("-", REGULAR_NODE, 'T', $1, ins_node("-", REGULAR_NODE, 'E', NULL, NULL, $3->val), $3->val);
-    $$ = $1;
+    $$ = ins_node("-", REGULAR_NODE, 'T', $3, $1, "tuple_args");
+    // $$ = $1;
   }
 | termo {
-    $$ = $1; 
+    $$ = $1;
+    // $$ = ins_node($1->var_type, REGULAR_NODE, 'T', NULL, NULL, $1->val);
   }
 ;
 
@@ -794,20 +799,24 @@ termo:
     #endif
     // $$ = ins_node_symbol($1, 'S','V', $1);
     s_node* s = find_in_s_table($1);
-    $$ = ins_node(s->var_type, REGULAR_NODE, 'E', NULL, NULL, $1);
+    if(s != NULL){
+      $$ = ins_node(s->var_type, REGULAR_NODE, 'E', NULL, NULL, $1);
+    } else {
+      $$ = ins_node("-", REGULAR_NODE, 'E', NULL, NULL, $1);
+    }
   }
 | INT { 
     #if defined DEBUG
       printf("termo #2 \n");
     #endif
     // $$ = NULL; 
-    $$ = ins_node("int", REGULAR_NODE, 'E', NULL, NULL, "int");
+    $$ = ins_node("int", REGULAR_NODE, 'E', NULL, NULL, $1);
   }
 | FLOAT { 
     #if defined DEBUG
       printf("termo #3 \n");
     #endif
-    $$ = NULL; 
+    $$ = ins_node("float", REGULAR_NODE, 'E', NULL, NULL, $1);
   }
 | variable '[' INT ']' { 
     #if defined DEBUG
@@ -820,7 +829,7 @@ termo:
   #if defined DEBUG
     printf("termo #5 \n");
   #endif
-  $$ = NULL; 
+  $$ = ins_node("char", REGULAR_NODE, 'E', NULL, NULL, $1);
 }
 ;
 
@@ -929,6 +938,12 @@ int main(int argc, char **argv){
     print_s_table();
   } else {
     printErrors();
+    printf("\n\nAbstract Syntax Tree:\n");
+    print_tree(parser_tree, 0);
+    // printLevelOrder(parser_tree);
+    printf("\n");
+
+    print_s_table();
   }
   #if defined DEBUG
     printf("Debug Mode...\nEscopos:\n");

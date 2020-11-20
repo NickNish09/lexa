@@ -4,6 +4,6 @@ int main(){
     if(true){
         return b;
     } else {
-        return(1 + false);
+        return("c");
     }
 };
