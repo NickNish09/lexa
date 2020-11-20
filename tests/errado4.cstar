@@ -7,3 +7,7 @@ int age(tuple p){
 int gender(tuple p){
     return p; /* return type missmatch */
 }
+
+int main(){
+    return 0;
+}
