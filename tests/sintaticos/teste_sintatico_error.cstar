@@ -1,5 +1,6 @@
 int main(){
   person = 43;
-};
+  char int;
+}
 
-tuple variavel;
+tuple variavel

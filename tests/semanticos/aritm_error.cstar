@@ -12,4 +12,4 @@ int main(){
     c = a * e;
     b = e - a;
     return 0;
-};
+}

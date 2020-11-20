@@ -2,8 +2,8 @@ tuple int age, char name person;
 
 int age(tuple p){
     return p; /* return type missmatch */
-};
+}
 
 int gender(tuple p){
     return p; /* return type missmatch */
-};
+}

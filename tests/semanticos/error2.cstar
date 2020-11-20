@@ -3,4 +3,4 @@ int declarada;
 int main(){
     naodeclarada = 0;
     return 0;
-};
+}

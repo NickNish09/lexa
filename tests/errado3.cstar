@@ -12,4 +12,4 @@ int main(){
     c = a * e; /* conversao implicita funcionando */
     b = e - a; /* conversao implicita funcionando */
     return 0;
-};
+}

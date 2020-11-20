@@ -486,7 +486,7 @@ func_decl:
     s_push($2);
   }
   parm_tipos ')' { ; }
-  '{' cod_blocks '}' ';' { 
+  '{' cod_blocks '}' { 
       $<nd>$ = ins_node($1, REGULAR_NODE,'F', $5, $9, $2);
       s_pop(); 
   }
@@ -497,7 +497,7 @@ func_decl:
   add_to_s_table($2, $1, FUNCTION_TYPE, 0); 
   s_push($2);
 }
- cod_blocks '}' ';' { $<nd>$ = ins_node($1, REGULAR_NODE,'F', NULL, $7, $2); s_pop(); }
+ cod_blocks '}' { $<nd>$ = ins_node($1, REGULAR_NODE,'F', NULL, $7, $2); s_pop(); }
 ;
 
 parm_tipos:

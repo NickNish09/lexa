@@ -1,10 +1,10 @@
 int sum(int a, int b){
     return(a + b);
-};
+}
 
 int main(){
     int aux;
     aux = sum(2,3.3);;
     print(aux);
     return 0;
-};
+}
