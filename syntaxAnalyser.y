@@ -381,7 +381,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
 }
 
 %type <nd> programa declaracoes declaracao var_decl func_decl parm_tipos cod_block assign expressao scan print func_call func_args func_arg
-%type <nd> cod_blocks expressao_logica termo op_expressao declaracao_tupla tuple_expressao tuple_args
+%type <nd> cod_blocks expressao_logica termo op_expressao declaracao_tupla 
 %type <str> palavra variable
 
 %token BOOL
@@ -453,9 +453,12 @@ declaracao_tupla:
       printf("var: %s | type: %s\n", $4->val, $4->var_type);
       printf("should_type: %s\n", $1);
     #endif
-    $$ = $4;
     s_node* s = find_in_s_table($4->val);
     s->var_type = concat($1,$4->var_type);
+    $4->var_type = concat($1, $4->var_type);
+    // printf("vt: %s\n",$4->var_type);
+    $$ = $4;
+    // $$ = ins_node(concat($4->var_type, $1), REGULAR_NODE,'F', NULL, $4, $2);
     // printf("CONCASS: %s\n",concat($1, $4->var_type));
   }
 | TIPO ID ID ';'{
@@ -639,24 +642,24 @@ cod_block:
   #endif
   $$ = $1;
   }
-| variable '(' expressao ')' ';' { 
-    #if defined DEBUG
-      printf("cod_block #8 \n"); 
-    #endif
-    $$ = $3;
-  }
-| variable '(' ')' ';' {
-    #if defined DEBUG
-      printf("cod_block #9 \n");
-    #endif
-    $$ = ins_node("-", 'C','R', NULL, NULL, "call");
-  }
+// | variable '(' expressao ')' ';' { 
+//     #if defined DEBUG
+//       printf("cod_block #8 \n"); 
+//     #endif
+//     $$ = $3;
+//   }
+// | variable '(' ')' ';' {
+//     #if defined DEBUG
+//       printf("cod_block #9 \n");
+//     #endif
+//     $$ = ins_node("-", 'C','R', NULL, NULL, "call");
+//   }
 | scan '(' variable ')' ';' {
     #if defined DEBUG
       printf("cod_block #10 \n"); 
     #endif
   }
-| declaracoes { $$ = $1 ;}
+| declaracao { $$ = $1 ;}
 ;
 
 assign:
@@ -682,45 +685,45 @@ assign:
     #endif
     $$ = $6;
   }
-| variable OP_ASSIGN tuple_expressao { 
-    #if defined DEBUG
-      printf("assign #3 \n");
-    #endif
-    // $$ = ins_node("-", REGULAR_NODE, 'T', ins_node("-", REGULAR_NODE, 'E', NULL, NULL, $1), $3, $1);
-    // $$ = $3;
-    $$ = ins_node("-", 'C','R', ins_node("-", 'C','R', NULL, NULL, $1), $3, "assign");
-  }
+// | variable OP_ASSIGN tuple_expressao { 
+//     #if defined DEBUG
+//       printf("assign #3 \n");
+//     #endif
+//     // $$ = ins_node("-", REGULAR_NODE, 'T', ins_node("-", REGULAR_NODE, 'E', NULL, NULL, $1), $3, $1);
+//     // $$ = $3;
+//     $$ = ins_node("-", 'C','R', ins_node("-", 'C','R', NULL, NULL, $1), $3, "assign");
+//   }
 ;
 
 expressao:
-  op_expressao
-| '(' expressao ')' {
+  '(' expressao ')' {
     #if defined DEBUG
       printf("expressao #6 \n"); 
     #endif
     $$ = $2; 
   }
+  | op_expressao
   | func_call {
     $$ = $1;
   }
 ;
 
-tuple_expressao:
-  '(' tuple_args ')' { 
-    $$ = $2;
-  }
-;
+// tuple_expressao:
+//   '(' tuple_args ')' { 
+//     $$ = $2;
+//   }
+// ;
 
-tuple_args:
-  tuple_args ',' termo {
-    $$ = ins_node("-", REGULAR_NODE, 'T', $3, $1, "tuple_args");
-    // $$ = $1;
-  }
-| termo {
-    $$ = $1;
-    // $$ = ins_node($1->var_type, REGULAR_NODE, 'T', NULL, NULL, $1->val);
-  }
-;
+// tuple_args:
+//   tuple_args ',' termo {
+//     $$ = ins_node("-", REGULAR_NODE, 'T', $3, $1, "tuple_args");
+//     // $$ = $1;
+//   }
+// | termo {
+//     $$ = $1;
+//     // $$ = ins_node($1->var_type, REGULAR_NODE, 'T', NULL, NULL, $1->val);
+//   }
+// ;
 
 expressao_logica:
   OP_LOG op_expressao { 
@@ -785,11 +788,37 @@ op_expressao:
     $$ = ins_node($1->var_type, REGULAR_NODE, 'E', $1, $3, $2); 
   
   }
+  // | '(' op_expressao OP_ARITM termo ')' { 
+  //   #if defined DEBUG
+  //     printf("op_expressao #1\n");
+  //   #endif
+  //   // printf("%s ll %s\n", $2->val, $4->val);
+  //   // s_node* s1 = find_in_s_table($2->val);
+  //   // s_node* s2 = find_in_s_table($4->val);
+  //   int tm = types_match($2->var_type, $4->var_type);
+  //   if(tm){
+  //     #if defined DEBUG
+  //       printf("types OK\n");
+  //     #endif
+  //   } else {
+  //     #if defined DEBUG
+  //       printf("types MISSMATCH: %s | %s\n", $2->var_type, $4->var_type);
+  //     #endif
+  //     char msg[50];
+  //     sprintf(msg, "%s %s\n", $2->var_type, $4->var_type);
+  //     semantic_error(TYPES_MISSMATCH_ERROR, msg);
+  //   }  
+  //   $$ = ins_node($2->var_type, REGULAR_NODE, 'E', $2, $4, $3); 
+  
+  // }
 | termo { 
     #if defined DEBUG
       printf("op_expressao #2\n"); 
     #endif
     $$ = $1;
+  }
+  | op_expressao ',' termo {
+      $$ = ins_node(concat($1->var_type, $3->var_type), REGULAR_NODE, 'T', $3, $1, "tuple_args");
   }
 ;
 
@@ -849,18 +878,17 @@ print:
     #endif
     $$ = ins_node("-", REGULAR_NODE, 'P', NULL, $3, "print"); 
   }
-| PRINT '(' palavra ')' ';' { 
-    #if defined DEBUG
-      printf("print #2 \n");
-    #endif
-    $$ = ins_node("-", REGULAR_NODE, 'P', NULL, NULL, $3); 
-  }
 ;
 
 func_call:
   ID '(' func_args ')'{
     s_node* aux = find_in_s_table($1);
     $$ = ins_node(aux->var_type, REGULAR_NODE,'F', NULL, $3, "func_call"); 
+    check_params($$, $1);
+  }
+  | ID '(' ')'{
+    s_node* aux = find_in_s_table($1);
+    $$ = ins_node(aux->var_type, REGULAR_NODE,'F', NULL, NULL, "func_call"); 
     check_params($$, $1);
   }
 ;
