@@ -468,7 +468,7 @@ declaracao_tupla:
     $$ = $4;
     // $$ = ins_node(concat($4->var_type, $1), REGULAR_NODE,'F', NULL, $4, $2);
     // printf("CONCASS: %s\n",concat($1, $4->var_type));
-    free(s);
+    // free(s);
   }
 | TIPO ID ID ';'{
     #if defined DEBUG
@@ -523,8 +523,8 @@ parm_tipos:
     func->params_list[func->params_count] = aux;
     // printf("aux: %s\n", aux);
     $$ = $1;
-    free(aux);
-    free(func);
+    // free(aux);
+    // free(func);
   }
 | parm_tipos TIPO ID '[' ']' {
     #if defined DEBUG
@@ -535,8 +535,8 @@ parm_tipos:
     func->params_count++;
     func->params_list[func->params_count] = aux;
     $$ = $1; 
-    free(aux);
-    free(func);
+    // free(aux);
+    // free(func);
   }
 | TIPO ID ',' {
    #if defined DEBUG
@@ -547,8 +547,8 @@ parm_tipos:
    func->params_count++;
    func->params_list[func->params_count] = aux;
    $$ = NULL; 
-   free(aux);
-   free(func);
+  //  free(aux);
+  //  free(func);
   }
 | TIPO ID {
    #if defined DEBUG
@@ -559,8 +559,8 @@ parm_tipos:
    func->params_count++; 
    func->params_list[func->params_count] = aux;
    $$ = NULL;
-   free(aux);
-   free(func);
+  //  free(aux);
+  //  free(func);
   }
 | TIPO ID '[' ']' { 
     #if defined DEBUG
@@ -571,8 +571,8 @@ parm_tipos:
     func->params_count++;
     func->params_list[func->params_count] = aux;
     $$ = NULL; 
-    free(aux);
-    free(func);
+    // free(aux);
+    // free(func);
   }
 | TUPLE ID { 
     #if defined DEBUG
@@ -636,7 +636,7 @@ cod_block:
       }
     }
     $$ = ins_node("-", REGULAR_NODE,'R', NULL, $2, "retorno");
-    free(s);
+    // free(s);
   }
 | RETORNO '(' expressao ')' ';' {
     #if defined DEBUG
@@ -697,7 +697,7 @@ assign:
         sprintf(msg, "%s %s\n", $3->var_type, s->var_type);
         semantic_error(TYPES_MISSMATCH_ERROR, msg);
       }
-      free(s);
+      // free(s);
     }
   }
 | variable '[' INT ']' OP_ASSIGN expressao { 
@@ -855,7 +855,7 @@ termo:
     } else {
       $$ = ins_node("-", REGULAR_NODE, 'E', NULL, NULL, $1);
     }
-    free(s);
+    // free(s);
   }
 | INT { 
     #if defined DEBUG
@@ -876,7 +876,7 @@ termo:
     #endif
     s_node* s = find_in_s_table($1);
     $$ = ins_node(s->var_type, REGULAR_NODE, 'E', NULL, NULL, $1);
-    free(s);
+    // free(s);
   }
 | palavra{
   #if defined DEBUG
@@ -908,13 +908,13 @@ func_call:
     s_node* aux = find_in_s_table($1);
     $$ = ins_node(aux->var_type, REGULAR_NODE,'F', NULL, $3, "func_call"); 
     check_params($$, $1);
-    free(aux);
+    // free(aux);
   }
   | ID '(' ')'{
     s_node* aux = find_in_s_table($1);
     $$ = ins_node(aux->var_type, REGULAR_NODE,'F', NULL, NULL, "func_call"); 
     check_params($$, $1);
-    free(aux);
+    // free(aux);
   }
 ;
 
@@ -936,7 +936,7 @@ func_arg:
     } else {
       $$ = ins_node(s->var_type, REGULAR_NODE,'A', NULL, NULL, $1); 
     }
-    free(s);
+    // free(s);
   }
   | ID '[' ID ']' { 
     s_node* s = find_in_s_table($1);
@@ -947,7 +947,7 @@ func_arg:
       // $$ = ins_node(s->var_type, REGULAR_NODE,'A', NULL, NULL, $1); 
     }
     $$ = ins_node("-", REGULAR_NODE,'A', NULL, NULL, $1);
-    free(s);
+    // free(s);
   }
   | INT { $$ = ins_node("int", REGULAR_NODE,'A', NULL, NULL, $1); }
   | FLOAT { $$ = ins_node("float", REGULAR_NODE,'A', NULL, NULL, $1); }
@@ -988,7 +988,7 @@ variable:
     }
     $$ = $1;
     // $$ = ins_node("-", REGULAR_NODE, 'V', NULL, NULL, $1); 
-    free(s);
+    // free(s);
   }
   | ID PONTO ID {
     #if defined DEBUG
@@ -1000,7 +1000,7 @@ variable:
     }
     $$ = $1;
     // $$ = ins_node("-", REGULAR_NODE, 'V', NULL, NULL, $1); 
-    free(s);
+    // free(s);
   }
 
 %%

@@ -2033,7 +2033,7 @@ yyreduce:
     (yyval.nd) = (yyvsp[0].nd);
     // $$ = ins_node(concat($4->var_type, $1), REGULAR_NODE,'F', NULL, $4, $2);
     // printf("CONCASS: %s\n",concat($1, $4->var_type));
-    free(s);
+    // free(s);
   }
 #line 2039 "syntaxAnalyser.tab.c"
     break;
@@ -2124,8 +2124,8 @@ yyreduce:
     func->params_list[func->params_count] = aux;
     // printf("aux: %s\n", aux);
     (yyval.nd) = (yyvsp[-2].nd);
-    free(aux);
-    free(func);
+    // free(aux);
+    // free(func);
   }
 #line 2131 "syntaxAnalyser.tab.c"
     break;
@@ -2141,8 +2141,8 @@ yyreduce:
     func->params_count++;
     func->params_list[func->params_count] = aux;
     (yyval.nd) = (yyvsp[-4].nd); 
-    free(aux);
-    free(func);
+    // free(aux);
+    // free(func);
   }
 #line 2148 "syntaxAnalyser.tab.c"
     break;
@@ -2158,8 +2158,8 @@ yyreduce:
    func->params_count++;
    func->params_list[func->params_count] = aux;
    (yyval.nd) = NULL; 
-   free(aux);
-   free(func);
+  //  free(aux);
+  //  free(func);
   }
 #line 2165 "syntaxAnalyser.tab.c"
     break;
@@ -2175,8 +2175,8 @@ yyreduce:
    func->params_count++; 
    func->params_list[func->params_count] = aux;
    (yyval.nd) = NULL;
-   free(aux);
-   free(func);
+  //  free(aux);
+  //  free(func);
   }
 #line 2182 "syntaxAnalyser.tab.c"
     break;
@@ -2192,8 +2192,8 @@ yyreduce:
     func->params_count++;
     func->params_list[func->params_count] = aux;
     (yyval.nd) = NULL; 
-    free(aux);
-    free(func);
+    // free(aux);
+    // free(func);
   }
 #line 2199 "syntaxAnalyser.tab.c"
     break;
@@ -2291,7 +2291,7 @@ yyreduce:
       }
     }
     (yyval.nd) = ins_node("-", REGULAR_NODE,'R', NULL, (yyvsp[-1].nd), "retorno");
-    free(s);
+    // free(s);
   }
 #line 2297 "syntaxAnalyser.tab.c"
     break;
@@ -2372,7 +2372,7 @@ yyreduce:
         sprintf(msg, "%s %s\n", (yyvsp[0].nd)->var_type, s->var_type);
         semantic_error(TYPES_MISSMATCH_ERROR, msg);
       }
-      free(s);
+      // free(s);
     }
   }
 #line 2379 "syntaxAnalyser.tab.c"
@@ -2534,7 +2534,7 @@ yyreduce:
     } else {
       (yyval.nd) = ins_node("-", REGULAR_NODE, 'E', NULL, NULL, (yyvsp[0].str));
     }
-    free(s);
+    // free(s);
   }
 #line 2540 "syntaxAnalyser.tab.c"
     break;
@@ -2570,7 +2570,7 @@ yyreduce:
     #endif
     s_node* s = find_in_s_table((yyvsp[-3].str));
     (yyval.nd) = ins_node(s->var_type, REGULAR_NODE, 'E', NULL, NULL, (yyvsp[-3].str));
-    free(s);
+    // free(s);
   }
 #line 2576 "syntaxAnalyser.tab.c"
     break;
@@ -2613,7 +2613,7 @@ yyreduce:
     s_node* aux = find_in_s_table((yyvsp[-3].id));
     (yyval.nd) = ins_node(aux->var_type, REGULAR_NODE,'F', NULL, (yyvsp[-1].nd), "func_call"); 
     check_params((yyval.nd), (yyvsp[-3].id));
-    free(aux);
+    // free(aux);
   }
 #line 2619 "syntaxAnalyser.tab.c"
     break;
@@ -2624,7 +2624,7 @@ yyreduce:
     s_node* aux = find_in_s_table((yyvsp[-2].id));
     (yyval.nd) = ins_node(aux->var_type, REGULAR_NODE,'F', NULL, NULL, "func_call"); 
     check_params((yyval.nd), (yyvsp[-2].id));
-    free(aux);
+    // free(aux);
   }
 #line 2630 "syntaxAnalyser.tab.c"
     break;
@@ -2655,7 +2655,7 @@ yyreduce:
     } else {
       (yyval.nd) = ins_node(s->var_type, REGULAR_NODE,'A', NULL, NULL, (yyvsp[0].id)); 
     }
-    free(s);
+    // free(s);
   }
 #line 2661 "syntaxAnalyser.tab.c"
     break;
@@ -2671,7 +2671,7 @@ yyreduce:
       // $$ = ins_node(s->var_type, REGULAR_NODE,'A', NULL, NULL, $1); 
     }
     (yyval.nd) = ins_node("-", REGULAR_NODE,'A', NULL, NULL, (yyvsp[-3].id));
-    free(s);
+    // free(s);
   }
 #line 2677 "syntaxAnalyser.tab.c"
     break;
@@ -2746,7 +2746,7 @@ yyreduce:
     }
     (yyval.str) = (yyvsp[0].id);
     // $$ = ins_node("-", REGULAR_NODE, 'V', NULL, NULL, $1); 
-    free(s);
+    // free(s);
   }
 #line 2752 "syntaxAnalyser.tab.c"
     break;
@@ -2763,7 +2763,7 @@ yyreduce:
     }
     (yyval.str) = (yyvsp[-2].id);
     // $$ = ins_node("-", REGULAR_NODE, 'V', NULL, NULL, $1); 
-    free(s);
+    // free(s);
   }
 #line 2769 "syntaxAnalyser.tab.c"
     break;
