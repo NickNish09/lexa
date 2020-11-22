@@ -1,0 +1,2462 @@
+==4708== Memcheck, a memory error detector
+==4708== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==4708== Using Valgrind-3.17.0.GIT-6049595824-20200908 and LibVEX; rerun with -h for copyright info
+==4708== Command: ./program.out ./tests/errado4.cstar
+==4708== Parent PID: 792
+==4708== 
+--4708-- 
+--4708-- Valgrind options:
+--4708--    -v
+--4708--    --tool=memcheck
+--4708--    --leak-check=full
+--4708--    --show-leak-kinds=all
+--4708--    --track-origins=yes
+--4708--    --log-file=__outs__/errado4.out
+--4708-- Output from sysctl({CTL_KERN,KERN_VERSION}):
+--4708--   Darwin Kernel Version 19.5.0: Tue May 26 20:41:44 PDT 2020; root:xnu-6153.121.2~2/RELEASE_X86_64
+--4708-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand
+--4708-- Page sizes: currently 4096, max supported 4096
+--4708-- Valgrind library directory: /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind
+--4708-- ./program.out (rx at 0x100000000, rw at 0x10000c000)
+--4708--    reading syms   from primary file (82 52)
+--4708--    dSYM= ./program.out.dSYM/Contents/Resources/DWARF/program.out
+--4708-- /usr/lib/dyld (rx at 0x100054000, rw at 0x1000e6000)
+--4708--    reading syms   from primary file (5 2727)
+--4708-- Scheduler: using generic scheduler lock implementation.
+--4708-- Reading suppressions file: /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/default.supp
+==4708== embedded gdbserver: reading from /var/folders/w8/tbsqlcyd53v4mnbzp2hkd6880000gp/T//vgdb-pipe-from-vgdb-to-4708-by-nicknish-on-???
+==4708== embedded gdbserver: writing to   /var/folders/w8/tbsqlcyd53v4mnbzp2hkd6880000gp/T//vgdb-pipe-to-vgdb-from-4708-by-nicknish-on-???
+==4708== embedded gdbserver: shared mem   /var/folders/w8/tbsqlcyd53v4mnbzp2hkd6880000gp/T//vgdb-pipe-shared-mem-vgdb-4708-by-nicknish-on-???
+==4708== 
+==4708== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==4708== don't want to do, unless you know exactly what you're doing,
+==4708== or are doing some strange experiment):
+==4708==   /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/../../bin/vgdb --pid=4708 ...command...
+==4708== 
+==4708== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==4708==   /path/to/gdb ./program.out
+==4708== and then give GDB the following command
+==4708==   target remote | /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/../../bin/vgdb --pid=4708
+==4708== --pid is optional if only one valgrind process is running
+==4708== 
+--4708-- REDIR: 0x1000a61a0 (dyld:strcmp) redirected to 0x258057aeb (???)
+--4708-- REDIR: 0x1000a0474 (dyld:arc4random) redirected to 0x258057b89 (???)
+--4708-- REDIR: 0x1000a5580 (dyld:strlen) redirected to 0x258057aba (???)
+--4708-- REDIR: 0x1000a64a0 (dyld:strcpy) redirected to 0x258057b07 (???)
+--4708-- REDIR: 0x1000a361a (dyld:strcat) redirected to 0x258057acb (???)
+--4708-- REDIR: 0x1000a537a (dyld:strlcat) redirected to 0x258057b24 (???)
+--4708-- /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_core-amd64-darwin.so (rx at 0x100159000, rw at 0x10015d000)
+--4708--    reading syms   from primary file (3 53)
+--4708--    dSYM= /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_core-amd64-darwin.so.dSYM/Contents/Resources/DWARF/vgpreload_core-amd64-darwin.so
+--4708-- /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so (rx at 0x100165000, rw at 0x10016d000)
+--4708--    reading syms   from primary file (75 62)
+--4708--    dSYM= /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so.dSYM/Contents/Resources/DWARF/vgpreload_memcheck-amd64-darwin.so
+--4708-- /usr/lib/libSystem.B.dylib (rx at 0x100175000, rw at 0x100177000)
+--4708--    reading syms   from primary file (29 8)
+--4708-- /usr/lib/system/libcache.dylib (rx at 0x10017f000, rw at 0x100185000)
+--4708--    reading syms   from primary file (32 29)
+--4708-- /usr/lib/system/libcommonCrypto.dylib (rx at 0x10018c000, rw at 0x100198000)
+--4708--    reading syms   from primary file (241 173)
+--4708-- /usr/lib/system/libcompiler_rt.dylib (rx at 0x1001a8000, rw at 0x1001b0000)
+--4708--    reading syms   from primary file (505 8)
+--4708-- /usr/lib/system/libcopyfile.dylib (rx at 0x1001c0000, rw at 0x1001ca000)
+--4708--    reading syms   from primary file (11 38)
+--4708-- /usr/lib/system/libcorecrypto.dylib (rx at 0x1001d2000, rw at 0x100265000)
+--4708--    reading syms   from primary file (586 846)
+--4708-- /usr/lib/system/libdispatch.dylib (rx at 0x100285000, rw at 0x1002c6000)
+--4708--    reading syms   from primary file (328 1607)
+--4708-- /usr/lib/system/libdyld.dylib (rx at 0x100303000, rw at 0x10033a000)
+--4708--    reading syms   from primary file (119 1467)
+--4708-- /usr/lib/system/libkeymgr.dylib (rx at 0x100363000, rw at 0x100364000)
+--4708--    reading syms   from primary file (11 2)
+--4708-- /usr/lib/system/libmacho.dylib (rx at 0x100373000, rw at 0x100379000)
+--4708--    reading syms   from primary file (105 2)
+--4708-- /usr/lib/system/libquarantine.dylib (rx at 0x100381000, rw at 0x100384000)
+--4708--    reading syms   from primary file (88 12)
+--4708-- /usr/lib/system/libremovefile.dylib (rx at 0x10038c000, rw at 0x10038e000)
+--4708--    reading syms   from primary file (12 8)
+--4708-- /usr/lib/system/libsystem_asl.dylib (rx at 0x100395000, rw at 0x1003ad000)
+--4708--    reading syms   from primary file (219 234)
+--4708-- /usr/lib/system/libsystem_blocks.dylib (rx at 0x1003bd000, rw at 0x1003be000)
+--4708--    reading syms   from primary file (21 8)
+--4708-- /usr/lib/system/libsystem_c.dylib (rx at 0x1003c5000, rw at 0x10044d000)
+--4708--    reading syms   from primary file (1346 892)
+--4708-- /usr/lib/system/libsystem_configuration.dylib (rx at 0x10047d000, rw at 0x100481000)
+--4708--    reading syms   from primary file (36 68)
+--4708-- /usr/lib/system/libsystem_coreservices.dylib (rx at 0x10048a000, rw at 0x10048e000)
+--4708--    reading syms   from primary file (14 47)
+--4708-- /usr/lib/system/libsystem_darwin.dylib (rx at 0x100496000, rw at 0x10049f000)
+--4708--    reading syms   from primary file (63 562)
+--4708-- /usr/lib/system/libsystem_dnssd.dylib (rx at 0x1004ae000, rw at 0x1004b6000)
+--4708--    reading syms   from primary file (40 26)
+--4708-- /usr/lib/system/libsystem_featureflags.dylib (rx at 0x1004be000, rw at 0x1004c0000)
+--4708--    reading syms   from primary file (1 12)
+--4708-- /usr/lib/system/libsystem_info.dylib (rx at 0x1004c7000, rw at 0x100515000)
+--4708--    reading syms   from primary file (427 714)
+--4708-- /usr/lib/system/libsystem_m.dylib (rx at 0x10052d000, rw at 0x100575000)
+--4708--    reading syms   from primary file (811 1)
+--4708-- /usr/lib/system/libsystem_malloc.dylib (rx at 0x100586000, rw at 0x1005ae000)
+--4708--    reading syms   from primary file (98 470)
+--4708-- /usr/lib/system/libsystem_networkextension.dylib (rx at 0x1005be000, rw at 0x1005cc000)
+--4708--    reading syms   from primary file (118 242)
+--4708-- /usr/lib/system/libsystem_notify.dylib (rx at 0x1005dc000, rw at 0x1005e6000)
+--4708--    reading syms   from primary file (23 1)
+--4708-- /usr/lib/system/libsystem_sandbox.dylib (rx at 0x1005ee000, rw at 0x1005f3000)
+--4708--    reading syms   from primary file (112 23)
+--4708-- /usr/lib/system/libsystem_secinit.dylib (rx at 0x1005fc000, rw at 0x1005ff000)
+--4708--    reading syms   from primary file (5 20)
+--4708-- /usr/lib/system/libsystem_kernel.dylib (rx at 0x100606000, rw at 0x100633000)
+--4708--    reading syms   from primary file (1361 230)
+--4708-- /usr/lib/system/libsystem_platform.dylib (rx at 0x100652000, rw at 0x10065b000)
+--4708--    reading syms   from primary file (168 103)
+--4708-- /usr/lib/system/libsystem_pthread.dylib (rx at 0x100665000, rw at 0x100670000)
+--4708--    reading syms   from primary file (189 143)
+--4708-- /usr/lib/system/libsystem_symptoms.dylib (rx at 0x10067d000, rw at 0x100685000)
+--4708--    reading syms   from primary file (10 86)
+--4708-- /usr/lib/system/libsystem_trace.dylib (rx at 0x10068d000, rw at 0x1006a4000)
+--4708--    reading syms   from primary file (131 274)
+--4708-- /usr/lib/system/libunwind.dylib (rx at 0x1006b5000, rw at 0x1006bb000)
+--4708--    reading syms   from primary file (102 52)
+--4708-- /usr/lib/system/libxpc.dylib (rx at 0x1006c4000, rw at 0x1006fa000)
+--4708--    reading syms   from primary file (627 1467)
+--4708-- /usr/lib/libobjc.A.dylib (rx at 0x100728000, rw at 0x10075c000)
+--4708--    reading syms   from primary file (382 771)
+--4708-- /usr/lib/libc++abi.dylib (rx at 0x100780000, rw at 0x100796000)
+--4708--    reading syms   from primary file (366 704)
+--4708-- /usr/lib/libc++.1.dylib (rx at 0x1007b4000, rw at 0x100807000)
+--4708--    reading syms   from primary file (2088 1160)
+--4708-- REDIR: 0x1006533a0 (libsystem_platform.dylib:_platform_memcmp) redirected to 0x1001698b5 (_platform_memcmp)
+--4708-- REDIR: 0x100652c00 (libsystem_platform.dylib:_platform_strncmp) redirected to 0x100169249 (_platform_strncmp)
+--4708-- REDIR: 0x100652800 (libsystem_platform.dylib:_platform_strcmp) redirected to 0x1001692c3 (_platform_strcmp)
+--4708-- REDIR: 0x100586ce0 (libsystem_malloc.dylib:malloc) redirected to 0x1001674d0 (malloc)
+--4708-- REDIR: 0x100588ec1 (libsystem_malloc.dylib:calloc) redirected to 0x100167ae6 (calloc)
+--4708-- REDIR: 0x100588d67 (libsystem_malloc.dylib:realloc) redirected to 0x100167e64 (realloc)
+--4708-- REDIR: 0x100589087 (libsystem_malloc.dylib:malloc_default_zone) redirected to 0x100168819 (malloc_default_zone)
+--4708-- REDIR: 0x100586d12 (libsystem_malloc.dylib:malloc_zone_malloc) redirected to 0x100167738 (malloc_zone_malloc)
+--4708-- REDIR: 0x100588ef6 (libsystem_malloc.dylib:malloc_zone_calloc) redirected to 0x100167cd2 (malloc_zone_calloc)
+--4708-- REDIR: 0x10058908f (libsystem_malloc.dylib:malloc_zone_from_ptr) redirected to 0x10016885a (malloc_zone_from_ptr)
+--4708-- REDIR: 0x1005879b1 (libsystem_malloc.dylib:free) redirected to 0x1001678ac (free)
+--4708-- REDIR: 0x100653300 (libsystem_platform.dylib:_platform_strchr$VARIANT$Haswell) redirected to 0x100168acd (_platform_strchr$VARIANT$Haswell)
+--4708-- REDIR: 0x10044239d (libsystem_c.dylib:__strcpy_chk) redirected to 0x100168da4 (__strcpy_chk)
+==4708== Invalid read of size 8
+==4708==    at 0x100002D29: add_to_s_table (in ./program.out)
+==4708==    by 0x100005405: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x100002D44: add_to_s_table (in ./program.out)
+==4708==    by 0x100005405: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x1000034EE: add_to_s_table (in ./program.out)
+==4708==    by 0x100005405: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x100003511: add_to_s_table (in ./program.out)
+==4708==    by 0x100005405: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x100003520: add_to_s_table (in ./program.out)
+==4708==    by 0x100005405: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x10000353E: add_to_s_table (in ./program.out)
+==4708==    by 0x100005405: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid write of size 8
+==4708==    at 0x100003546: add_to_s_table (in ./program.out)
+==4708==    by 0x100005405: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de48 is 40 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x10000355C: add_to_s_table (in ./program.out)
+==4708==    by 0x100005405: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x100003575: add_to_s_table (in ./program.out)
+==4708==    by 0x100005405: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x10000358C: add_to_s_table (in ./program.out)
+==4708==    by 0x100005405: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x1000035AA: add_to_s_table (in ./program.out)
+==4708==    by 0x100005405: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x100002D29: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x100002D44: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x1000034EE: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x100003511: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x100003520: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x10000353E: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x10000355C: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x100003575: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x10000358C: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x1000035AA: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x100004072: find_in_s_table (in ./program.out)
+==4708==    by 0x1000063B3: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x10000408D: find_in_s_table (in ./program.out)
+==4708==    by 0x1000063B3: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x1000040BA: find_in_s_table (in ./program.out)
+==4708==    by 0x1000063B3: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x1000040D7: find_in_s_table (in ./program.out)
+==4708==    by 0x1000063B3: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x100004072: find_in_s_table (in ./program.out)
+==4708==    by 0x100005E1F: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x10000408D: find_in_s_table (in ./program.out)
+==4708==    by 0x100005E1F: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x1000040BA: find_in_s_table (in ./program.out)
+==4708==    by 0x100005E1F: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x1000040D7: find_in_s_table (in ./program.out)
+==4708==    by 0x100005E1F: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 4
+==4708==    at 0x100004107: find_in_s_table (in ./program.out)
+==4708==    by 0x100005E1F: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086e79c is 76 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x1000063FC: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 4
+==4708==    at 0x100004117: find_in_s_table (in ./program.out)
+==4708==    by 0x100005E1F: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086e798 is 72 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x1000063FC: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x100004127: find_in_s_table (in ./program.out)
+==4708==    by 0x100005E1F: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086e790 is 64 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x1000063FC: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x100005E40: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086e758 is 8 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x1000063FC: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid free() / delete / delete[] / realloc()
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100005EBE: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086e750 is 0 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x1000063FC: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x100004072: find_in_s_table (in ./program.out)
+==4708==    by 0x1000059AA: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x10000408D: find_in_s_table (in ./program.out)
+==4708==    by 0x1000059AA: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x1000040BA: find_in_s_table (in ./program.out)
+==4708==    by 0x1000059AA: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x1000040D7: find_in_s_table (in ./program.out)
+==4708==    by 0x1000059AA: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 4
+==4708==    at 0x100004107: find_in_s_table (in ./program.out)
+==4708==    by 0x1000063B3: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086e4ec is 76 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100005A3E: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x100005405: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x100004150: find_in_s_table (in ./program.out)
+==4708==    by 0x1000063B3: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086e4d8 is 56 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100005A3E: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x100005405: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 4
+==4708==    at 0x100004117: find_in_s_table (in ./program.out)
+==4708==    by 0x1000063B3: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086e798 is 72 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x1000063FC: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x100004127: find_in_s_table (in ./program.out)
+==4708==    by 0x1000063B3: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086e790 is 64 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x1000063FC: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid free() / delete / delete[] / realloc()
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x1000063FC: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086e750 is 0 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x1000063FC: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x100004150: find_in_s_table (in ./program.out)
+==4708==    by 0x100005E1F: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086e4d8 is 56 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100005A3E: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x100005405: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x100002D29: add_to_s_table (in ./program.out)
+==4708==    by 0x100005494: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x100002D44: add_to_s_table (in ./program.out)
+==4708==    by 0x100005494: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x1000034EE: add_to_s_table (in ./program.out)
+==4708==    by 0x100005494: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x100003511: add_to_s_table (in ./program.out)
+==4708==    by 0x100005494: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x100003520: add_to_s_table (in ./program.out)
+==4708==    by 0x100005494: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x10000353E: add_to_s_table (in ./program.out)
+==4708==    by 0x100005494: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x10000355C: add_to_s_table (in ./program.out)
+==4708==    by 0x100005494: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x100003575: add_to_s_table (in ./program.out)
+==4708==    by 0x100005494: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x10000358C: add_to_s_table (in ./program.out)
+==4708==    by 0x100005494: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x1000035AA: add_to_s_table (in ./program.out)
+==4708==    by 0x100005494: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+--4708-- REDIR: 0x1006531a0 (libsystem_platform.dylib:_platform_memchr$VARIANT$Haswell) redirected to 0x100169334 (_platform_memchr$VARIANT$Haswell)
+==4708== Invalid read of size 8
+==4708==    at 0x100003A90: print_s_table (in ./program.out)
+==4708==    by 0x10000763A: main (in ./program.out)
+==4708==  Address 0x10086de20 is 0 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x100003A97: print_s_table (in ./program.out)
+==4708==    by 0x10000763A: main (in ./program.out)
+==4708==  Address 0x10086de28 is 8 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 4
+==4708==    at 0x100003A9F: print_s_table (in ./program.out)
+==4708==    by 0x10000763A: main (in ./program.out)
+==4708==  Address 0x10086de30 is 16 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 4
+==4708==    at 0x100003AB3: print_s_table (in ./program.out)
+==4708==    by 0x10000763A: main (in ./program.out)
+==4708==  Address 0x10086de34 is 20 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 4
+==4708==    at 0x100003ABB: print_s_table (in ./program.out)
+==4708==    by 0x10000763A: main (in ./program.out)
+==4708==  Address 0x10086de70 is 80 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 4
+==4708==    at 0x100003ADC: print_s_table (in ./program.out)
+==4708==    by 0x10000763A: main (in ./program.out)
+==4708==  Address 0x10086de30 is 16 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 4
+==4708==    at 0x100003B05: print_s_table (in ./program.out)
+==4708==    by 0x10000763A: main (in ./program.out)
+==4708==  Address 0x10086de70 is 80 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== Invalid read of size 8
+==4708==    at 0x100003B6A: print_s_table (in ./program.out)
+==4708==    by 0x10000763A: main (in ./program.out)
+==4708==  Address 0x10086de48 is 40 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== HEAP SUMMARY:
+==4708==     in use at exit: 41,539 bytes in 249 blocks
+==4708==   total heap usage: 268 allocs, 22 frees, 47,123 bytes allocated
+==4708== 
+==4708== Searching for pointers to 249 not-freed blocks
+==4708== Checked 9,426,136 bytes
+==4708== 
+==4708== 2 bytes in 1 blocks are still reachable in loss record 1 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10041BCE5: strdup (in /usr/lib/system/libsystem_c.dylib)
+==4708==    by 0x1000083D7: yylex (in ./program.out)
+==4708==    by 0x100004CF3: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 6 bytes in 1 blocks are definitely lost in loss record 2 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10041BCE5: strdup (in /usr/lib/system/libsystem_c.dylib)
+==4708==    by 0x100008302: yylex (in ./program.out)
+==4708==    by 0x100004CF3: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 7 bytes in 1 blocks are definitely lost in loss record 3 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000236B: concat (in ./program.out)
+==4708==    by 0x100002887: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 8 bytes in 1 blocks are still reachable in loss record 4 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100009A44: yyalloc (in ./program.out)
+==4708==    by 0x100008C0D: yyensure_buffer_stack (in ./program.out)
+==4708==    by 0x100007E26: yylex (in ./program.out)
+==4708==    by 0x100004CF3: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 8 bytes in 1 blocks are still reachable in loss record 5 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000236B: concat (in ./program.out)
+==4708==    by 0x100005320: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 8 bytes in 1 blocks are definitely lost in loss record 6 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000236B: concat (in ./program.out)
+==4708==    by 0x1000052F8: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 9 bytes in 1 blocks are definitely lost in loss record 7 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000236B: concat (in ./program.out)
+==4708==    by 0x100002876: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 9 bytes in 1 blocks are definitely lost in loss record 8 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000236B: concat (in ./program.out)
+==4708==    by 0x100003BC5: find_in_s_table (in ./program.out)
+==4708==    by 0x1000052D4: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 9 bytes in 1 blocks are definitely lost in loss record 9 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000236B: concat (in ./program.out)
+==4708==    by 0x100002876: add_to_s_table (in ./program.out)
+==4708==    by 0x100005494: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 9 bytes in 2 blocks are definitely lost in loss record 10 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10041BCE5: strdup (in /usr/lib/system/libsystem_c.dylib)
+==4708==    by 0x100008327: yylex (in ./program.out)
+==4708==    by 0x100004CF3: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 9 bytes in 2 blocks are definitely lost in loss record 11 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10041BCE5: strdup (in /usr/lib/system/libsystem_c.dylib)
+==4708==    by 0x1000083B2: yylex (in ./program.out)
+==4708==    by 0x100004CF3: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 10 bytes in 1 blocks are indirectly lost in loss record 12 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000236B: concat (in ./program.out)
+==4708==    by 0x100002887: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 12 bytes in 2 blocks are still reachable in loss record 13 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10041BCE5: strdup (in /usr/lib/system/libsystem_c.dylib)
+==4708==    by 0x100008302: yylex (in ./program.out)
+==4708==    by 0x100004CF3: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 12 bytes in 3 blocks are still reachable in loss record 14 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10041BCE5: strdup (in /usr/lib/system/libsystem_c.dylib)
+==4708==    by 0x100008327: yylex (in ./program.out)
+==4708==    by 0x100004CF3: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 13 bytes in 1 blocks are definitely lost in loss record 15 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000236B: concat (in ./program.out)
+==4708==    by 0x100002887: add_to_s_table (in ./program.out)
+==4708==    by 0x100005494: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 15 bytes in 1 blocks are definitely lost in loss record 17 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000236B: concat (in ./program.out)
+==4708==    by 0x100002887: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 15 bytes in 1 blocks are definitely lost in loss record 18 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000236B: concat (in ./program.out)
+==4708==    by 0x100003BD6: find_in_s_table (in ./program.out)
+==4708==    by 0x1000052D4: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 15 bytes in 2 blocks are definitely lost in loss record 19 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000236B: concat (in ./program.out)
+==4708==    by 0x100002876: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 18 bytes in 2 blocks are definitely lost in loss record 22 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000236B: concat (in ./program.out)
+==4708==    by 0x100002876: add_to_s_table (in ./program.out)
+==4708==    by 0x100005405: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 21 bytes in 3 blocks are definitely lost in loss record 23 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10041BCE5: strdup (in /usr/lib/system/libsystem_c.dylib)
+==4708==    by 0x100008264: yylex (in ./program.out)
+==4708==    by 0x100004CF3: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 24 bytes in 1 blocks are still reachable in loss record 26 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x1000026CD: initialize_s_stack (in ./program.out)
+==4708==    by 0x1000075D1: main (in ./program.out)
+==4708== 
+==4708== 24 bytes in 1 blocks are definitely lost in loss record 28 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002735: s_push (in ./program.out)
+==4708==    by 0x1000054AB: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 27 bytes in 2 blocks are definitely lost in loss record 29 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000236B: concat (in ./program.out)
+==4708==    by 0x100002887: add_to_s_table (in ./program.out)
+==4708==    by 0x100005405: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 27 bytes in 3 blocks are definitely lost in loss record 30 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000236B: concat (in ./program.out)
+==4708==    by 0x100003BC5: find_in_s_table (in ./program.out)
+==4708==    by 0x1000059AA: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 30 bytes in 4 blocks are definitely lost in loss record 31 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000236B: concat (in ./program.out)
+==4708==    by 0x100003BC5: find_in_s_table (in ./program.out)
+==4708==    by 0x1000063B3: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 30 bytes in 4 blocks are definitely lost in loss record 32 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000236B: concat (in ./program.out)
+==4708==    by 0x100003BC5: find_in_s_table (in ./program.out)
+==4708==    by 0x100005E1F: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 31 bytes in 8 blocks are still reachable in loss record 33 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10041BCE5: strdup (in /usr/lib/system/libsystem_c.dylib)
+==4708==    by 0x1000083B2: yylex (in ./program.out)
+==4708==    by 0x100004CF3: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 34 bytes in 4 blocks are definitely lost in loss record 42 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000236B: concat (in ./program.out)
+==4708==    by 0x100003BD6: find_in_s_table (in ./program.out)
+==4708==    by 0x1000063B3: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 34 bytes in 4 blocks are definitely lost in loss record 43 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000236B: concat (in ./program.out)
+==4708==    by 0x100003BD6: find_in_s_table (in ./program.out)
+==4708==    by 0x100005E1F: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 40 bytes in 3 blocks are definitely lost in loss record 44 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000236B: concat (in ./program.out)
+==4708==    by 0x100003BD6: find_in_s_table (in ./program.out)
+==4708==    by 0x1000059AA: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 48 bytes in 1 blocks are still reachable in loss record 47 of 83
+==4708==    at 0x100167BA0: calloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x1000042C4: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 48 bytes in 1 blocks are still reachable in loss record 48 of 83
+==4708==    at 0x100167BA0: calloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000424C: ins_node (in ./program.out)
+==4708==    by 0x100005EF5: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 48 bytes in 1 blocks are still reachable in loss record 49 of 83
+==4708==    at 0x100167BA0: calloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000424C: ins_node (in ./program.out)
+==4708==    by 0x1000054E4: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 48 bytes in 2 blocks are definitely lost in loss record 50 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002735: s_push (in ./program.out)
+==4708==    by 0x10000541C: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 72 bytes in 1 blocks are still reachable in loss record 54 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100009A44: yyalloc (in ./program.out)
+==4708==    by 0x100008D48: yy_create_buffer (in ./program.out)
+==4708==    by 0x100007E37: yylex (in ./program.out)
+==4708==    by 0x100004CF3: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 96 bytes in 2 blocks are still reachable in loss record 57 of 83
+==4708==    at 0x100167BA0: calloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x1000042C4: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 96 bytes in 2 blocks are still reachable in loss record 58 of 83
+==4708==    at 0x100167BA0: calloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000424C: ins_node (in ./program.out)
+==4708==    by 0x100005E6A: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 96 bytes in 2 blocks are still reachable in loss record 59 of 83
+==4708==    at 0x100167BA0: calloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000424C: ins_node (in ./program.out)
+==4708==    by 0x100005461: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 144 bytes in 3 blocks are still reachable in loss record 64 of 83
+==4708==    at 0x100167BA0: calloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000424C: ins_node (in ./program.out)
+==4708==    by 0x100005A28: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 144 bytes in 3 blocks are still reachable in loss record 65 of 83
+==4708==    at 0x100167BA0: calloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000424C: ins_node (in ./program.out)
+==4708==    by 0x10000525D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 168 bytes in 1 blocks are indirectly lost in loss record 66 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 512 bytes in 1 blocks are indirectly lost in loss record 72 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100003475: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 754 (64 direct, 690 indirect) bytes in 1 blocks are definitely lost in loss record 73 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x1000033D2: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 4,096 bytes in 1 blocks are still reachable in loss record 81 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100401367: __smakebuf (in /usr/lib/system/libsystem_c.dylib)
+==4708==    by 0x1004048A6: __srefill0 (in /usr/lib/system/libsystem_c.dylib)
+==4708==    by 0x1003FF779: __fread (in /usr/lib/system/libsystem_c.dylib)
+==4708==    by 0x1003FF6BD: fread (in /usr/lib/system/libsystem_c.dylib)
+==4708==    by 0x1000094F2: yy_get_next_buffer (in ./program.out)
+==4708==    by 0x1000089EC: yylex (in ./program.out)
+==4708==    by 0x100004CF3: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 16,386 bytes in 1 blocks are still reachable in loss record 83 of 83
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100009A44: yyalloc (in ./program.out)
+==4708==    by 0x100008D85: yy_create_buffer (in ./program.out)
+==4708==    by 0x100007E37: yylex (in ./program.out)
+==4708==    by 0x100004CF3: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== LEAK SUMMARY:
+==4708==    definitely lost: 521 bytes in 48 blocks
+==4708==    indirectly lost: 690 bytes in 3 blocks
+==4708==      possibly lost: 0 bytes in 0 blocks
+==4708==    still reachable: 21,371 bytes in 35 blocks
+==4708==         suppressed: 18,957 bytes in 163 blocks
+==4708== 
+==4708== ERROR SUMMARY: 177 errors from 86 contexts (suppressed: 8 from 8)
+==4708== 
+==4708== 1 errors in context 1 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x1000035AA: add_to_s_table (in ./program.out)
+==4708==    by 0x100005494: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 1 errors in context 2 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x10000358C: add_to_s_table (in ./program.out)
+==4708==    by 0x100005494: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 1 errors in context 3 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x100003575: add_to_s_table (in ./program.out)
+==4708==    by 0x100005494: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 1 errors in context 4 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x10000355C: add_to_s_table (in ./program.out)
+==4708==    by 0x100005494: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 1 errors in context 5 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x10000353E: add_to_s_table (in ./program.out)
+==4708==    by 0x100005494: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 1 errors in context 6 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x100003520: add_to_s_table (in ./program.out)
+==4708==    by 0x100005494: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 1 errors in context 7 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x100003511: add_to_s_table (in ./program.out)
+==4708==    by 0x100005494: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 1 errors in context 8 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x1000034EE: add_to_s_table (in ./program.out)
+==4708==    by 0x100005494: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 1 errors in context 9 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x100002D44: add_to_s_table (in ./program.out)
+==4708==    by 0x100005494: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 1 errors in context 10 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x100002D29: add_to_s_table (in ./program.out)
+==4708==    by 0x100005494: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 1 errors in context 11 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x100004150: find_in_s_table (in ./program.out)
+==4708==    by 0x100005E1F: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086e4d8 is 56 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100005A3E: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x100005405: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 1 errors in context 12 of 86:
+==4708== Invalid free() / delete / delete[] / realloc()
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x1000063FC: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086e750 is 0 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x1000063FC: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 1 errors in context 13 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x100004127: find_in_s_table (in ./program.out)
+==4708==    by 0x1000063B3: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086e790 is 64 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x1000063FC: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 1 errors in context 14 of 86:
+==4708== Invalid read of size 4
+==4708==    at 0x100004117: find_in_s_table (in ./program.out)
+==4708==    by 0x1000063B3: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086e798 is 72 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x1000063FC: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 1 errors in context 15 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x100004150: find_in_s_table (in ./program.out)
+==4708==    by 0x1000063B3: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086e4d8 is 56 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100005A3E: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x100005405: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 2 errors in context 16 of 86:
+==4708== Invalid free() / delete / delete[] / realloc()
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100005EBE: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086e750 is 0 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x1000063FC: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 2 errors in context 17 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x100005E40: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086e758 is 8 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x1000063FC: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 2 errors in context 18 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x100004127: find_in_s_table (in ./program.out)
+==4708==    by 0x100005E1F: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086e790 is 64 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x1000063FC: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 2 errors in context 19 of 86:
+==4708== Invalid read of size 4
+==4708==    at 0x100004117: find_in_s_table (in ./program.out)
+==4708==    by 0x100005E1F: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086e798 is 72 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x1000063FC: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 2 errors in context 20 of 86:
+==4708== Invalid read of size 4
+==4708==    at 0x100004107: find_in_s_table (in ./program.out)
+==4708==    by 0x1000063B3: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086e4ec is 76 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100005A3E: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x100005405: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 2 errors in context 21 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x1000035AA: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 2 errors in context 22 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x10000358C: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 2 errors in context 23 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x100003575: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 2 errors in context 24 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x10000355C: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 2 errors in context 25 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x10000353E: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 2 errors in context 26 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x100003520: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 2 errors in context 27 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x100003511: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 2 errors in context 28 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x1000034EE: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 2 errors in context 29 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x100002D44: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 2 errors in context 30 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x100002D29: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 2 errors in context 31 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x1000035AA: add_to_s_table (in ./program.out)
+==4708==    by 0x100005405: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 2 errors in context 32 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x10000358C: add_to_s_table (in ./program.out)
+==4708==    by 0x100005405: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 2 errors in context 33 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x100003575: add_to_s_table (in ./program.out)
+==4708==    by 0x100005405: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 2 errors in context 34 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x10000355C: add_to_s_table (in ./program.out)
+==4708==    by 0x100005405: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 2 errors in context 35 of 86:
+==4708== Invalid write of size 8
+==4708==    at 0x100003546: add_to_s_table (in ./program.out)
+==4708==    by 0x100005405: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de48 is 40 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 2 errors in context 36 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x10000353E: add_to_s_table (in ./program.out)
+==4708==    by 0x100005405: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 2 errors in context 37 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x100003520: add_to_s_table (in ./program.out)
+==4708==    by 0x100005405: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 2 errors in context 38 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x100003511: add_to_s_table (in ./program.out)
+==4708==    by 0x100005405: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 2 errors in context 39 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x1000034EE: add_to_s_table (in ./program.out)
+==4708==    by 0x100005405: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 2 errors in context 40 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x100002D44: add_to_s_table (in ./program.out)
+==4708==    by 0x100005405: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 2 errors in context 41 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x100002D29: add_to_s_table (in ./program.out)
+==4708==    by 0x100005405: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 3 errors in context 42 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x1000040D7: find_in_s_table (in ./program.out)
+==4708==    by 0x1000059AA: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 3 errors in context 43 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x1000040BA: find_in_s_table (in ./program.out)
+==4708==    by 0x1000059AA: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 3 errors in context 44 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x10000408D: find_in_s_table (in ./program.out)
+==4708==    by 0x1000059AA: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 3 errors in context 45 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x100004072: find_in_s_table (in ./program.out)
+==4708==    by 0x1000059AA: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 3 errors in context 46 of 86:
+==4708== Invalid read of size 4
+==4708==    at 0x100004107: find_in_s_table (in ./program.out)
+==4708==    by 0x100005E1F: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086e79c is 76 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x1000063FC: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005831: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 4 errors in context 47 of 86:
+==4708== Invalid read of size 4
+==4708==    at 0x100003B05: print_s_table (in ./program.out)
+==4708==    by 0x10000763A: main (in ./program.out)
+==4708==  Address 0x10086de70 is 80 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 4 errors in context 48 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x1000040D7: find_in_s_table (in ./program.out)
+==4708==    by 0x100005E1F: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 4 errors in context 49 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x1000040BA: find_in_s_table (in ./program.out)
+==4708==    by 0x100005E1F: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 4 errors in context 50 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x10000408D: find_in_s_table (in ./program.out)
+==4708==    by 0x100005E1F: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 4 errors in context 51 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x100004072: find_in_s_table (in ./program.out)
+==4708==    by 0x100005E1F: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 4 errors in context 52 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x1000040D7: find_in_s_table (in ./program.out)
+==4708==    by 0x1000063B3: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 4 errors in context 53 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x1000040BA: find_in_s_table (in ./program.out)
+==4708==    by 0x1000063B3: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 4 errors in context 54 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x10000408D: find_in_s_table (in ./program.out)
+==4708==    by 0x1000063B3: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 4 errors in context 55 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x100004072: find_in_s_table (in ./program.out)
+==4708==    by 0x1000063B3: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Address 0x10086de38 is 24 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 5 errors in context 56 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x100003B6A: print_s_table (in ./program.out)
+==4708==    by 0x10000763A: main (in ./program.out)
+==4708==  Address 0x10086de48 is 40 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 5 errors in context 57 of 86:
+==4708== Invalid read of size 4
+==4708==    at 0x100003ADC: print_s_table (in ./program.out)
+==4708==    by 0x10000763A: main (in ./program.out)
+==4708==  Address 0x10086de30 is 16 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 5 errors in context 58 of 86:
+==4708== Invalid read of size 4
+==4708==    at 0x100003ABB: print_s_table (in ./program.out)
+==4708==    by 0x10000763A: main (in ./program.out)
+==4708==  Address 0x10086de70 is 80 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 5 errors in context 59 of 86:
+==4708== Invalid read of size 4
+==4708==    at 0x100003AB3: print_s_table (in ./program.out)
+==4708==    by 0x10000763A: main (in ./program.out)
+==4708==  Address 0x10086de34 is 20 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 5 errors in context 60 of 86:
+==4708== Invalid read of size 4
+==4708==    at 0x100003A9F: print_s_table (in ./program.out)
+==4708==    by 0x10000763A: main (in ./program.out)
+==4708==  Address 0x10086de30 is 16 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 5 errors in context 61 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x100003A97: print_s_table (in ./program.out)
+==4708==    by 0x10000763A: main (in ./program.out)
+==4708==  Address 0x10086de28 is 8 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+==4708== 
+==4708== 5 errors in context 62 of 86:
+==4708== Invalid read of size 8
+==4708==    at 0x100003A90: print_s_table (in ./program.out)
+==4708==    by 0x10000763A: main (in ./program.out)
+==4708==  Address 0x10086de20 is 0 bytes inside a block of size 168 free'd
+==4708==    at 0x10016791D: free (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x10000534D: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708==  Block was alloc'd at
+==4708==    at 0x100167545: malloc (in /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==4708==    by 0x100002E7D: add_to_s_table (in ./program.out)
+==4708==    by 0x10000433C: ins_node_symbol (in ./program.out)
+==4708==    by 0x100005377: yyparse (in ./program.out)
+==4708==    by 0x1000075D6: main (in ./program.out)
+==4708== 
+--4708-- 
+--4708-- used_suppression:      1 OSX1015:Leak01-printf /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/default.supp:801 suppressed: 4,096 bytes in 1 blocks
+--4708-- used_suppression:      3 OSX1015:dyld-4 /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/default.supp:751 suppressed: 4,152 bytes in 3 blocks
+--4708-- used_suppression:      1 OSX1015:Leak02-objc /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/default.supp:812 suppressed: 2,048 bytes in 1 blocks
+--4708-- used_suppression:     17 OSX1015:dyld-7 /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/default.supp:781 suppressed: 2,560 bytes in 74 blocks
+--4708-- used_suppression:     15 OSX1015:dyld-8 /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/default.supp:791 suppressed: 5,837 bytes in 81 blocks
+--4708-- used_suppression:      1 OSX1015:dyld-5 /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/default.supp:761 suppressed: 264 bytes in 3 blocks
+--4708-- used_suppression:      1 OSX1015:dyld-1 /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/default.supp:726
+--4708-- used_suppression:      2 OSX1015:dyld-3 /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/default.supp:742
+--4708-- used_suppression:      1 OSX1015:dyld-2 /usr/local/Cellar/valgrind/HEAD-6049595/lib/valgrind/default.supp:733
+==4708== 
+==4708== ERROR SUMMARY: 177 errors from 86 contexts (suppressed: 8 from 8)
