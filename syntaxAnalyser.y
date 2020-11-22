@@ -659,7 +659,7 @@ cod_block:
       printf("cod_block #10 \n"); 
     #endif
   }
-| declaracoes { $$ = $1 ;}
+| declaracao { $$ = $1 ;}
 ;
 
 assign:
@@ -886,6 +886,11 @@ func_call:
     $$ = ins_node(aux->var_type, REGULAR_NODE,'F', NULL, $3, "func_call"); 
     check_params($$, $1);
   }
+  | ID '(' ')'{
+    s_node* aux = find_in_s_table($1);
+    $$ = ins_node(aux->var_type, REGULAR_NODE,'F', NULL, NULL, "func_call"); 
+    check_params($$, $1);
+  }
 ;
 
 func_args:
@@ -920,7 +925,6 @@ func_arg:
   | INT { $$ = ins_node("int", REGULAR_NODE,'A', NULL, NULL, $1); }
   | FLOAT { $$ = ins_node("float", REGULAR_NODE,'A', NULL, NULL, $1); }
   | palavra { $$ = ins_node("char", REGULAR_NODE,'A', NULL, NULL, $1); }
-  | %empty
 ;
 
 palavra:
