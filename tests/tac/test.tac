@@ -4,8 +4,7 @@ int size = 5
 .code
 main:
 mov $0, 0
-sub $1, size,
-1
+sub $1, size,1
 // while $0 < size
 L1:
 slt $2, $0, size
@@ -17,8 +16,8 @@ print $2
 // if $0 < size - 1, print ", "
 slt $2, $0, $1
 brz L3, $2
-print ’,’
-print ’ ’
+print ','
+print ' '
 L3:
 add $0, $0,
 1
