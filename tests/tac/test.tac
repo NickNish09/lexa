@@ -19,8 +19,7 @@ brz L3, $2
 print ','
 print ' '
 L3:
-add $0, $0,
-1
+add $0, $0,1
 jump L1 // loop
 L2:
 println
