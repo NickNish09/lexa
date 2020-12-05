@@ -6,6 +6,7 @@
   #include <stdlib.h>
   #include <stdio.h>
   #include <string.h>
+  #include <libgen.h>
   #include "uthash.h"
   #define SYMBOL_NODE 888
   #define REGULAR_NODE 889
@@ -15,6 +16,7 @@
   #define NO_DECLARATION_ERROR 5002
   #define TYPES_MISSMATCH_ERROR 5003
   #define WRONG_NUMBER_OF_ARGUMENTS_ERROR 5004
+  #define TAC_PATH "tests/tac/"
   // #define DEBUG 993
   #define TRUE 1
   #define FALSE 0
@@ -375,6 +377,35 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
     // printf("func: %d\n", aux->params_count);
     // printf("v: %s\n", nd->right->left->right->val);
     // printf("v: %s\n", nd->right->left->left->val);
+  }
+
+  char *remove_extension(char* myStr) {
+    char *retStr;
+    char *lastExt;
+    if (myStr == NULL) return NULL;
+    if ((retStr = malloc (strlen (myStr) + 1)) == NULL) return NULL;
+    strcpy (retStr, myStr);
+    lastExt = strrchr (retStr, '.');
+    if (lastExt != NULL)
+        *lastExt = '\0';
+    return retStr;
+  }
+
+  void generateTacFile(node * tree, char* file_name){
+    FILE *tac_file;
+    char *file_name_with_path = concat(TAC_PATH, file_name);
+    tac_file = fopen(concat(file_name_with_path, ".tac"), "w");
+
+    if(tac_file == NULL)
+    {
+        printf("Falha ao criar tac file.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    fputs("ola\nmundo", tac_file);
+
+    fclose(tac_file);
+    printf("Arquivo .tac gerado em %s\n", file_name_with_path);
   }
 %}
 
@@ -1040,5 +1071,7 @@ int main(int argc, char **argv){
       printf("%s\n", scopes_names[i]);
     }
   #endif
+
+  generateTacFile(parser_tree, remove_extension(basename(argv[0])));
   return 0;
 }
