@@ -391,6 +391,10 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
     return retStr;
   }
 
+  void generateTableInTac(FILE *tac_file){
+    fputs(".table\n", tac_file);
+  }
+
   void generateTacFile(node * tree, char* file_name){
     FILE *tac_file;
     char *file_name_with_path = concat(TAC_PATH, file_name);
@@ -402,7 +406,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
         exit(EXIT_FAILURE);
     }
 
-    fputs("ola\nmundo", tac_file);
+    generateTableInTac(tac_file);
 
     fclose(tac_file);
     printf("Arquivo .tac gerado em %s\n", file_name_with_path);
