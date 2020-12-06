@@ -7,7 +7,7 @@ int in__sum
 float out__sum
 int a__main
 .code
-jump main
+jump __main
 __sum:
 pop c__sum
 pop b__sum
