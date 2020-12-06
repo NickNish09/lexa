@@ -11,6 +11,7 @@ int sum(int a, int b, int c){
 int main(){
     int a;
     a = sum(2, 3, 4);
+    print(a);
     a = sum(a, 4, 5);
     /* a = (2 + (3 + 4)); */
     print(a);
