@@ -15,7 +15,6 @@ pop a__sum
 add $0, b__sum, a__sum
 add $0, $0, c__sum
 mov in__sum, $0
-println in__sum
 return in__sum
 main:
 param 2
@@ -30,3 +29,4 @@ param 5
 call sum, 3
 pop a__main
 println a__main
+return #0

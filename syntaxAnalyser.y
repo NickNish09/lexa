@@ -564,7 +564,11 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
 
         case CODE_RETURN:
           if(tree->right != NULL){
-            aux = generate_instruction("return", tree->right->val, NULL, NULL);
+            if(strcmp(tree->right->val, "0") == 0){
+              aux = generate_instruction("return", "#0", NULL, NULL);
+            } else {
+              aux = generate_instruction("return", tree->right->val, NULL, NULL);
+            }
           } else {
             aux = generate_instruction("return", NULL, NULL, NULL);
           }
