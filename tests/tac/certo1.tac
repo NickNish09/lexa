@@ -1,5 +1,10 @@
 .table
-int a
-.code
-mov a, 2
-print a
+int i::global
+int sum::global
+int a::sum
+int b::sum
+int in::sum
+int inner::sum
+float out::sum
+int main::global
+int a::main

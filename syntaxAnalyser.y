@@ -21,6 +21,29 @@
   #define TRUE 1
   #define FALSE 0
 
+  #define BADKEY -1
+#define CODE_ASSIGN 440
+#define CODE_PRINT 441
+
+typedef struct { char *key; int val; } t_symstruct;
+
+static t_symstruct lookuptable[] = {
+  { "assign", CODE_ASSIGN }, { "print", CODE_PRINT },
+};
+
+#define NKEYS (sizeof(lookuptable)/sizeof(t_symstruct))
+
+int keyfromstring(char *key)
+{
+    int i;
+    for (i=0; i < NKEYS; i++) {
+        t_symstruct *sym = &lookuptable[i];
+        if (strcmp(sym->key, key) == 0)
+            return sym->val;
+    }
+    return BADKEY;
+}
+
   int has_error = FALSE;
   int yylex();
   extern int lin;
@@ -392,7 +415,61 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
   }
 
   void generateTableInTac(FILE *tac_file){
+    s_node *s;
+    char aux[100];
     fputs(".table\n", tac_file);
+    for(s=s_table; s != NULL; s=s->hh.next) {
+      strcpy(aux, s->var_type);
+      strcat(aux, " ");
+      strcat(aux, s->id);
+      strcat(aux, "\n");
+      fputs(aux, tac_file);
+    }
+  }
+
+  char* generate_instruction(char *instruction, char* arg1, char* arg2, char* arg3){
+    char *aux = (char*)malloc(50* sizeof(char));
+    strcpy(aux, instruction);
+    strcat(aux, " ");
+    strcat(aux, arg1);
+    if(arg2 != NULL){
+      strcat(aux, ", ");
+      strcat(aux, arg2);
+      if(arg3 != NULL){
+        strcat(aux, ", ");
+        strcat(aux, arg3);
+      }
+    }
+    strcat(aux, "\n");
+    return aux;
+  }
+
+  void resolveNode(FILE *tac_file, node *tree){
+    if(tree){
+      char *aux = NULL;
+      switch(keyfromstring(tree->val)){
+        case CODE_ASSIGN:
+          aux = generate_instruction("mov", tree->left->val, tree->right->val, NULL);
+          break;
+
+        case CODE_PRINT:
+          aux = generate_instruction("print", tree->right->val, NULL, NULL);
+          break;
+
+        default:
+          break;
+      }
+      if(aux != NULL){
+        fputs(aux, tac_file);
+      }
+      resolveNode(tac_file, tree->left);
+      resolveNode(tac_file, tree->right);
+    }
+  }
+
+  void generateCodeInTac(FILE *tac_file, node* tree){
+    fputs(".code\n", tac_file);
+    resolveNode(tac_file, tree);
   }
 
   void generateTacFile(node * tree, char* file_name){
@@ -407,6 +484,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
     }
 
     generateTableInTac(tac_file);
+    generateCodeInTac(tac_file, parser_tree);
 
     fclose(tac_file);
     printf("Arquivo .tac gerado em %s\n", file_name_with_path);
@@ -1021,7 +1099,9 @@ variable:
     if(s == NULL){ // nao declarou a variavel ainda
       semantic_error(NO_DECLARATION_ERROR, $1);
     }
-    $$ = $1;
+    char *auxid = concat("::", s_stack->id);
+    char *identifier = concat($1, auxid);
+    $$ = identifier;
     // $$ = ins_node("-", REGULAR_NODE, 'V', NULL, NULL, $1); 
     // free(s);
   }
@@ -1076,6 +1156,7 @@ int main(int argc, char **argv){
     }
   #endif
 
-  generateTacFile(parser_tree, remove_extension(basename(argv[0])));
+  char *pure_file_name = remove_extension(basename(argv[0]));
+  generateTacFile(parser_tree, pure_file_name);
   return 0;
 }
