@@ -15,5 +15,6 @@ int main(){
     a = sum(2, 3);
     a = sum(a, 4);
     /* a = (2 + (3 + 4)); */
-    return a;
+    print(a);
+    return 0;
 }

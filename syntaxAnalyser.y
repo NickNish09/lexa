@@ -18,6 +18,7 @@
   #define WRONG_NUMBER_OF_ARGUMENTS_ERROR 5004
   #define TAC_PATH "tests/tac/"
   #define SCOPE_SEPARATOR "__"
+  #define FUNCTION_CHAR 'Z'
   // #define DEBUG 993
   #define TRUE 1
   #define FALSE 0
@@ -420,25 +421,29 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
     char aux[100];
     fputs(".table\n", tac_file);
     for(s=s_table; s != NULL; s=s->hh.next) {
-      strcpy(aux, s->var_type);
-      strcat(aux, " ");
-      strcat(aux, s->id);
-      strcat(aux, "\n");
-      fputs(aux, tac_file);
+      if(s->s_node_type != FUNCTION_TYPE){
+        strcpy(aux, s->var_type);
+        strcat(aux, " ");
+        strcat(aux, s->id);
+        strcat(aux, "\n");
+        fputs(aux, tac_file);
+      }
     }
   }
 
   char* generate_instruction(char *instruction, char* arg1, char* arg2, char* arg3){
     char *aux = (char*)malloc(50* sizeof(char));
     strcpy(aux, instruction);
-    strcat(aux, " ");
-    strcat(aux, arg1);
-    if(arg2 != NULL){
-      strcat(aux, ", ");
-      strcat(aux, arg2);
-      if(arg3 != NULL){
+    if(arg1 != NULL){
+      strcat(aux, " ");
+      strcat(aux, arg1);
+      if(arg2 != NULL){
         strcat(aux, ", ");
-        strcat(aux, arg3);
+        strcat(aux, arg2);
+        if(arg3 != NULL){
+          strcat(aux, ", ");
+          strcat(aux, arg3);
+        }
       }
     }
     strcat(aux, "\n");
@@ -458,6 +463,14 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
           break;
 
         default:
+          switch(tree->node_kind){
+            case FUNCTION_CHAR:
+              aux = generate_instruction(concat(tree->val, ":"), NULL, NULL, NULL);
+              break;
+
+            default:
+              break;
+          }
           break;
       }
       if(aux != NULL){
@@ -613,7 +626,7 @@ func_decl:
   }
   parm_tipos ')' { ; }
   '{' cod_blocks '}' { 
-      $<nd>$ = ins_node($1, REGULAR_NODE,'F', $5, $9, $2);
+      $<nd>$ = ins_node($1, REGULAR_NODE, FUNCTION_CHAR, $5, $9, $2);
       s_pop(); 
   }
 | TIPO ID '(' ')' '{' {
@@ -623,7 +636,7 @@ func_decl:
   add_to_s_table($2, $1, FUNCTION_TYPE, 0); 
   s_push($2);
 }
- cod_blocks '}' { $<nd>$ = ins_node($1, REGULAR_NODE,'F', NULL, $7, $2); s_pop(); }
+ cod_blocks '}' { $<nd>$ = ins_node($1, REGULAR_NODE, FUNCTION_CHAR, NULL, $7, $2); s_pop(); }
 ;
 
 parm_tipos:
