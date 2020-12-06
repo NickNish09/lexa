@@ -10,7 +10,7 @@ int b__mul
 int c__mul
 int a__main
 .code
-jump main
+jump _main
 _sum:
 pop c__sum
 pop b__sum

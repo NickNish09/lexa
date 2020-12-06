@@ -604,7 +604,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
   }
 
   void generateCodeInTac(FILE *tac_file, node* tree){
-    fputs(".code\njump main\n", tac_file);
+    fputs(".code\njump _main\n", tac_file);
     resolveNode(tac_file, tree);
   }
 
