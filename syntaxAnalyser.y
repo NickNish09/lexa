@@ -488,13 +488,13 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
     if(is_expression(sub_tree->left->val)){
       strcpy(aux, generate_aritm_instruction(sub_tree->left));
       if(strcmp(sub_tree->val, "+") == 0){
-        strcpy(aux, "add ");
+        strcat(aux, "add ");
       } else if(strcmp(sub_tree->val, "-") == 0){
-        strcpy(aux, "sub ");
+        strcat(aux, "sub ");
       } else if(strcmp(sub_tree->val, "*") == 0){
-        strcpy(aux, "mul ");
+        strcat(aux, "mul ");
       } else if(strcmp(sub_tree->val, "/") == 0){
-        strcpy(aux, "div ");
+        strcat(aux, "div ");
       }
       strcat(aux, "$0, $0, ");
       strcat(aux, sub_tree->right->val);
@@ -557,7 +557,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
             char func_counter_string[3];
             aux = generate_func_call_instruction(tree->right->right);
             sprintf(func_counter_string, "%d", func_counter);
-            strcat(aux, generate_instruction("call", tree->right->func_name, func_counter_string, NULL));
+            strcat(aux, generate_instruction("call", concat(SCOPE_SEPARATOR, tree->right->func_name), func_counter_string, NULL));
             strcat(aux, generate_instruction("pop", tree->left->val, NULL, NULL));
           } else {
             aux = generate_instruction("mov", tree->left->val, tree->right->val, NULL);
@@ -581,7 +581,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
         default:
           switch(tree->node_kind){
             case FUNCTION_CHAR:
-              aux = generate_instruction(concat(tree->val, ":"), NULL, NULL, NULL);
+              aux = generate_instruction(concat(SCOPE_SEPARATOR, concat(tree->val, ":")), NULL, NULL, NULL);
               s_node* func_s_node = find_in_s_table(tree->val);
               int i;
               for(i=func_s_node->params_count; i> 0; i--){
