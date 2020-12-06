@@ -488,10 +488,13 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
     if(is_expression(sub_tree->left->val)){
       strcpy(aux, generate_aritm_instruction(sub_tree->left));
       if(strcmp(sub_tree->val, "+") == 0){
-        strcat(aux, "add ");
+        strcpy(aux, "add ");
       } else if(strcmp(sub_tree->val, "-") == 0){
+        strcpy(aux, "sub ");
       } else if(strcmp(sub_tree->val, "*") == 0){
+        strcpy(aux, "mul ");
       } else if(strcmp(sub_tree->val, "/") == 0){
+        strcpy(aux, "div ");
       }
       strcat(aux, "$0, $0, ");
       strcat(aux, sub_tree->right->val);
@@ -500,8 +503,11 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
       if(strcmp(sub_tree->val, "+") == 0){
         strcpy(aux, "add ");
       } else if(strcmp(sub_tree->val, "-") == 0){
+        strcpy(aux, "sub ");
       } else if(strcmp(sub_tree->val, "*") == 0){
+        strcpy(aux, "mul ");
       } else if(strcmp(sub_tree->val, "/") == 0){
+        strcpy(aux, "div ");
       }
       strcat(aux, "$0, ");
       strcat(aux, concat(sub_tree->right->val, ", "));
