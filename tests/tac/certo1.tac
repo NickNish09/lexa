@@ -13,8 +13,6 @@ add $0, b__sum, a__sum
 add $0, $0, c__sum
 mov in__sum, $0
 return in__sum
-inner:
-print b__inner
 main:
 param 2
 param 3
