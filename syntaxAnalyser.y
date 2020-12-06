@@ -573,6 +573,12 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
           switch(tree->node_kind){
             case FUNCTION_CHAR:
               aux = generate_instruction(concat(tree->val, ":"), NULL, NULL, NULL);
+              s_node* func_s_node = find_in_s_table(tree->val);
+              int i;
+              for(i=func_s_node->params_count; i> 0; i--){
+                // printf("LL: %s\n", func_s_node->params_list[i]->id);
+                strcat(aux, generate_instruction("pop", func_s_node->params_list[i]->id, NULL, NULL));
+              }
               break;
 
             default:
