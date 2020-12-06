@@ -2896,7 +2896,7 @@ yyreduce:
       semantic_error(NO_DECLARATION_ERROR, (yyvsp[0].id));
       (yyval.nd) = ins_node("-", REGULAR_NODE,'A', NULL, NULL, "-");  
     } else {
-      (yyval.nd) = ins_node(s->var_type, REGULAR_NODE,'A', NULL, NULL, (yyvsp[0].id)); 
+      (yyval.nd) = ins_node(s->var_type, REGULAR_NODE,'A', NULL, NULL, concat((yyvsp[0].id), concat(SCOPE_SEPARATOR, s_stack->id))); 
     }
     // free(s);
   }

@@ -1151,7 +1151,7 @@ func_arg:
       semantic_error(NO_DECLARATION_ERROR, $1);
       $$ = ins_node("-", REGULAR_NODE,'A', NULL, NULL, "-");  
     } else {
-      $$ = ins_node(s->var_type, REGULAR_NODE,'A', NULL, NULL, $1); 
+      $$ = ins_node(s->var_type, REGULAR_NODE,'A', NULL, NULL, concat($1, concat(SCOPE_SEPARATOR, s_stack->id))); 
     }
     // free(s);
   }
