@@ -19,11 +19,11 @@ param 3
 param 4
 call sum, 3
 pop a__main
-print a__main
+println a__main
 param a__main
 param 4
 param 5
 call sum, 3
 pop a__main
-print a__main
+println a__main
 println

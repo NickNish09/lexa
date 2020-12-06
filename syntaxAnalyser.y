@@ -559,7 +559,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
           break;
 
         case CODE_PRINT:
-          aux = generate_instruction("print", tree->right->val, NULL, NULL);
+          aux = generate_instruction("println", tree->right->val, NULL, NULL);
           break;
 
         case CODE_RETURN:
