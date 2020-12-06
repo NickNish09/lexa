@@ -26,11 +26,14 @@
   #define BADKEY -1
 #define CODE_ASSIGN 440
 #define CODE_PRINT 441
+#define CODE_RETURN 442
 
 typedef struct { char *key; int val; } t_symstruct;
 
 static t_symstruct lookuptable[] = {
-  { "assign", CODE_ASSIGN }, { "print", CODE_PRINT },
+  { "assign", CODE_ASSIGN }, 
+  { "print", CODE_PRINT },
+  { "retorno", CODE_RETURN },
 };
 
 #define NKEYS (sizeof(lookuptable)/sizeof(t_symstruct))
@@ -257,6 +260,16 @@ int keyfromstring(char *key)
     return s;
   }
 
+  s_node* find_in_s_table_plain(char* id){
+    s_node *s;
+    HASH_FIND_STR(s_table, id, s);
+    if(s != NULL){
+      return s;
+    }
+
+    return s;
+  }
+
   // END REFERENTE A TABELA DE SIMBOLOS
 
   // REFERENTE A ARVORE SINTATICA
@@ -268,6 +281,7 @@ int keyfromstring(char *key)
     struct node *right;
     struct node *middle;
     char *val;
+    char *func_name;
 
   } node;
 
@@ -285,6 +299,20 @@ node* ins_node(char* var_type, int node_type, char node_kind, node *left, node *
     aux_node->node_type = node_type;
     aux_node->node_kind = node_kind;
     aux_node->val = node_val;
+
+    return aux_node;
+}
+
+node* ins_node_func_call(char* var_type, int node_type, char node_kind, node *left, node *right, char* node_val, char* func_name){
+  node* aux_node = (node*)calloc(1, sizeof(node));
+
+    aux_node->left = left;
+    aux_node->right = right;
+    aux_node->var_type = var_type;
+    aux_node->node_type = node_type;
+    aux_node->node_kind = node_kind;
+    aux_node->val = node_val;
+    aux_node->func_name = func_name;
 
     return aux_node;
 }
@@ -450,18 +478,97 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
     return aux;
   }
 
+  int is_expression(char* sym){
+    int is_exp = ((strcmp(sym, "+") == 0) || (strcmp(sym, "-") == 0) || (strcmp(sym, "*") == 0) || (strcmp(sym, "/") == 0));
+    return is_exp;
+  }
+
+  char * generate_aritm_instruction(node *sub_tree){
+    char *aux = (char*)malloc(50* sizeof(char));
+    if(is_expression(sub_tree->left->val)){
+      strcpy(aux, generate_aritm_instruction(sub_tree->left));
+      if(strcmp(sub_tree->val, "+") == 0){
+        strcat(aux, "add ");
+      } else if(strcmp(sub_tree->val, "-") == 0){
+      } else if(strcmp(sub_tree->val, "*") == 0){
+      } else if(strcmp(sub_tree->val, "/") == 0){
+      }
+      strcat(aux, "$0, $0, ");
+      strcat(aux, sub_tree->right->val);
+      strcat(aux, "\n");
+    } else {
+      if(strcmp(sub_tree->val, "+") == 0){
+        strcpy(aux, "add ");
+      } else if(strcmp(sub_tree->val, "-") == 0){
+      } else if(strcmp(sub_tree->val, "*") == 0){
+      } else if(strcmp(sub_tree->val, "/") == 0){
+      }
+      strcat(aux, "$0, ");
+      strcat(aux, concat(sub_tree->right->val, ", "));
+      strcat(aux, sub_tree->left->val);
+      strcat(aux, "\n");
+    }
+
+    return aux;
+  }
+
+  int func_counter;
+  char * generate_func_call_instruction(node *sub_tree){
+    char *aux = (char*)malloc(50* sizeof(char));
+    // printf("aa: %s\n", sub_tree->left->val);
+    if(strcmp(sub_tree->left->val, "func_args") == 0){
+      strcpy(aux, generate_func_call_instruction(sub_tree->left));
+      strcat(aux, "param ");
+      strcat(aux, sub_tree->right->val);
+      strcat(aux, "\n");
+      func_counter++;
+    } else {
+      if(sub_tree->left != NULL){
+        strcat(aux, "param ");
+        strcat(aux, concat(sub_tree->left->val, "\n"));
+        func_counter++;
+      }
+      if(sub_tree->right != NULL){
+        strcat(aux, "param ");
+        strcat(aux, concat(sub_tree->right->val, "\n"));
+        func_counter++;
+      }
+    }
+
+    return aux;
+  }
+
   void resolveNode(FILE *tac_file, node *tree){
     if(tree){
       char *aux = NULL;
       switch(keyfromstring(tree->val)){
         case CODE_ASSIGN:
-          aux = generate_instruction("mov", tree->left->val, tree->right->val, NULL);
+          if(is_expression(tree->right->val)){
+            aux = generate_aritm_instruction(tree->right);
+            strcat(aux, generate_instruction("mov", tree->left->val, "$0", NULL));
+          } else if(strcmp(tree->right->val, "func_call") == 0){
+            func_counter = 0;
+            char func_counter_string[3];
+            aux = generate_func_call_instruction(tree->right->right);
+            sprintf(func_counter_string, "%d", func_counter);
+            strcat(aux, generate_instruction("call", tree->right->func_name, func_counter_string, NULL));
+            strcat(aux, generate_instruction("pop", tree->left->val, NULL, NULL));
+          } else {
+            aux = generate_instruction("mov", tree->left->val, tree->right->val, NULL);
+          }
           break;
 
         case CODE_PRINT:
           aux = generate_instruction("print", tree->right->val, NULL, NULL);
           break;
 
+        case CODE_RETURN:
+          if(tree->right != NULL){
+            aux = generate_instruction("return", tree->right->val, NULL, NULL);
+          } else {
+            aux = generate_instruction("return", NULL, NULL, NULL);
+          }
+          break;
         default:
           switch(tree->node_kind){
             case FUNCTION_CHAR:
@@ -482,7 +589,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
   }
 
   void generateCodeInTac(FILE *tac_file, node* tree){
-    fputs(".code\n", tac_file);
+    fputs(".code\njump main\n", tac_file);
     resolveNode(tac_file, tree);
   }
 
@@ -640,11 +747,11 @@ func_decl:
 ;
 
 parm_tipos:
-  parm_tipos TIPO ID { 
+  parm_tipos ',' TIPO ID { 
     #if defined DEBUG
       printf("parm_tipos #1 \n"); 
     #endif
-    s_node* aux = add_to_s_table($3, $2, VARIABLE_TYPE, 0);
+    s_node* aux = add_to_s_table($4, $3, VARIABLE_TYPE, 0);
     s_node* func = find_in_s_table(s_stack->id);
     func->params_count++;
     func->params_list[func->params_count] = aux;
@@ -665,7 +772,7 @@ parm_tipos:
     // free(aux);
     // free(func);
   }
-| TIPO ID ',' {
+| TIPO ID {
    #if defined DEBUG
     printf("parm_tipos #3 \n"); 
    #endif
@@ -756,10 +863,16 @@ cod_block:
     #endif
     // printf("CURRENTSCOPSCOPE_SEPARATORs %s\n", s_stack->id, scopes_names[0]);
     s_node* s = find_in_s_table(s_stack->id);
+    s_node* ss = find_in_s_table_plain($2->val);
     if(s != NULL){
-      // printf("FUNCTYPE : %s\n", s->var_type);
-      if(!types_match(s->var_type, $2->var_type)){
-        semantic_error(TYPES_MISSMATCH_ERROR, "return type mismatch");
+      if(ss != NULL){
+        if(!types_match(s->var_type, ss->var_type)){
+          semantic_error(TYPES_MISSMATCH_ERROR, "return type mismatch");
+        }
+      } else {
+        if(!types_match(s->var_type, $2->var_type)){
+          semantic_error(TYPES_MISSMATCH_ERROR, "return type mismatch");
+        }
       }
     }
     $$ = ins_node("-", REGULAR_NODE,'R', NULL, $2, "retorno");
@@ -936,30 +1049,7 @@ op_expressao:
     $$ = ins_node($1->var_type, REGULAR_NODE, 'E', $1, $3, $2); 
   
   }
-  // | '(' op_expressao OP_ARITM termo ')' { 
-  //   #if defined DEBUG
-  //     printf("op_expressao #1\n");
-  //   #endif
-  //   // printf("%s ll %s\n", $2->val, $4->val);
-  //   // s_node* s1 = find_in_s_table($2->val);
-  //   // s_node* s2 = find_in_s_table($4->val);
-  //   int tm = types_match($2->var_type, $4->var_type);
-  //   if(tm){
-  //     #if defined DEBUG
-  //       printf("types OK\n");
-  //     #endif
-  //   } else {
-  //     #if defined DEBUG
-  //       printf("types MISSMATCH: %s | %s\n", $2->var_type, $4->var_type);
-  //     #endif
-  //     char msg[50];
-  //     sprintf(msg, "%s %s\n", $2->var_type, $4->var_type);
-  //     semantic_error(TYPES_MISSMATCH_ERROR, msg);
-  //   }  
-  //   $$ = ins_node($2->var_type, REGULAR_NODE, 'E', $2, $4, $3); 
-  
-  // }
-| termo { 
+  | termo { 
     #if defined DEBUG
       printf("op_expressao #2\n"); 
     #endif
@@ -1033,13 +1123,13 @@ print:
 func_call:
   ID '(' func_args ')'{
     s_node* aux = find_in_s_table($1);
-    $$ = ins_node(aux->var_type, REGULAR_NODE,'F', NULL, $3, "func_call"); 
+    $$ = ins_node_func_call(aux->var_type, REGULAR_NODE,'F', NULL, $3, "func_call", $1); 
     check_params($$, $1);
     // free(aux);
   }
   | ID '(' ')'{
     s_node* aux = find_in_s_table($1);
-    $$ = ins_node(aux->var_type, REGULAR_NODE,'F', NULL, NULL, "func_call"); 
+    $$ = ins_node_func_call(aux->var_type, REGULAR_NODE,'F', NULL, NULL, "func_call", $1); 
     check_params($$, $1);
     // free(aux);
   }

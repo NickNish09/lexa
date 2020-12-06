@@ -2,14 +2,29 @@
 int i__global
 int a__sum
 int b__sum
+int c__sum
 int in__sum
 float out__sum
 int a__main
 .code
+jump main
 sum:
+add $0, b__sum, a__sum
+add $0, $0, c__sum
+mov in__sum, $0
+return in__sum
 inner:
 print b__inner
 main:
-mov a__main, func_call
-mov a__main, func_call
+param 2
+param 3
+param 4
+call sum, 3
+pop a__main
+param a
+param 4
+param 5
+call sum, 3
+pop a__main
 print a__main
+return 0
