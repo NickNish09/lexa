@@ -29,4 +29,3 @@ param 5
 call sum, 3
 pop a__main
 println a__main
-return #0

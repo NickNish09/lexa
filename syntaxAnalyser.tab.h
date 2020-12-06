@@ -82,7 +82,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 625 "syntaxAnalyser.y"
+#line 624 "syntaxAnalyser.y"
 
   char *id;
   char *tipo;
