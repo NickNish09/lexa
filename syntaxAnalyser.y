@@ -17,6 +17,7 @@
   #define TYPES_MISSMATCH_ERROR 5003
   #define WRONG_NUMBER_OF_ARGUMENTS_ERROR 5004
   #define TAC_PATH "tests/tac/"
+  #define SCOPE_SEPARATOR "__"
   // #define DEBUG 993
   #define TRUE 1
   #define FALSE 0
@@ -198,7 +199,7 @@ int keyfromstring(char *key)
     s_node *s;
     char scope_string[5];
     sprintf(scope_string, "%d", scope);
-    char *auxid = concat("::", s_stack->id);
+    char *auxid = concat(SCOPE_SEPARATOR, s_stack->id);
     char *identifier = concat(id, auxid);
     HASH_FIND_STR(s_table, identifier, s);
     if(s == NULL){ // variavel ainda nao esta na tabela
@@ -241,7 +242,7 @@ int keyfromstring(char *key)
     int i;
     for(i=0; i<=scopes_count;i++){
       // printf("sn: %s\n", scopes_names[i]);
-      char *auxid = concat("::", scopes_names[i]);
+      char *auxid = concat(SCOPE_SEPARATOR, scopes_names[i]);
       char *identifier = concat(id, auxid);
       // print_s_table();
       // printf("identificador: %s\n", identifier);
@@ -740,7 +741,7 @@ cod_block:
     #if defined DEBUG
       printf("cod_block #4.5 \n");
     #endif
-    // printf("CURRENTSCOPE::%s %s\n", s_stack->id, scopes_names[0]);
+    // printf("CURRENTSCOPSCOPE_SEPARATORs %s\n", s_stack->id, scopes_names[0]);
     s_node* s = find_in_s_table(s_stack->id);
     if(s != NULL){
       // printf("FUNCTYPE : %s\n", s->var_type);
@@ -1099,7 +1100,7 @@ variable:
     if(s == NULL){ // nao declarou a variavel ainda
       semantic_error(NO_DECLARATION_ERROR, $1);
     }
-    char *auxid = concat("::", s_stack->id);
+    char *auxid = concat(SCOPE_SEPARATOR, s_stack->id);
     char *identifier = concat($1, auxid);
     $$ = identifier;
     // $$ = ins_node("-", REGULAR_NODE, 'V', NULL, NULL, $1); 

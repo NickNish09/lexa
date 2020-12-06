@@ -1,6 +1,6 @@
 .table
-int main::global
-int a::main
+int main__global
+int a__main
 .code
-mov a::main, 0
-print a::main
+mov a__main, 0
+print a__main
