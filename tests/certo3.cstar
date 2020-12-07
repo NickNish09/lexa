@@ -1,27 +1,14 @@
-int i;
-
-int sum(int a, int b, int c){
-    int in;
-    in = a + b + c;
-    return in;
-
-    float out;
-}
-
-int mult(int a, int b){
-    int c;
-    c = a * b;
-    return c;
+float salaryClt(float sal){
+    float s;
+    s = sal * 0.8;
+    return s;
 }
 
 int main(){
-    int a;
-    a = sum(2, 3, 4);
-    print(a);
-    a = sum(a, 4, 5);
-    /* a = (2 + (3 + 4)); */
-    print(a);
-    a = mult(2, 3);
-    print(a);
+    tuple int age, float sal person;
+    person = (20, 500.3);
+    float saldisc;
+    saldisc = salaryClt(sal);
+    print(saldisc);
     return 0;
 }

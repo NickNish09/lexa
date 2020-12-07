@@ -799,18 +799,6 @@ parm_tipos:
   //  free(aux);
   //  free(func);
   }
-| TIPO ID {
-   #if defined DEBUG
-    printf("parm_tipos #4 \n"); 
-   #endif
-   s_node* aux = add_to_s_table($2, $1, VARIABLE_TYPE, 0);
-   s_node* func = find_in_s_table(s_stack->id);
-   func->params_count++; 
-   func->params_list[func->params_count] = aux;
-   $$ = NULL;
-  //  free(aux);
-  //  free(func);
-  }
 | TIPO ID '[' ']' { 
     #if defined DEBUG
       printf("parm_tipos #5 \n"); 
