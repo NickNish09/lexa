@@ -940,20 +940,32 @@ cod_block:
 assign:
   variable OP_ASSIGN expressao { 
     // $$ = $3;
-    $$ = ins_node("-", 'C','R', ins_node("-", 'C','R', NULL, NULL, $1), $3, "assign");
-    s_node* s = find_in_s_table($1);
+    
     #if defined DEBUG
       printf("assign #1 \n");
       printf("TIIIPO: %s | %s\n", $3->var_type, s->var_type);
     #endif
+    s_node* s = find_in_s_table_plain($1);
+    s_node* ss = find_in_s_table_plain($3->val);
     if(s != NULL){
-      if(!types_match($3->var_type, s->var_type)){
-        char msg[50];
-        sprintf(msg, "%s %s\n", $3->var_type, s->var_type);
-        semantic_error(TYPES_MISSMATCH_ERROR, msg);
+      // printf("$3 var_type: %s\n", s->var_type);
+      if(ss != NULL){
+        // printf("AAA\n");
+        if(!types_match(s->var_type, ss->var_type)){
+          char msg[50];
+          sprintf(msg, "%s %s\n", ss->var_type, s->var_type);
+          semantic_error(TYPES_MISSMATCH_ERROR, msg);
+        }
+      } else {
+        // printf("BBB\n");
+        if(!types_match($3->var_type, s->var_type)){
+          char msg[50];
+          sprintf(msg, "%s %s\n", $3->var_type, s->var_type);
+          semantic_error(TYPES_MISSMATCH_ERROR, msg);
+        }
       }
-      // free(s);
     }
+    $$ = ins_node($3->var_type, 'C','R', ins_node("-", 'C','R', NULL, NULL, $1), $3, "assign");
   }
 | variable '[' INT ']' OP_ASSIGN expressao { 
     #if defined DEBUG
@@ -1081,7 +1093,7 @@ termo:
       printf("termo #1 \n");
     #endif
     // $$ = ins_node_symbol($1, 'S','V', $1);
-    s_node* s = find_in_s_table($1);
+    s_node* s = find_in_s_table_plain($1);
     if(s != NULL){
       $$ = ins_node(s->var_type, REGULAR_NODE, 'E', NULL, NULL, $1);
     } else {
