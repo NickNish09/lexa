@@ -13,15 +13,15 @@ Para compilar o programa siga os seguintes passos:
 - Um arquivo .tac será gerado em /tests/tac/nome_do_arquivo.tac. Utilize ele para rodar no TAC.
 
 Testes Certos:
-/tests/certo1.cstar
-/tests/certo2.cstar
+tests/certo1.cstar
+tests/certo2.cstar
 
 Testes Errados:
-/tests/errado1.cstar
-/tests/errado2.cstar
-/tests/errado3.cstar
-/tests/errado4.cstar
-/tests/errado5.cstar
+tests/errado1.cstar
+tests/errado2.cstar
+tests/errado3.cstar
+tests/errado4.cstar
+tests/errado5.cstar
 
 Os arquivos de teste que tem um \_error são os que possuem erros, conforme descritos no relatório. Há mais testes para mais casos dentro das pastas /tests/lexicos, /tests/semanticos e /tests/sintaticos, porém rode os testes da pasta /tests primeiro pois alguns desses outros testes podem estar desatualizados.
 
