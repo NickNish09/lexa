@@ -1,3 +1,6 @@
+%option nounput
+%option noinput
+
 %{
     /* definitions of manifest constants
     LT, LE, EQ, NE, GT, GE,

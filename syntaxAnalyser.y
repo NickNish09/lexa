@@ -70,8 +70,8 @@ int keyfromstring(char *key)
   }
 
   const char * plainName(char* composedName){
-    char* return_string;
-    char aux;
+    char* return_string = NULL;
+    char aux = ' ';
     int i = 0;
     while(aux != ':'){
       aux = composedName[i];
