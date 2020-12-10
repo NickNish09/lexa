@@ -28,6 +28,7 @@
   #define CODE_ASSIGN 440
   #define CODE_PRINT 441
   #define CODE_RETURN 442
+  #define CODE_TUPLEARGS 443
 
 typedef struct { char *key; int val; } t_symstruct;
 
@@ -35,6 +36,7 @@ static t_symstruct lookuptable[] = {
   { "assign", CODE_ASSIGN }, 
   { "print", CODE_PRINT },
   { "retorno", CODE_RETURN },
+  { "tuple_args", CODE_TUPLEARGS },
 };
 
 #define NKEYS (sizeof(lookuptable)/sizeof(t_symstruct))
@@ -94,6 +96,8 @@ int keyfromstring(char *key)
       return "Function";
     } else if(number == VARIABLE_TYPE){
       return "Variable";
+    } else if(number == TUPLE_TYPE){
+      return "Tuple";
     }
     return "Not Found";
   }
@@ -229,7 +233,7 @@ int keyfromstring(char *key)
     // printf("NAME\t\tTYPE\t\tSYMBOL_TYPE\t\tSCOPE SYMBOLS\n");
     for(s=s_table; s != NULL; s=s->hh.next) {
       printf("id: %15s | var_type: %7s | s_node_type: %10s | scope_level: %d | params_count: %d", s->id, s->var_type, stringBasedOnNumber(s->s_node_type), s->scope, s->params_count);
-      if(s->s_node_type == FUNCTION_TYPE){
+      if(s->s_node_type == FUNCTION_TYPE || s->s_node_type == TUPLE_TYPE){
         printf(" | params: ");
         int k;
         for(k=0;k<s->params_count;k++){
@@ -332,6 +336,8 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
   int t = FUNCTION_TYPE;
   if(node_kind == 'V'){
     t = VARIABLE_TYPE;
+  } else if(node_kind == 'T'){
+    t = TUPLE_TYPE;
   }
   add_to_s_table(id, var_type, t, 0);
 
@@ -451,11 +457,22 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
     fputs(".table\n", tac_file);
     for(s=s_table; s != NULL; s=s->hh.next) {
       if(s->s_node_type != FUNCTION_TYPE){
-        strcpy(aux, s->var_type);
-        strcat(aux, " ");
-        strcat(aux, s->id);
-        strcat(aux, "\n");
-        fputs(aux, tac_file);
+        if(s->s_node_type == TUPLE_TYPE){
+          int i;
+          for(i=1; i<=s->params_count;i++){
+            strcpy(aux, s->params_list[i]->var_type);
+            strcat(aux, " ");
+            strcat(aux, concat(s->id, concat(SCOPE_SEPARATOR, s->params_list[i]->id)));
+            strcat(aux, "\n");
+            fputs(aux, tac_file);
+          }
+        } else {
+          strcpy(aux, s->var_type);
+          strcat(aux, " ");
+          strcat(aux, s->id);
+          strcat(aux, "\n");
+          fputs(aux, tac_file);
+        }
       }
     }
   }
@@ -519,16 +536,36 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
     return aux;
   }
 
+  char * generate_tuple_instruction(node *sub_tree){
+    char *aux = (char*)malloc(50* sizeof(char));
+    strcpy(aux, "");
+
+    return aux;
+  }
+
   int func_counter;
   char * generate_func_call_instruction(node *sub_tree){
     char *aux = (char*)malloc(50* sizeof(char));
     // printf("aa: %s\n", sub_tree->left->val);
-    if(strcmp(sub_tree->left->val, "func_args") == 0){
-      strcpy(aux, generate_func_call_instruction(sub_tree->left));
-      strcat(aux, "param ");
-      strcat(aux, sub_tree->right->val);
-      strcat(aux, "\n");
-      func_counter++;
+    if(sub_tree->left != NULL){
+      if(strcmp(sub_tree->left->val, "func_args") == 0){
+        strcpy(aux, generate_func_call_instruction(sub_tree->left));
+        strcat(aux, "param ");
+        strcat(aux, sub_tree->right->val);
+        strcat(aux, "\n");
+        func_counter++;
+      } else {
+        if(sub_tree->left != NULL){
+          strcat(aux, "param ");
+          strcat(aux, concat(sub_tree->left->val, "\n"));
+          func_counter++;
+        }
+        if(sub_tree->right != NULL){
+          strcat(aux, "param ");
+          strcat(aux, concat(sub_tree->right->val, "\n"));
+          func_counter++;
+        }
+      } 
     } else {
       if(sub_tree->left != NULL){
         strcat(aux, "param ");
@@ -547,6 +584,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
 
   void resolveNode(FILE *tac_file, node *tree){
     if(tree){
+      // printf("sasdadasdasd: %s\n", tree->val);
       char *aux = NULL;
       switch(keyfromstring(tree->val)){
         case CODE_ASSIGN:
@@ -560,6 +598,8 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
             sprintf(func_counter_string, "%d", func_counter);
             strcat(aux, generate_instruction("call", concat(SCOPE_SEPARATOR, tree->right->func_name), func_counter_string, NULL));
             strcat(aux, generate_instruction("pop", tree->left->val, NULL, NULL));
+          } else if(strcmp(tree->right->val, "tuple_args") == 0){
+            aux = generate_tuple_instruction(tree->right);
           } else {
             aux = generate_instruction("mov", tree->left->val, tree->right->val, NULL);
           }
