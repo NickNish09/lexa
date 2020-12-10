@@ -12,6 +12,7 @@
   #define REGULAR_NODE 889
   #define VARIABLE_TYPE 1001
   #define FUNCTION_TYPE 1002
+  #define TUPLE_TYPE 1003
   #define REDECLARATION_ERROR 5001
   #define NO_DECLARATION_ERROR 5002
   #define TYPES_MISSMATCH_ERROR 5003
@@ -24,9 +25,9 @@
   #define FALSE 0
 
   #define BADKEY -1
-#define CODE_ASSIGN 440
-#define CODE_PRINT 441
-#define CODE_RETURN 442
+  #define CODE_ASSIGN 440
+  #define CODE_PRINT 441
+  #define CODE_RETURN 442
 
 typedef struct { char *key; int val; } t_symstruct;
 
@@ -232,7 +233,7 @@ int keyfromstring(char *key)
         printf(" | params: ");
         int k;
         for(k=0;k<s->params_count;k++){
-          printf("%s | ", s->params_list[k+1]->var_type);
+          printf("%s::%s | ", s->params_list[k+1]->var_type, s->params_list[k+1]->id);
         }
         printf("\n");
       } else {
@@ -626,6 +627,9 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
     fclose(tac_file);
     printf("Arquivo .tac gerado em %s\n", file_name_with_path);
   }
+
+  char *tuple_gamb;
+  char *tuple_gamb_kind;
 %}
 
 %union {
@@ -714,7 +718,16 @@ declaracao_tupla:
     s_node* s = find_in_s_table($4->val);
     s->var_type = concat($1,$4->var_type);
     $4->var_type = concat($1, $4->var_type);
-    // printf("vt: %s\n",$4->var_type);
+    s->params_count++;
+    s_node *aux = (s_node *)malloc(sizeof *aux);
+    aux->id = $2;
+    aux->var_type = $1;
+    s->params_list[s->params_count] = aux;
+    s->params_count++;
+    s_node *aux2 = (s_node *)malloc(sizeof *aux);
+    aux2->id = tuple_gamb;
+    aux2->var_type = tuple_gamb_kind;
+    s->params_list[s->params_count] = aux2;
     $$ = $4;
     // $$ = ins_node(concat($4->var_type, $1), REGULAR_NODE,'F', NULL, $4, $2);
     // printf("CONCASS: %s\n",concat($1, $4->var_type));
@@ -725,6 +738,8 @@ declaracao_tupla:
       printf("declaracao_tupla #2\n"); 
     #endif
     // $$ = $1;
+    tuple_gamb = $2;
+    tuple_gamb_kind = $1;
     $$ = ins_node_symbol($1, SYMBOL_NODE,'T', $3);
   }
 | ID {
@@ -906,18 +921,6 @@ cod_block:
   #endif
   $$ = $1;
   }
-// | variable '(' expressao ')' ';' { 
-//     #if defined DEBUG
-//       printf("cod_block #8 \n"); 
-//     #endif
-//     $$ = $3;
-//   }
-// | variable '(' ')' ';' {
-//     #if defined DEBUG
-//       printf("cod_block #9 \n");
-//     #endif
-//     $$ = ins_node("-", 'C','R', NULL, NULL, "call");
-//   }
 | scan '(' variable ')' ';' {
     #if defined DEBUG
       printf("cod_block #10 \n"); 
@@ -962,14 +965,6 @@ assign:
     #endif
     $$ = $6;
   }
-// | variable OP_ASSIGN tuple_expressao { 
-//     #if defined DEBUG
-//       printf("assign #3 \n");
-//     #endif
-//     // $$ = ins_node("-", REGULAR_NODE, 'T', ins_node("-", REGULAR_NODE, 'E', NULL, NULL, $1), $3, $1);
-//     // $$ = $3;
-//     $$ = ins_node("-", 'C','R', ins_node("-", 'C','R', NULL, NULL, $1), $3, "assign");
-//   }
 ;
 
 expressao:
