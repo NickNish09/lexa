@@ -591,6 +591,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
               break;
 
             default:
+              
               break;
           }
           break;

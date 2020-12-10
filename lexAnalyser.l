@@ -28,14 +28,6 @@ struct lerror {
 
 struct lerror err[SYM_TABLE_SIZE];
 
-struct symbol_item {
-    char sym[SYM_SIZE];
-    int position;
-    int scope;
-};
-
-struct symbol_item symbol_table[SYM_TABLE_SIZE];
-
 void printErrors(){
     printf("Erros léxicos:\n");
     int i;
@@ -241,6 +233,7 @@ PRINT "print"
  }
 {FLOAT} {
     // printf("<FLOAT, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    yylval.str = (char *) strdup(yytext);
     return FLOAT;
 }
 {ENTER} {
@@ -260,18 +253,3 @@ PRINT "print"
 }
 
 %%
-
-// int main( int argc, char **argv ) {
-//     ++argv, --argc;
-//     if( argc > 0 ){
-//         yyin = fopen( argv[0], "r" );
-//     }
-//     else{
-//         yyin = stdin;
-//     }
-
-//     yylex();
-//     printErrors();
-
-//     return 0;
-// }

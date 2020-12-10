@@ -626,8 +626,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
             strcat(aux, generate_instruction("call", concat(SCOPE_SEPARATOR, tree->right->func_name), func_counter_string, NULL));
             strcat(aux, generate_instruction("pop", tree->left->val, NULL, NULL));
           } else {
-            printf("AAAAA: %s\n", tree->right->val);
-            // aux = generate_instruction("mov", tree->left->val, tree->right->val, NULL);
+            aux = generate_instruction("mov", tree->left->val, tree->right->val, NULL);
           }
           break;
 
@@ -658,6 +657,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
               break;
 
             default:
+              
               break;
           }
           break;

@@ -6,9 +6,15 @@ float salaryClt(float sal){
 
 int main(){
     tuple int age, float sal person;
+    tuple int age, float sal person2;
+    tuple int age, float sal personresult;
     person = (20, 500.3);
+    person2 = (22, 350.1);
     float saldisc;
     saldisc = salaryClt(sal);
     print(saldisc);
+
+    personresult = person + person2;
+    print(personresult);
     return 0;
 }
