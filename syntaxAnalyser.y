@@ -543,8 +543,9 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
       strcpy(aux, "print ");
       strcat(aux, concat(sub_tree->val, concat(SCOPE_SEPARATOR, s->params_list[1]->id)));
       strcat(aux, "\n");
-      strcat(aux, "print ' '\nprint");
+      strcat(aux, "print ' '\nprint ");
       strcat(aux, concat(sub_tree->val, concat(SCOPE_SEPARATOR, s->params_list[2]->id)));
+      strcat(aux, "\n");
     }
 
     return aux;
