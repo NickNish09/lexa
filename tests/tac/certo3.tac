@@ -16,7 +16,8 @@ mul $0, 0.8, sal__salaryClt
 mov s__salaryClt, $0
 return s__salaryClt
 __main:
-mov person__main__age 20
+mov $0, 20
+mov person__main__age $0
 mov person__main__sal 500.3
 mov person2__main__age 22
 mov person2__main__sal 350.1
