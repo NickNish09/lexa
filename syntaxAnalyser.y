@@ -536,9 +536,75 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
     return aux;
   }
 
+  char * generate_tuple_print(node *sub_tree){
+    char *aux = (char*)malloc(50* sizeof(char));
+    s_node *s = find_in_s_table_plain(sub_tree->val);
+    if(s != NULL){
+      strcpy(aux, "print ");
+      strcat(aux, concat(sub_tree->val, concat(SCOPE_SEPARATOR, s->params_list[1]->id)));
+      strcat(aux, "\n");
+      strcat(aux, "print ' '\nprint");
+      strcat(aux, concat(sub_tree->val, concat(SCOPE_SEPARATOR, s->params_list[2]->id)));
+    }
+
+    return aux;
+  }
+
+  char * generate_tuple_operation(node *sub_tree){
+    char *aux = (char*)malloc(50* sizeof(char));
+    s_node *s = find_in_s_table_plain(sub_tree->left->val);
+    s_node *sr = find_in_s_table_plain(sub_tree->right->right->val);
+    s_node *sl = find_in_s_table_plain(sub_tree->right->left->val);
+    if(s != NULL){
+      if(strcmp(sub_tree->right->val, "+") == 0){
+        strcpy(aux, "add ");
+      } else if(strcmp(sub_tree->right->val, "-") == 0){
+        strcpy(aux, "sub ");
+      } else if(strcmp(sub_tree->right->val, "*") == 0){
+        strcpy(aux, "mul ");
+      } else if(strcmp(sub_tree->right->val, "/") == 0){
+        strcpy(aux, "div ");
+      }
+      strcat(aux, concat(sub_tree->left->val, concat(SCOPE_SEPARATOR, s->params_list[1]->id)));
+      strcat(aux, concat(", ", concat(sub_tree->right->right->val, concat(SCOPE_SEPARATOR, sr->params_list[1]->id))));
+      strcat(aux, concat(", ", concat(sub_tree->right->left->val, concat(SCOPE_SEPARATOR, sl->params_list[1]->id))));
+      strcat(aux, "\n");
+
+      if(strcmp(sub_tree->right->val, "+") == 0){
+        strcat(aux, "add ");
+      } else if(strcmp(sub_tree->right->val, "-") == 0){
+        strcat(aux, "sub ");
+      } else if(strcmp(sub_tree->right->val, "*") == 0){
+        strcat(aux, "mul ");
+      } else if(strcmp(sub_tree->right->val, "/") == 0){
+        strcat(aux, "div ");
+      }
+      strcat(aux, concat(sub_tree->left->val, concat(SCOPE_SEPARATOR, s->params_list[2]->id)));
+      strcat(aux, concat(", ", concat(sub_tree->right->right->val, concat(SCOPE_SEPARATOR, sr->params_list[2]->id))));
+      strcat(aux, concat(", ", concat(sub_tree->right->left->val, concat(SCOPE_SEPARATOR, sl->params_list[2]->id))));
+      strcat(aux, "\n");
+    }
+
+    return aux;
+  }
+
   char * generate_tuple_instruction(node *sub_tree){
     char *aux = (char*)malloc(50* sizeof(char));
-    strcpy(aux, "");
+    // printf("tuplee: %s %s %s\n", sub_tree->right->val, sub_tree->right->right->val, sub_tree->right->left->val);
+    // printf("var: %s\n", sub_tree->left->val);
+    // printf("r: %s\n", sub_tree->right->right->val);
+    s_node *s = find_in_s_table_plain(sub_tree->left->val);
+    if(s != NULL){
+      strcpy(aux, "mov ");
+      strcat(aux, concat(sub_tree->left->val, concat(SCOPE_SEPARATOR, s->params_list[1]->id)));
+      strcat(aux, concat(" ", sub_tree->right->right->val));
+      strcat(aux, "\n");
+
+      strcat(aux, "mov ");
+      strcat(aux, concat(sub_tree->left->val, concat(SCOPE_SEPARATOR, s->params_list[2]->id)));
+      strcat(aux, concat(" ", sub_tree->right->left->val));
+      strcat(aux, "\n");
+    }
 
     return aux;
   }
@@ -576,6 +642,10 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
         strcat(aux, "param ");
         strcat(aux, concat(sub_tree->right->val, "\n"));
         func_counter++;
+      } else {
+        strcat(aux, "param ");
+        strcat(aux, concat(sub_tree->val, "\n"));
+        func_counter++;
       }
     }
 
@@ -589,8 +659,12 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
       switch(keyfromstring(tree->val)){
         case CODE_ASSIGN:
           if(is_expression(tree->right->val)){
-            aux = generate_aritm_instruction(tree->right);
-            strcat(aux, generate_instruction("mov", tree->left->val, "$0", NULL));
+            if(strlen(tree->right->right->var_type) > 6){
+              aux = generate_tuple_operation(tree);
+            } else {
+              aux = generate_aritm_instruction(tree->right);
+              strcat(aux, generate_instruction("mov", tree->left->val, "$0", NULL));
+            }
           } else if(strcmp(tree->right->val, "func_call") == 0){
             func_counter = 0;
             char func_counter_string[3];
@@ -599,14 +673,18 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
             strcat(aux, generate_instruction("call", concat(SCOPE_SEPARATOR, tree->right->func_name), func_counter_string, NULL));
             strcat(aux, generate_instruction("pop", tree->left->val, NULL, NULL));
           } else if(strcmp(tree->right->val, "tuple_args") == 0){
-            aux = generate_tuple_instruction(tree->right);
+            aux = generate_tuple_instruction(tree);
           } else {
             aux = generate_instruction("mov", tree->left->val, tree->right->val, NULL);
           }
           break;
 
         case CODE_PRINT:
-          aux = generate_instruction("println", tree->right->val, NULL, NULL);
+          if(strlen(tree->right->var_type) > 6){
+            aux = generate_tuple_print(tree->right);
+          } else {
+            aux = generate_instruction("println", tree->right->val, NULL, NULL);
+          }
           break;
 
         case CODE_RETURN:
@@ -1143,7 +1221,11 @@ termo:
       printf("termo #4 \n");
     #endif
     s_node* s = find_in_s_table($1);
-    $$ = ins_node(s->var_type, REGULAR_NODE, 'E', NULL, NULL, $1);
+    if(s != NULL){
+      $$ = ins_node(s->var_type, REGULAR_NODE, 'E', NULL, NULL, $1);
+    } else {
+      $$ = ins_node("-", REGULAR_NODE, 'E', NULL, NULL, $1); 
+    }
     // free(s);
   }
 | palavra{
@@ -1206,7 +1288,7 @@ func_arg:
     }
     // free(s);
   }
-  | ID '[' ID ']' { 
+  | ID '[' ID ']' {
     s_node* s = find_in_s_table($1);
     if(s == NULL){ // nao declarou a variavel ainda
       semantic_error(NO_DECLARATION_ERROR, $1);

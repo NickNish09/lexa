@@ -11,8 +11,8 @@ int main(){
     person = (20, 500.3);
     person2 = (22, 350.1);
     float saldisc;
-    saldisc = salaryClt(sal);
-    print(saldisc);
+    /* saldisc = salaryClt(sal); */
+    /* print(saldisc); */
 
     personresult = person + person2;
     print(personresult);
