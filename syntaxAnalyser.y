@@ -597,12 +597,12 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
     if(s != NULL){
       strcpy(aux, "mov ");
       strcat(aux, concat(sub_tree->left->val, concat(SCOPE_SEPARATOR, s->params_list[1]->id)));
-      strcat(aux, concat(" ", sub_tree->right->right->val));
+      strcat(aux, concat(", ", sub_tree->right->right->val));
       strcat(aux, "\n");
 
       strcat(aux, "mov ");
       strcat(aux, concat(sub_tree->left->val, concat(SCOPE_SEPARATOR, s->params_list[2]->id)));
-      strcat(aux, concat(" ", sub_tree->right->left->val));
+      strcat(aux, concat(", ", sub_tree->right->left->val));
       strcat(aux, "\n");
     }
 
