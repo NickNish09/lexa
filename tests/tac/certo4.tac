@@ -6,6 +6,7 @@ int c__sum
 int d__sum
 int in__sum
 int a__main
+int b__main
 .code
 jump __main
 __sum:
@@ -32,9 +33,18 @@ param 5
 param 6
 call __sum, 4
 pop a__main
+param 1
+param 1
+param 1
+param 1
+call __sum, 4
+pop b__main
 slt $0, 10, a__main
 brz $1, $0
 println a__main
+slt $0, a__main, 10
+brz $1, $0
+println b__main
 add $0, 5, 4
 mul $0, $0, 2
 mov a__main, $0
