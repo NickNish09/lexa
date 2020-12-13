@@ -747,7 +747,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
       strcat(aux, ", ");
       strcat(aux, sub_tree->left->right->val);
     }
-    strcat(aux, "\nbrz, $1, $0\n");
+    strcat(aux, "\nbrz $1, $0\n");
 
     return aux;
   }

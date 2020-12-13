@@ -32,7 +32,7 @@ param 5
 call __sum, 3
 pop a__main
 slt $0, 10, a__main
-brz, $1, $0
+brz $1, $0
 println a__main
 add $0, 5, 4
 mul $0, $0, 2
