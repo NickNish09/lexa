@@ -40,11 +40,13 @@ param 1
 call __sum, 4
 pop b__main
 slt $0, 10, a__main
-brz $1, $0
+brz L0, $0
 println a__main
+L0:
 slt $0, a__main, 10
-brz $1, $0
+brz L1, $0
 println b__main
+L1:
 add $0, 5, 4
 mul $0, $0, 2
 mov a__main, $0

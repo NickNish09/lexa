@@ -657,6 +657,9 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
     return aux;
   }
 
+  int globalLabelCounter = 0;
+  int nextInstructionShouldHaveLabel = FALSE;
+
   char * generate_conditional_instruction(node *sub_tree){
     char *aux = (char*)malloc(50* sizeof(char));
     // printf("VALLL: %s\n", sub_tree->left->val);
@@ -681,7 +684,12 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
       strcat(aux, ", ");
       strcat(aux, sub_tree->left->right->val);
     }
-    strcat(aux, "\nbrz $1, $0\n");
+    strcat(aux, "\nbrz ");
+    char labelChar[12];
+    sprintf(labelChar, "%d", globalLabelCounter);
+    strcat(aux, concat("L", labelChar));
+    strcat(aux, ", $0\n");
+    nextInstructionShouldHaveLabel = TRUE;
 
     return aux;
   }
@@ -754,6 +762,15 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
       }
       if(aux != NULL){
         fputs(aux, tac_file);
+        if(nextInstructionShouldHaveLabel && keyfromstring(tree->val) != CODE_IF){
+          char labelChar[12];
+          sprintf(labelChar, "%d", globalLabelCounter);
+          strcpy(aux, concat(concat("L", labelChar), ":"));
+          strcat(aux, "\n");
+          fputs(aux, tac_file);
+          nextInstructionShouldHaveLabel = FALSE;
+          globalLabelCounter++;
+        }
       }
       resolveNode(tac_file, tree->left);
       resolveNode(tac_file, tree->right);
