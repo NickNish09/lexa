@@ -29,7 +29,8 @@ println a__main
 param a__main
 param 4
 param 5
-call __sum, 3
+param 6
+call __sum, 4
 pop a__main
 slt $0, 10, a__main
 brz $1, $0

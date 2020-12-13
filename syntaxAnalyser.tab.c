@@ -725,7 +725,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
 
   char * generate_conditional_instruction(node *sub_tree){
     char *aux = (char*)malloc(50* sizeof(char));
-    printf("VALLL: %s\n", sub_tree->left->val);
+    // printf("VALLL: %s\n", sub_tree->left->val);
     if(strcmp(sub_tree->left->val, ">") == 0){
       strcpy(aux, "slt $0, ");
       strcat(aux, sub_tree->left->right->val);
