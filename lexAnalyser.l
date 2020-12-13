@@ -153,6 +153,7 @@ PRINT "print"
 }
 {OP_COMP} {
     // printf("<OP_COMP, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    yylval.operador = (char *) strdup(yytext);
     return OP_COMP;
 }
 {OP_LOG} {

@@ -1,0 +1,22 @@
+int i;
+
+int sum(int a, int b, int c, int d){
+    int in;
+    in = a + b + c + d;
+    return in;
+}
+
+int main(){
+    int a;
+    a = sum(10, 3, 4, 5);
+    print(a);
+    a = sum(a, 4, 5);
+    /* a = (2 + (3 + 4)); */
+    if(a > 10){
+        print(a);
+    }
+    a = 4 + 5 * 2;
+
+    print(a);
+    return 0;
+}

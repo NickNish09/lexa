@@ -29,6 +29,8 @@
   #define CODE_PRINT 441
   #define CODE_RETURN 442
   #define CODE_TUPLEARGS 443
+  #define CODE_IF 444
+  #define CODE_ELSE 445
 
 typedef struct { char *key; int val; } t_symstruct;
 
@@ -37,6 +39,8 @@ static t_symstruct lookuptable[] = {
   { "print", CODE_PRINT },
   { "retorno", CODE_RETURN },
   { "tuple_args", CODE_TUPLEARGS },
+  { "if", CODE_IF },
+  { "else", CODE_ELSE },
 };
 
 #define NKEYS (sizeof(lookuptable)/sizeof(t_symstruct))
@@ -653,6 +657,35 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
     return aux;
   }
 
+  char * generate_conditional_instruction(node *sub_tree){
+    char *aux = (char*)malloc(50* sizeof(char));
+    printf("VALLL: %s\n", sub_tree->left->val);
+    if(strcmp(sub_tree->left->val, ">") == 0){
+      strcpy(aux, "slt $0, ");
+      strcat(aux, sub_tree->left->right->val);
+      strcat(aux, ", ");
+      strcat(aux, sub_tree->left->left->val);
+    } else if(strcmp(sub_tree->left->val, "<") == 0){
+      strcpy(aux, "slt $0, ");
+      strcat(aux, sub_tree->left->left->val);
+      strcat(aux, ", ");
+      strcat(aux, sub_tree->left->right->val);
+    } else if(strcmp(sub_tree->left->val, ">=") == 0){
+      strcpy(aux, "sleq $0, ");
+      strcat(aux, sub_tree->left->right->val);
+      strcat(aux, ", ");
+      strcat(aux, sub_tree->left->left->val);
+    } else if(strcmp(sub_tree->left->val, "<=") == 0){
+      strcpy(aux, "sleq $0, ");
+      strcat(aux, sub_tree->left->left->val);
+      strcat(aux, ", ");
+      strcat(aux, sub_tree->left->right->val);
+    }
+    strcat(aux, "\nbrz, $1, $0\n");
+
+    return aux;
+  }
+
   void resolveNode(FILE *tac_file, node *tree){
     if(tree){
       // printf("sasdadasdasd: %s\n", tree->val);
@@ -697,6 +730,9 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
           } else {
             aux = generate_instruction("return", NULL, NULL, NULL);
           }
+          break;
+        case CODE_IF:
+          aux = generate_conditional_instruction(tree);
           break;
         default:
           switch(tree->node_kind){
@@ -1133,7 +1169,7 @@ expressao_logica:
     #if defined DEBUG
       printf("expressao_logica #3 \n");
     #endif
-    $$ = ins_node("-", REGULAR_NODE, 'E', $1, $3, "expressao_logica"); 
+    $$ = ins_node("-", REGULAR_NODE, 'E', $1, $3, $2); 
   }
 | '(' op_expressao ')' { 
     #if defined DEBUG
@@ -1289,6 +1325,7 @@ func_arg:
     }
     // free(s);
   }
+  // op_expressao { $$ = $1; }
   | ID '[' ID ']' {
     s_node* s = find_in_s_table($1);
     if(s == NULL){ // nao declarou a variavel ainda
