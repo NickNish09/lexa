@@ -1241,6 +1241,25 @@ op_expressao:
   | op_expressao ',' termo {
       $$ = ins_node(concat($1->var_type, $3->var_type), REGULAR_NODE, 'T', $3, $1, "tuple_args");
   }
+  | '(' op_expressao ')' OP_ARITM termo { 
+      #if defined DEBUG
+        printf("op_expressao #1\n");
+      #endif
+      int tm = types_match($2->var_type, $5->var_type);
+      if(tm){
+        #if defined DEBUG
+          printf("types OK\n");
+        #endif
+      } else {
+        #if defined DEBUG
+          printf("types MISSMATCH: %s | %s\n", $2->var_type, $5->var_type);
+        #endif
+        char msg[50];
+        sprintf(msg, "%s %s\n", $2->var_type, $5->var_type);
+        semantic_error(TYPES_MISSMATCH_ERROR, msg);
+      }  
+      $$ = ins_node($2->var_type, REGULAR_NODE, 'E', $2, $5, $4); 
+  }
 ;
 
 termo:
