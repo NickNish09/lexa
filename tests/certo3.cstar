@@ -1,20 +1,27 @@
-float salaryClt(float sal){
-    float s;
-    s = sal * 0.8;
-    return s;
+int i;
+
+int sumul(int a, int b, int c){
+    int in;
+    in = a + b * c;
+    return in;
+
+    float out;
+}
+
+int mult(int a, int b){
+    int c;
+    c = a * b;
+    return c;
 }
 
 int main(){
-    tuple int age, float sal person;
-    tuple int age, float sal person2;
-    tuple int age, float sal personresult;
-    person = (20, 500.3);
-    person2 = (22, 350.1);
-    float saldisc;
-    /* saldisc = salaryClt(sal); */
-    /* print(saldisc); */
-
-    personresult = person + person2;
-    print(personresult);
+    int a;
+    a = sumul(2, 3, 4);
+    print(a);
+    a = sumul(a, 4, 5);
+    /* a = (2 + (3 + 4)); */
+    print(a);
+    a = mult(2, 3);
+    print(a);
     return 0;
 }
