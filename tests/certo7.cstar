@@ -1,0 +1,17 @@
+bool ola(){
+    bool a;
+    a = true;
+    return a;
+}
+
+int main(){
+    int a;
+    a = 10;
+    bool b;
+    b = true;
+    if(b){
+        print(a);
+    }
+    
+    return 0;
+}

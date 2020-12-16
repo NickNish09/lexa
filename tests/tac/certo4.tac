@@ -43,10 +43,12 @@ slt $0, 10, a__main
 brz L0, $0
 println a__main
 L0:
+nop
 slt $0, a__main, 10
 brz L1, $0
 println b__main
 L1:
+nop
 add $0, 4, 5
 mul $0, $0, 2
 mov a__main, $0

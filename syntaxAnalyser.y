@@ -450,6 +450,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
   void generateTableInTac(FILE *tac_file){
     s_node *s;
     char aux[100];
+    int shouldGenerateBools = FALSE;
     fputs(".table\n", tac_file);
     for(s=s_table; s != NULL; s=s->hh.next) {
       if(s->s_node_type != FUNCTION_TYPE){
@@ -463,13 +464,23 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
             fputs(aux, tac_file);
           }
         } else {
-          strcpy(aux, s->var_type);
+          if(strcmp(s->var_type, "bool") == 0){
+            strcpy(aux, "int");
+            shouldGenerateBools = TRUE;
+          } else {
+            strcpy(aux, s->var_type);
+          }
           strcat(aux, " ");
           strcat(aux, s->id);
           strcat(aux, "\n");
           fputs(aux, tac_file);
         }
       }
+    }
+    if(shouldGenerateBools){
+      strcpy(aux, "int true = 1\n");
+      strcat(aux, "int false = 0\n");
+      fputs(aux, tac_file);
     }
   }
 
@@ -725,6 +736,9 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
       strcat(aux, sub_tree->left->left->val);
       strcat(aux, ", ");
       strcat(aux, sub_tree->left->right->val);
+    } else {
+      strcpy(aux, "mov $0, ");
+      strcat(aux, sub_tree->left->val);
     }
     strcat(aux, "\nbrz ");
     char labelChar[12];
@@ -812,7 +826,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
           if(nextInstructionShouldHaveLabel){
             char labelChar[12];
             sprintf(labelChar, "%d", globalLabelCounter);
-            strcpy(aux, concat(concat("L", labelChar), ":"));
+            strcpy(aux, concat(concat("L", labelChar), ":\nnop"));
             strcat(aux, "\n");
             fputs(aux, tac_file);
             nextInstructionShouldHaveLabel = FALSE;
@@ -877,7 +891,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
 %type <nd> cod_blocks expressao_logica termo op_expressao declaracao_tupla 
 %type <str> palavra variable
 
-%token BOOL
+%token <str> BOOL
 %token <tipo> TIPO
 %token <str> IF ELSE
 %token LACOS
@@ -1348,6 +1362,12 @@ termo:
   #endif
   $$ = ins_node("char", REGULAR_NODE, 'E', NULL, NULL, $1);
 }
+| BOOL { 
+    #if defined DEBUG
+      printf("termo #3 \n");
+    #endif
+    $$ = ins_node("bool", REGULAR_NODE, 'E', NULL, NULL, $1);
+  }
 ;
 
 scan:

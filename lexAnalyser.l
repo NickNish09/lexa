@@ -116,6 +116,7 @@ PRINT "print"
 }
 {BOOL} {
     // printf("<BOOL, %s> (tamanho %d)\n", yytext, (int)yyleng);
+    yylval.tipo = (char *) strdup(yytext);
     return BOOL;
 }
 {LACOS} {
