@@ -43,7 +43,7 @@ Gramática
 
    23 cod_block: IF '(' expressao_logica ')' '{' cod_blocks '}'
    24          | IF '(' expressao_logica ')' '{' cod_blocks '}' ELSE '{' cod_blocks '}'
-   25          | LACOS '(' expressao_logica ')' '{' cod_block '}'
+   25          | LACOS '(' expressao_logica ')' '{' cod_blocks '}'
    26          | RETORNO ';'
    27          | RETORNO termo ';'
    28          | RETORNO '(' expressao ')' ';'
@@ -174,10 +174,10 @@ Não terminais com as regras onde eles aparecem
         à direita: 13 16 17
     cod_blocks <nd> (43)
         à esquerda: 21 22
-        à direita: 13 15 21 23 24
+        à direita: 13 15 21 23 24 25
     cod_block <nd> (44)
         à esquerda: 23 24 25 26 27 28 29 30 31 32 33
-        à direita: 21 22 25
+        à direita: 21 22
     assign <nd> (45)
         à esquerda: 34 35
         à direita: 29
@@ -524,7 +524,7 @@ Estado 33
 
 Estado 34
 
-   25 cod_block: LACOS • '(' expressao_logica ')' '{' cod_block '}'
+   25 cod_block: LACOS • '(' expressao_logica ')' '{' cod_blocks '}'
 
     '('  deslocar, e ir ao estado 52
 
@@ -704,7 +704,7 @@ Estado 51
 
 Estado 52
 
-   25 cod_block: LACOS '(' • expressao_logica ')' '{' cod_block '}'
+   25 cod_block: LACOS '(' • expressao_logica ')' '{' cod_blocks '}'
 
     BOOL    deslocar, e ir ao estado 77
     INT     deslocar, e ir ao estado 53
@@ -1056,7 +1056,7 @@ Estado 83
 
 Estado 84
 
-   25 cod_block: LACOS '(' expressao_logica • ')' '{' cod_block '}'
+   25 cod_block: LACOS '(' expressao_logica • ')' '{' cod_blocks '}'
 
     ')'  deslocar, e ir ao estado 116
 
@@ -1377,7 +1377,7 @@ Estado 115
 
 Estado 116
 
-   25 cod_block: LACOS '(' expressao_logica ')' • '{' cod_block '}'
+   25 cod_block: LACOS '(' expressao_logica ')' • '{' cod_blocks '}'
 
     '{'  deslocar, e ir ao estado 134
 
@@ -1546,7 +1546,7 @@ Estado 133
 
 Estado 134
 
-   25 cod_block: LACOS '(' expressao_logica ')' '{' • cod_block '}'
+   25 cod_block: LACOS '(' expressao_logica ')' '{' • cod_blocks '}'
 
     TIPO     deslocar, e ir ao estado 1
     IF       deslocar, e ir ao estado 33
@@ -1560,7 +1560,8 @@ Estado 134
     declaracao  ir ao estado 39
     var_decl    ir ao estado 6
     func_decl   ir ao estado 7
-    cod_block   ir ao estado 146
+    cod_blocks  ir ao estado 146
+    cod_block   ir ao estado 41
     assign      ir ao estado 42
     scan        ir ao estado 43
     print       ir ao estado 44
@@ -1690,9 +1691,28 @@ Estado 145
 
 Estado 146
 
-   25 cod_block: LACOS '(' expressao_logica ')' '{' cod_block • '}'
+   21 cod_blocks: cod_blocks • cod_block
+   25 cod_block: LACOS '(' expressao_logica ')' '{' cod_blocks • '}'
 
-    '}'  deslocar, e ir ao estado 151
+    TIPO     deslocar, e ir ao estado 1
+    IF       deslocar, e ir ao estado 33
+    LACOS    deslocar, e ir ao estado 34
+    RETORNO  deslocar, e ir ao estado 35
+    TUPLE    deslocar, e ir ao estado 2
+    ID       deslocar, e ir ao estado 36
+    PRINT    deslocar, e ir ao estado 37
+    SCAN     deslocar, e ir ao estado 38
+    '}'      deslocar, e ir ao estado 151
+
+    declaracao  ir ao estado 39
+    var_decl    ir ao estado 6
+    func_decl   ir ao estado 7
+    cod_block   ir ao estado 68
+    assign      ir ao estado 42
+    scan        ir ao estado 43
+    print       ir ao estado 44
+    func_call   ir ao estado 45
+    variable    ir ao estado 46
 
 
 Estado 147
@@ -1728,7 +1748,7 @@ Estado 150
 
 Estado 151
 
-   25 cod_block: LACOS '(' expressao_logica ')' '{' cod_block '}' •
+   25 cod_block: LACOS '(' expressao_logica ')' '{' cod_blocks '}' •
 
     $padrão  reduzir usando a regra 25 (cod_block)
 

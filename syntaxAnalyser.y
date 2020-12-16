@@ -1036,7 +1036,7 @@ cod_block:
     #endif
     $$ = ins_node("-", REGULAR_NODE,'I', $3, ins_node("-", REGULAR_NODE,'I', $6, $10, "cb"), "if-else"); 
   }
-| LACOS '(' expressao_logica ')' '{' cod_block '}' { 
+| LACOS '(' expressao_logica ')' '{' cod_blocks '}' { 
     #if defined DEBUG
       printf("cod_block #3 \n");
     #endif
