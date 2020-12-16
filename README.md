@@ -13,8 +13,12 @@ Para compilar o programa siga os seguintes passos:
 - Um arquivo .tac será gerado em /tests/tac/nome_do_arquivo.tac. Utilize ele para rodar no TAC.
 
 Testes Certos:
-tests/certo1.cstar
-tests/certo2.cstar
+tests/certo1.cstar (operações aritméticas e chamada de função)
+tests/certo2.cstar (operações em tuplas e print tuplas)
+tests/certo3.cstar (ordem de operações)
+tests/certo4.cstar (condições)
+tests/certo5.cstar (parenteses)
+tests/certo6.cstar (laços)
 
 Testes Errados:
 tests/errado1.cstar
