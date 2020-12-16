@@ -31,6 +31,7 @@
   #define CODE_TUPLEARGS 443
   #define CODE_IF 444
   #define CODE_ELSE 445
+  #define CODE_WHILE 446
 
 typedef struct { char *key; int val; } t_symstruct;
 
@@ -41,6 +42,7 @@ static t_symstruct lookuptable[] = {
   { "tuple_args", CODE_TUPLEARGS },
   { "if", CODE_IF },
   { "else", CODE_ELSE },
+  { "while", CODE_WHILE },
 };
 
 #define NKEYS (sizeof(lookuptable)/sizeof(t_symstruct))
@@ -657,6 +659,12 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
     return aux;
   }
 
+  char * generate_loop_expression(node *sub_tree){
+    char *aux = (char*)malloc(50* sizeof(char));
+    
+    return aux;
+  }
+
   int globalLabelCounter = 0;
   int nextInstructionShouldHaveLabel = FALSE;
 
@@ -741,6 +749,9 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
           break;
         case CODE_IF:
           aux = generate_conditional_instruction(tree);
+          break;
+        case CODE_WHILE:
+          aux = generate_loop_expression(tree);
           break;
         default:
           switch(tree->node_kind){
