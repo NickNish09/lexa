@@ -7,10 +7,18 @@ bool ola(){
 int main(){
     int a;
     a = 10;
+    int d;
+    d = 20;
     bool b;
     b = true;
+    bool c;
+    c = false;
     if(b){
         print(a);
+    }
+
+    if(c){
+        print(d);
     }
     
     return 0;
