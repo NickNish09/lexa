@@ -532,8 +532,8 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
         strcpy(aux, "div ");
       }
       strcat(aux, "$0, ");
-      strcat(aux, concat(sub_tree->right->val, ", "));
-      strcat(aux, sub_tree->left->val);
+      strcat(aux, concat(sub_tree->left->val, ", "));
+      strcat(aux, sub_tree->right->val);
       strcat(aux, "\n");
     }
 
