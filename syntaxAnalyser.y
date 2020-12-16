@@ -1140,7 +1140,8 @@ assign:
 ;
 
 expressao:
-  op_expressao
+  op_expressao { $$ = $1; }
+  | '(' op_expressao ')' { $$ = $2; }
   | func_call {
     $$ = $1;
   }
