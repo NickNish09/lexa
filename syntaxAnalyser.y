@@ -659,9 +659,59 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
     return aux;
   }
 
-  char * generate_loop_expression(node *sub_tree){
+  char * int_to_label(char* label, int i){
     char *aux = (char*)malloc(50* sizeof(char));
-    
+    char labelChar[12];
+    sprintf(labelChar, "%d", i);
+    strcat(aux, concat(label, labelChar));
+    strcat(aux, "");
+    return aux;
+  }
+
+  int whileLabelCounter = 1;
+  int whileInstructionFound = FALSE;
+
+  char * generate_loop_expression(node *tree){
+    char *aux = (char*)malloc(50* sizeof(char));
+    whileInstructionFound = TRUE;
+    strcpy(aux, int_to_label("W", whileLabelCounter));
+    strcat(aux, ":\n");
+    printf("asd: %s\n", tree->val);
+    if(strcmp(tree->val, "<") == 0){
+      strcat(aux, "slt $2, ");
+      strcat(aux, tree->right->val);
+      strcat(aux, ", ");
+      strcat(aux, tree->left->val);
+      strcat(aux, "\n");
+    } else if(strcmp(tree->val, "<=") == 0){
+      strcat(aux, "sleq $2, ");
+      strcat(aux, tree->right->val);
+      strcat(aux, ", ");
+      strcat(aux, tree->left->val);
+      strcat(aux, "\n");
+    } else if(strcmp(tree->val, ">") == 0){
+      strcat(aux, "slt $2, ");
+      strcat(aux, tree->left->val);
+      strcat(aux, ", ");
+      strcat(aux, tree->right->val);
+      strcat(aux, "\n");
+    } else if(strcmp(tree->val, ">=") == 0){
+      strcat(aux, "sleq $2, ");
+      strcat(aux, tree->left->val);
+      strcat(aux, ", ");
+      strcat(aux, tree->right->val);
+      strcat(aux, "\n");
+    } else if(strcmp(tree->val, "==") == 0){
+      strcat(aux, "seq $2, ");
+      strcat(aux, tree->right->val);
+      strcat(aux, ", ");
+      strcat(aux, tree->left->val);
+      strcat(aux, "\n");
+    }
+
+    strcat(aux, concat("brz EXIT_", int_to_label("W", whileLabelCounter)));
+    strcat(aux, ", $2\n");
+    whileLabelCounter++;
     return aux;
   }
 
@@ -751,7 +801,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
           aux = generate_conditional_instruction(tree);
           break;
         case CODE_WHILE:
-          aux = generate_loop_expression(tree);
+          aux = generate_loop_expression(tree->left);
           break;
         default:
           switch(tree->node_kind){
@@ -773,18 +823,30 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
       }
       if(aux != NULL){
         fputs(aux, tac_file);
-        if(nextInstructionShouldHaveLabel && keyfromstring(tree->val) != CODE_IF){
-          char labelChar[12];
-          sprintf(labelChar, "%d", globalLabelCounter);
-          strcpy(aux, concat(concat("L", labelChar), ":"));
-          strcat(aux, "\n");
-          fputs(aux, tac_file);
-          nextInstructionShouldHaveLabel = FALSE;
-          globalLabelCounter++;
-        }
       }
-      resolveNode(tac_file, tree->left);
-      resolveNode(tac_file, tree->right);
+      if(strcmp(tree->val, "while") == 0 || strcmp(tree->val, "if") == 0){
+        resolveNode(tac_file, tree->right);
+        if(aux != NULL){
+          if(nextInstructionShouldHaveLabel){
+            char labelChar[12];
+            sprintf(labelChar, "%d", globalLabelCounter);
+            strcpy(aux, concat(concat("L", labelChar), ":"));
+            strcat(aux, "\n");
+            fputs(aux, tac_file);
+            nextInstructionShouldHaveLabel = FALSE;
+            globalLabelCounter++;
+          }
+          if(whileInstructionFound){
+            strcpy(aux, int_to_label("EXIT_W",whileLabelCounter));
+            strcat(aux, ":\nnop\n");
+            fputs(aux, tac_file);
+            whileInstructionFound = FALSE;
+          }
+        }
+      } else {
+        resolveNode(tac_file, tree->left);
+        resolveNode(tac_file, tree->right);
+      }
     }
   }
 
