@@ -835,8 +835,11 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
             globalLabelCounter++;
           }
           if(whileInstructionFound){
-            strcpy(aux, int_to_label("EXIT_W",whileLabelCounter));
-            strcat(aux, ":\nnop\n");
+            strcpy(aux, concat("jump ", int_to_label("W", whileLabelCounter)));
+            strcat(aux, "\n");
+            strcat(aux, int_to_label("EXIT_W",whileLabelCounter));
+            strcat(aux, ":\n");
+            strcat(aux, "nop\n");
             fputs(aux, tac_file);
             whileInstructionFound = FALSE;
             whileLabelCounter++;

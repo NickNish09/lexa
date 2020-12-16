@@ -10,5 +10,6 @@ brz EXIT_W1, $2
 println a__main
 sub $0, a__main, 1
 mov a__main, $0
+jump W1
 EXIT_W1:
 nop
