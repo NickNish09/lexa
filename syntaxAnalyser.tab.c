@@ -3513,6 +3513,8 @@ int main(int argc, char **argv){
   #endif
 
   char *pure_file_name = remove_extension(basename(argv[0]));
-  generateTacFile(parser_tree, pure_file_name);
+  if(!has_error){
+    generateTacFile(parser_tree, pure_file_name);
+  }
   return 0;
 }
