@@ -1258,12 +1258,6 @@ expressao_logica:
     #endif
     $$ = $1; 
   }
-| BOOL {
-    #if defined DEBUG
-      printf("expressao_logica #6\n"); 
-    #endif
-    $$ = NULL;
-  }
 ;
 
 op_expressao:
