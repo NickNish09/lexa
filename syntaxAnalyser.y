@@ -676,7 +676,6 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
     whileInstructionFound = TRUE;
     strcpy(aux, int_to_label("W", whileLabelCounter));
     strcat(aux, ":\n");
-    printf("asd: %s\n", tree->val);
     if(strcmp(tree->val, "<") == 0){
       strcat(aux, "slt $2, ");
       strcat(aux, tree->right->val);
@@ -711,7 +710,6 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
 
     strcat(aux, concat("brz EXIT_", int_to_label("W", whileLabelCounter)));
     strcat(aux, ", $2\n");
-    whileLabelCounter++;
     return aux;
   }
 
@@ -841,6 +839,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
             strcat(aux, ":\nnop\n");
             fputs(aux, tac_file);
             whileInstructionFound = FALSE;
+            whileLabelCounter++;
           }
         }
       } else {
