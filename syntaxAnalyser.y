@@ -236,7 +236,6 @@ int keyfromstring(char *key)
     s_node *s;
 
     printf("Tabela de Símbolos:\n");
-    // printf("NAME\t\tTYPE\t\tSYMBOL_TYPE\t\tSCOPE SYMBOLS\n");
     for(s=s_table; s != NULL; s=s->hh.next) {
       printf("id: %15s | var_type: %7s | s_node_type: %10s | scope_level: %d | params_count: %d", s->id, s->var_type, stringBasedOnNumber(s->s_node_type), s->scope, s->params_count);
       if(s->s_node_type == FUNCTION_TYPE || s->s_node_type == TUPLE_TYPE){
@@ -256,11 +255,8 @@ int keyfromstring(char *key)
     s_node *s;
     int i;
     for(i=0; i<=scopes_count;i++){
-      // printf("sn: %s\n", scopes_names[i]);
       char *auxid = concat(SCOPE_SEPARATOR, scopes_names[i]);
       char *identifier = concat(id, auxid);
-      // print_s_table();
-      // printf("identificador: %s\n", identifier);
       
       HASH_FIND_STR(s_table, identifier, s);
       if(s != NULL){
@@ -331,7 +327,6 @@ node* ins_node_func_call(char* var_type, int node_type, char node_kind, node *le
 node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
   node* aux_node = (node*)calloc(1, sizeof(node));
 
-  // printf("tipo_var: %s", var_type);
   aux_node->left = NULL;
   aux_node->right = NULL;
   aux_node->var_type = var_type;
@@ -414,9 +409,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
   void check_specific_param(node *nd, char *func_name){
     if(nd != NULL){
       if(strcmp(nd->val, "func_args") != 0){
-        // printf("arg: %s \n", nd->var_type);
         s_node *aux = find_in_s_table(func_name);
-        // printf("should arg: %s\n", aux->params_list[paramsc]->var_type);
         if(paramsc > 0){
          if(strcmp(nd->var_type, aux->params_list[paramsc]->var_type) != 0){
             char msg[50];
@@ -440,9 +433,6 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
     paramsc = aux->params_count;
     check_specific_param(nd->right, func_name);
     paramsc = 0;
-    // printf("func: %d\n", aux->params_count);
-    // printf("v: %s\n", nd->right->left->right->val);
-    // printf("v: %s\n", nd->right->left->left->val);
   }
 
   char *remove_extension(char* myStr) {
@@ -597,9 +587,6 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
 
   char * generate_tuple_instruction(node *sub_tree){
     char *aux = (char*)malloc(50* sizeof(char));
-    // printf("tuplee: %s %s %s\n", sub_tree->right->val, sub_tree->right->right->val, sub_tree->right->left->val);
-    // printf("var: %s\n", sub_tree->left->val);
-    // printf("r: %s\n", sub_tree->right->right->val);
     s_node *s = find_in_s_table_plain(sub_tree->left->val);
     if(s != NULL){
       strcpy(aux, "mov ");
@@ -619,7 +606,6 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
   int func_counter;
   char * generate_func_call_instruction(node *sub_tree){
     char *aux = (char*)malloc(50* sizeof(char));
-    // printf("aa: %s\n", sub_tree->left->val);
     if(sub_tree->left != NULL){
       if(strcmp(sub_tree->left->val, "func_args") == 0){
         strcpy(aux, generate_func_call_instruction(sub_tree->left));
@@ -718,7 +704,7 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
 
   char * generate_conditional_instruction(node *sub_tree){
     char *aux = (char*)malloc(50* sizeof(char));
-    // printf("VALLL: %s\n", sub_tree->left->val);
+
     if(strcmp(sub_tree->left->val, ">") == 0){
       strcpy(aux, "slt $0, ");
       strcat(aux, sub_tree->left->right->val);
@@ -752,7 +738,6 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
 
   void resolveNode(FILE *tac_file, node *tree){
     if(tree){
-      // printf("sasdadasdasd: %s\n", tree->val);
       char *aux = NULL;
       switch(keyfromstring(tree->val)){
         case CODE_ASSIGN:
@@ -808,7 +793,6 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
               s_node* func_s_node = find_in_s_table(tree->val);
               int i;
               for(i=func_s_node->params_count; i> 0; i--){
-                // printf("LL: %s\n", func_s_node->params_list[i]->id);
                 strcat(aux, generate_instruction("pop", func_s_node->params_list[i]->id, NULL, NULL));
               }
               break;
@@ -976,9 +960,6 @@ declaracao_tupla:
     aux2->var_type = tuple_gamb_kind;
     s->params_list[s->params_count] = aux2;
     $$ = $4;
-    // $$ = ins_node(concat($4->var_type, $1), REGULAR_NODE,'F', NULL, $4, $2);
-    // printf("CONCASS: %s\n",concat($1, $4->var_type));
-    // free(s);
   }
 | TIPO ID ID ';'{
     #if defined DEBUG
@@ -1033,10 +1014,7 @@ parm_tipos:
     s_node* func = find_in_s_table(s_stack->id);
     func->params_count++;
     func->params_list[func->params_count] = aux;
-    // printf("aux: %s\n", aux);
     $$ = $1;
-    // free(aux);
-    // free(func);
   }
 | parm_tipos TIPO ID '[' ']' {
     #if defined DEBUG
@@ -1127,7 +1105,6 @@ cod_block:
     #if defined DEBUG
       printf("cod_block #4.5 \n");
     #endif
-    // printf("CURRENTSCOPSCOPE_SEPARATORs %s\n", s_stack->id, scopes_names[0]);
     s_node* s = find_in_s_table(s_stack->id);
     s_node* ss = find_in_s_table_plain($2->val);
     if(s != NULL){
@@ -1187,16 +1164,13 @@ assign:
     s_node* s = find_in_s_table_plain($1);
     s_node* ss = find_in_s_table_plain($3->val);
     if(s != NULL){
-      // printf("$3 var_type: %s\n", s->var_type);
       if(ss != NULL){
-        // printf("AAA\n");
         if(!types_match(s->var_type, ss->var_type)){
           char msg[50];
           sprintf(msg, "%s %s\n", ss->var_type, s->var_type);
           semantic_error(TYPES_MISSMATCH_ERROR, msg);
         }
       } else {
-        // printf("BBB\n");
         if(!types_match($3->var_type, s->var_type)){
           char msg[50];
           sprintf(msg, "%s %s\n", $3->var_type, s->var_type);
@@ -1283,9 +1257,6 @@ op_expressao:
     #if defined DEBUG
       printf("op_expressao #1\n");
     #endif
-    // printf("%s ll %s\n", $1->val, $3->val);
-    // s_node* s1 = find_in_s_table($1->val);
-    // s_node* s2 = find_in_s_table($3->val);
     int tm = types_match($1->var_type, $3->var_type);
     if(tm){
       #if defined DEBUG
@@ -1515,15 +1486,11 @@ int main(int argc, char **argv){
   if(has_error != TRUE){
     printf("\n\nAbstract Syntax Tree:\n");
     print_tree(parser_tree, 0);
-    // printLevelOrder(parser_tree);
     printf("\n");
 
     print_s_table();
   } else {
     printErrors();
-    // printf("\n\nAbstract Syntax Tree:\n");
-    // print_tree(parser_tree, 0);
-    // printLevelOrder(parser_tree);
     printf("\n");
 
     print_s_table();
