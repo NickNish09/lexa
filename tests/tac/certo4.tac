@@ -14,7 +14,7 @@ pop d__sum
 pop c__sum
 pop b__sum
 pop a__sum
-add $0, b__sum, a__sum
+add $0, a__sum, b__sum
 add $0, $0, c__sum
 add $0, $0, d__sum
 mov in__sum, $0
@@ -47,7 +47,7 @@ slt $0, a__main, 10
 brz L1, $0
 println b__main
 L1:
-add $0, 5, 4
+add $0, 4, 5
 mul $0, $0, 2
 mov a__main, $0
 println a__main

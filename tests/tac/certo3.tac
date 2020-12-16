@@ -15,14 +15,14 @@ __sumul:
 pop c__sumul
 pop b__sumul
 pop a__sumul
-add $0, b__sumul, a__sumul
+add $0, a__sumul, b__sumul
 mul $0, $0, c__sumul
 mov in__sumul, $0
 return in__sumul
 __mult:
 pop b__mult
 pop a__mult
-mul $0, b__mult, a__mult
+mul $0, a__mult, b__mult
 mov c__mult, $0
 return c__mult
 __main:

@@ -1140,13 +1140,7 @@ assign:
 ;
 
 expressao:
-  '(' expressao ')' {
-    #if defined DEBUG
-      printf("expressao #6 \n"); 
-    #endif
-    $$ = $2; 
-  }
-  | op_expressao
+  op_expressao
   | func_call {
     $$ = $1;
   }
