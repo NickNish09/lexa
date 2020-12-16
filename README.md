@@ -19,6 +19,7 @@ tests/certo3.cstar (ordem de operações)
 tests/certo4.cstar (condições)
 tests/certo5.cstar (parenteses)
 tests/certo6.cstar (laços)
+tests/certo7.cstar (booleanos)
 
 Testes Errados:
 tests/errado1.cstar
