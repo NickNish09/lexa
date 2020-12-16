@@ -676,25 +676,25 @@ node* ins_node_symbol(char* var_type, int node_type, char node_kind, char* id){
     whileInstructionFound = TRUE;
     strcpy(aux, int_to_label("W", whileLabelCounter));
     strcat(aux, ":\n");
-    if(strcmp(tree->val, "<") == 0){
+    if(strcmp(tree->val, ">") == 0){
       strcat(aux, "slt $2, ");
       strcat(aux, tree->right->val);
       strcat(aux, ", ");
       strcat(aux, tree->left->val);
       strcat(aux, "\n");
-    } else if(strcmp(tree->val, "<=") == 0){
+    } else if(strcmp(tree->val, ">=") == 0){
       strcat(aux, "sleq $2, ");
       strcat(aux, tree->right->val);
       strcat(aux, ", ");
       strcat(aux, tree->left->val);
       strcat(aux, "\n");
-    } else if(strcmp(tree->val, ">") == 0){
+    } else if(strcmp(tree->val, "<") == 0){
       strcat(aux, "slt $2, ");
       strcat(aux, tree->left->val);
       strcat(aux, ", ");
       strcat(aux, tree->right->val);
       strcat(aux, "\n");
-    } else if(strcmp(tree->val, ">=") == 0){
+    } else if(strcmp(tree->val, "<=") == 0){
       strcat(aux, "sleq $2, ");
       strcat(aux, tree->left->val);
       strcat(aux, ", ");
