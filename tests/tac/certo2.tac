@@ -30,3 +30,13 @@ sub personresult__main__sal, person2__main__sal, person__main__sal
 print personresult__main__age
 print ' '
 println personresult__main__sal
+mul personresult__main__age, person2__main__age, person__main__age
+mul personresult__main__sal, person2__main__sal, person__main__sal
+print personresult__main__age
+print ' '
+println personresult__main__sal
+div personresult__main__age, person2__main__age, person__main__age
+div personresult__main__sal, person2__main__sal, person__main__sal
+print personresult__main__age
+print ' '
+println personresult__main__sal

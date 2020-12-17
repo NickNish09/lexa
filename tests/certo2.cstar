@@ -18,5 +18,9 @@ int main(){
     print(personresult);
     personresult = person - person2;
     print(personresult);
+    personresult = person * person2;
+    print(personresult);
+    personresult = person / person2;
+    print(personresult);
     return 0;
 }
